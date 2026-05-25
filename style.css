@@ -993,9 +993,10 @@ select {
   }
 
   .intro-carousel {
-    height: 100svh;
-    min-height: 100vh;
-    min-height: 100svh;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
     max-height: none;
   }
 
@@ -1011,9 +1012,8 @@ select {
   .intro-carousel .carousel-slide img {
     width: 100%;
     height: 100%;
-    min-height: 100svh;
     object-fit: cover !important;
-    object-position: center;
+    object-position: center top;
   }
 
   .carousel-btn {
@@ -1051,13 +1051,13 @@ select {
 
   .social-float {
     right: 18px;
-    bottom: 90px;
-    gap: 12px;
+    bottom: 18px;
+    gap: 10px;
   }
 
   .social-float-btn {
-    width: 58px;
-    height: 58px;
+    width: 52px;
+    height: 52px;
   }
 
   .service-grid {
@@ -1089,9 +1089,9 @@ select {
   }
 
   .intro-carousel {
-    height: 100svh;
-    min-height: 100vh;
-    min-height: 100svh;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
   }
 
   .carousel-prev {
@@ -1141,7 +1141,12 @@ select {
   }
 
   .social-float-btn {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .social-float-btn svg {
+    width: 28px;
+    height: 28px;
   }
 }
