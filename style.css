@@ -997,9 +997,12 @@ select {
     top: calc(100% + 12px);
     right: 0;
     display: grid;
+    grid-template-columns: 1fr;
     width: min(270px, calc(100vw - 36px));
     gap: 0;
+    justify-content: stretch;
     justify-items: stretch;
+    align-items: stretch;
     padding: 10px;
     border: 1px solid rgba(31, 60, 47, 0.12);
     border-radius: 18px;
