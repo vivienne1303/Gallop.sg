@@ -93,6 +93,10 @@ select {
   box-shadow: 0 12px 34px rgba(6, 18, 12, 0.18);
 }
 
+.site-brand:hover {
+  transform: translateY(-1px);
+}
+
 .logo-img {
   width: 150px;
   height: auto;
@@ -149,6 +153,14 @@ select {
   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
+.nav-toggle:hover,
+.nav-toggle:focus-visible {
+  background: rgba(201, 165, 107, 0.28);
+  border-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.04);
+  outline: none;
+}
+
 .site-header.header-scrolled .nav-toggle {
   border-color: rgba(31, 60, 47, 0.18);
   background: rgba(31, 60, 47, 0.08);
@@ -168,11 +180,25 @@ select {
 }
 
 .main-nav a {
+  position: relative;
   color: #ffffff;
   font-weight: 600;
   font-size: 0.95rem;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.42);
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition: color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.main-nav a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  right: 50%;
+  bottom: -8px;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--gold);
+  transition: left 0.25s ease, right 0.25s ease, opacity 0.25s ease;
+  opacity: 0;
 }
 
 .site-header.header-scrolled .brand-copy .eyebrow,
@@ -187,9 +213,18 @@ select {
   color: var(--dark-green);
 }
 
-.main-nav a:hover {
+.main-nav a:hover,
+.main-nav a:focus-visible {
   color: var(--gold);
   transform: translateY(-1px);
+  outline: none;
+}
+
+.main-nav a:hover::after,
+.main-nav a:focus-visible::after {
+  left: 8px;
+  right: 8px;
+  opacity: 1;
 }
 
 .intro-carousel {
@@ -259,6 +294,14 @@ select {
 .carousel-btn:hover {
   background: rgba(10, 22, 17, 0.5);
   border-color: rgba(255, 255, 255, 0.72);
+}
+
+.carousel-btn:hover,
+.carousel-btn:focus-visible {
+  background: rgba(201, 165, 107, 0.34);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 14px 34px rgba(6, 18, 12, 0.28);
+  outline: none;
 }
 
 .carousel-prev {
@@ -396,8 +439,25 @@ select {
   transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
 }
 
-.btn:hover {
-  transform: translateY(-1px);
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible,
+.btn-tertiary:hover,
+.btn-tertiary:focus-visible {
+  background: #d9b978;
+  box-shadow: 0 16px 34px rgba(201, 165, 107, 0.32);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.78);
+  box-shadow: 0 16px 34px rgba(6, 18, 12, 0.22);
 }
 
 .btn-primary,
@@ -560,6 +620,11 @@ select {
   box-shadow: 0 36px 90px rgba(18, 30, 22, 0.2);
 }
 
+.service-card:hover .service-card-image img,
+.service-card:focus-within .service-card-image img {
+  transform: scale(1.04);
+}
+
 .service-card::before {
   display: none;
 }
@@ -575,6 +640,7 @@ select {
   height: 100%;
   object-fit: cover;
   object-position: center;
+  transition: transform 0.45s ease, filter 0.45s ease;
 }
 
 .service-card-body {
@@ -680,6 +746,8 @@ select {
 .promo-card:hover {
   transform: translateY(-5px);
   border-color: rgba(201,165,107,0.4);
+  background: rgba(255,255,255,0.12);
+  box-shadow: 0 32px 74px rgba(5, 16, 11, 0.24);
 }
 
 .promo-label {
@@ -864,7 +932,7 @@ select {
 
 .social-float-btn:hover,
 .social-float-btn:focus-visible {
-  transform: translateY(-3px);
+  transform: translateY(-4px) scale(1.04);
   box-shadow: 0 24px 54px rgba(16, 37, 28, 0.32);
   outline: none;
 }
@@ -992,6 +1060,11 @@ select {
     color: #ffffff;
   }
 
+  .nav-toggle:hover,
+  .nav-toggle:focus-visible {
+    transform: translateY(-50%) scale(1.04);
+  }
+
   .main-nav {
     position: absolute;
     top: calc(100% + 12px);
@@ -1032,9 +1105,16 @@ select {
     text-shadow: none;
   }
 
-  .main-nav a:hover {
-    background: rgba(201, 165, 107, 0.14);
-    transform: none;
+  .main-nav a::after {
+    display: none;
+  }
+
+  .main-nav a:hover,
+  .main-nav a:focus-visible {
+    background: rgba(201, 165, 107, 0.16);
+    color: var(--deep-green);
+    box-shadow: inset 0 0 0 1px rgba(201, 165, 107, 0.18);
+    transform: translateY(-1px);
   }
 
   .intro-carousel {
