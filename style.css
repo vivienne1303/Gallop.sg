@@ -923,25 +923,12 @@ select {
     position: sticky;
     background: #0d1813;
     border-bottom-color: rgba(255, 255, 255, 0.08);
-    box-shadow: none;
-    overflow: visible;
+    box-shadow: 0 10px 28px rgba(6, 18, 12, 0.18);
   }
 
   .site-header.header-scrolled {
     background: #0d1813;
     border-bottom-color: rgba(255, 255, 255, 0.08);
-  }
-
-  .site-header::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 100%;
-    height: 34px;
-    background: linear-gradient(180deg, rgba(13, 24, 19, 0.95), rgba(13, 24, 19, 0));
-    pointer-events: none;
-    z-index: 1;
   }
 
   #book,
@@ -1048,7 +1035,6 @@ select {
     min-height: 0;
     aspect-ratio: 16 / 9;
     max-height: none;
-    margin-top: -1px;
   }
 
   .intro-carousel .carousel-track,
@@ -1057,7 +1043,7 @@ select {
   }
 
   .intro-carousel::before {
-    background: linear-gradient(180deg, rgba(8, 19, 14, 0.52) 0%, rgba(8, 19, 14, 0.2) 22%, rgba(8, 19, 14, 0.12) 58%, rgba(8, 19, 14, 0.38) 100%);
+    background: linear-gradient(180deg, rgba(8, 19, 14, 0.48) 0%, rgba(8, 19, 14, 0.14) 48%, rgba(8, 19, 14, 0.42) 100%);
   }
 
   .intro-carousel .carousel-slide img {
