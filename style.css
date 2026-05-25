@@ -125,6 +125,48 @@ select {
   justify-content: flex-end;
 }
 
+.nav-toggle {
+  display: none;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  background: rgba(10, 22, 17, 0.28);
+  color: #ffffff;
+  cursor: pointer;
+  gap: 5px;
+  align-content: center;
+  place-items: center;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.site-header.header-scrolled .nav-toggle {
+  border-color: rgba(31, 60, 47, 0.18);
+  background: rgba(31, 60, 47, 0.08);
+  color: var(--dark-green);
+}
+
+.site-header.nav-open .nav-toggle span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.site-header.nav-open .nav-toggle span:nth-child(2) {
+  opacity: 0;
+}
+
+.site-header.nav-open .nav-toggle span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
 .main-nav a {
   color: #ffffff;
   font-weight: 600;
@@ -873,24 +915,88 @@ select {
 }
 
 @media (max-width: 768px) {
+  #book,
+  #riding,
+  #activities,
+  #promotions,
+  #contact {
+    scroll-margin-top: 88px;
+  }
+
   .header-inner {
-    flex-direction: column;
-    align-items: stretch;
+    position: relative;
+    align-items: center;
     width: min(100% - 36px, 1200px);
     padding: 16px 0;
+  }
+
+  .site-brand {
+    max-width: calc(100% - 62px);
   }
 
   .logo-img {
     width: 92px;
   }
 
+  .nav-toggle {
+    display: grid;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+  }
+
   .main-nav {
-    justify-content: flex-start;
-    gap: 14px 18px;
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    display: grid;
+    width: min(270px, calc(100vw - 36px));
+    gap: 0;
+    padding: 10px;
+    border: 1px solid rgba(31, 60, 47, 0.12);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 24px 64px rgba(16, 37, 28, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .site-header.nav-open .main-nav {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .main-nav a,
+  .site-header.header-scrolled .main-nav a {
+    padding: 13px 14px;
+    border-radius: 12px;
+    color: var(--dark-green);
+    text-shadow: none;
+  }
+
+  .main-nav a:hover {
+    background: rgba(201, 165, 107, 0.14);
+    transform: none;
   }
 
   .intro-carousel {
-    min-height: 86vh;
+    height: 70vh;
+    min-height: 420px;
+    max-height: 620px;
+  }
+
+  .intro-carousel::before {
+    background: linear-gradient(180deg, rgba(8, 19, 14, 0.48) 0%, rgba(8, 19, 14, 0.14) 48%, rgba(8, 19, 14, 0.42) 100%);
+  }
+
+  .carousel-slide img {
+    object-fit: contain;
+    background: #14261e;
   }
 
   .carousel-btn {
@@ -950,8 +1056,21 @@ select {
     letter-spacing: 0.14em;
   }
 
-  .main-nav a {
-    font-size: 0.86rem;
+  .brand-copy h1 {
+    font-size: 0.95rem;
+  }
+
+  .intro-carousel {
+    height: 62vh;
+    min-height: 360px;
+  }
+
+  .carousel-prev {
+    left: 14px;
+  }
+
+  .carousel-next {
+    right: 14px;
   }
 
   .hero-copy {

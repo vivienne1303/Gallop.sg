@@ -1,4 +1,5 @@
-﻿const navLinks = document.querySelectorAll('.main-nav a');
+const navLinks = document.querySelectorAll('.main-nav a');
+const navToggle = document.querySelector('.nav-toggle');
 const revealElements = document.querySelectorAll('.reveal');
 const siteHeader = document.querySelector('.site-header');
 const introCarousel = document.querySelector('.intro-carousel');
@@ -6,6 +7,21 @@ const carouselSlides = document.querySelectorAll('.carousel-slide');
 const carouselPrev = document.querySelector('.carousel-prev');
 const carouselNext = document.querySelector('.carousel-next');
 let currentSlide = 0;
+
+const setNavOpen = isOpen => {
+  if (!siteHeader || !navToggle) return;
+
+  siteHeader.classList.toggle('nav-open', isOpen);
+  navToggle.setAttribute('aria-expanded', String(isOpen));
+  navToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+};
+
+if (navToggle) {
+  navToggle.addEventListener('click', () => {
+    const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
+    setNavOpen(!isOpen);
+  });
+}
 
 navLinks.forEach(link => {
   link.addEventListener('click', event => {
@@ -16,6 +32,8 @@ navLinks.forEach(link => {
       event.preventDefault();
       targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+
+    setNavOpen(false);
   });
 });
 
@@ -54,5 +72,11 @@ const observer = new IntersectionObserver((entries, observer) => {
 revealElements.forEach(element => observer.observe(element));
 
 window.addEventListener('scroll', updateHeaderState);
-window.addEventListener('resize', updateHeaderState);
+window.addEventListener('resize', () => {
+  updateHeaderState();
+
+  if (window.innerWidth > 768) {
+    setNavOpen(false);
+  }
+});
 updateHeaderState();
