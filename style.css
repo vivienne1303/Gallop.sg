@@ -930,20 +930,31 @@ select {
   .header-inner {
     position: relative;
     align-items: center;
-    width: min(100% - 36px, 1200px);
-    padding: 12px 0;
+    width: min(100% - 28px, 1200px);
+    padding: 10px 0;
   }
 
   .site-brand {
-    max-width: calc(100% - 62px);
+    gap: 10px;
+    max-width: calc(100% - 58px);
   }
 
   .site-header:not(.header-scrolled) .site-brand {
-    padding: 12px 18px;
+    padding: 8px 14px 8px 10px;
   }
 
   .logo-img {
-    width: 120px;
+    width: 92px;
+  }
+
+  .brand-copy .eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+  }
+
+  .brand-copy h1 {
+    font-size: 0.9rem;
+    line-height: 1.05;
   }
 
   .nav-toggle {
@@ -952,6 +963,8 @@ select {
     right: 0;
     top: 50%;
     z-index: 2;
+    width: 42px;
+    height: 42px;
     transform: translateY(-50%);
   }
 
@@ -1081,11 +1094,25 @@ select {
 
 @media (max-width: 480px) {
   .brand-copy .eyebrow {
-    letter-spacing: 0.14em;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
   }
 
   .brand-copy h1 {
-    font-size: 0.95rem;
+    font-size: 0.82rem;
+  }
+
+  .logo-img {
+    width: 82px;
+  }
+
+  .site-header:not(.header-scrolled) .site-brand {
+    padding: 7px 12px 7px 9px;
+  }
+
+  .nav-toggle {
+    width: 40px;
+    height: 40px;
   }
 
   .intro-carousel {
