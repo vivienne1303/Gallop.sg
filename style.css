@@ -999,6 +999,7 @@ select {
     display: grid;
     width: min(270px, calc(100vw - 36px));
     gap: 0;
+    justify-items: stretch;
     padding: 10px;
     border: 1px solid rgba(31, 60, 47, 0.12);
     border-radius: 18px;
@@ -1018,9 +1019,13 @@ select {
 
   .main-nav a,
   .site-header.header-scrolled .main-nav a {
+    display: flex;
+    justify-content: center;
+    width: 100%;
     padding: 13px 14px;
     border-radius: 12px;
     color: var(--dark-green);
+    text-align: center;
     text-shadow: none;
   }
 
