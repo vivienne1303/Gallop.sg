@@ -53,20 +53,21 @@ select {
 }
 
 .site-header {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
   z-index: 30;
-  background: transparent;
-  border-bottom: 1px solid transparent;
+  background: #0d1813;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 28px rgba(6, 18, 12, 0.18);
   transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .site-header.header-scrolled {
-  background: #ffffff;
-  border-bottom-color: rgba(31, 60, 47, 0.08);
-  box-shadow: 0 12px 36px rgba(16, 37, 28, 0.08);
+  background: #0d1813;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 28px rgba(6, 18, 12, 0.18);
 }
 
 .site-header.header-scrolled .site-brand {
@@ -259,9 +260,9 @@ select {
 }
 
 .site-header.header-scrolled .nav-toggle {
-  border-color: rgba(31, 60, 47, 0.18);
-  background: rgba(31, 60, 47, 0.08);
-  color: var(--dark-green);
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(10, 22, 17, 0.28);
+  color: #ffffff;
 }
 
 .site-header.nav-open .nav-toggle span:nth-child(1) {
@@ -305,14 +306,14 @@ select {
   opacity: 0;
 }
 
-.site-header.header-scrolled .brand-copy .eyebrow,
-.site-header.header-scrolled .brand-copy h1,
 .site-header.header-scrolled .main-nav a,
 .site-header.header-scrolled .nav-dropdown-toggle {
-  color: var(--dark-green);
+  color: #ffffff;
   text-shadow: none;
 }
 
+.site-header.header-scrolled .brand-copy .eyebrow,
+.site-header.header-scrolled .brand-copy h1,
 .site-header:not(.header-scrolled) .brand-copy .eyebrow,
 .site-header:not(.header-scrolled) .brand-copy h1 {
   color: var(--dark-green);
@@ -1081,7 +1082,9 @@ select {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(8, 19, 14, 0.72), rgba(8, 19, 14, 0.32) 45%, rgba(8, 19, 14, 0.78));
+  background:
+    radial-gradient(circle at center, rgba(8, 19, 14, 0.78) 0%, rgba(8, 19, 14, 0.58) 42%, rgba(8, 19, 14, 0.42) 72%),
+    linear-gradient(180deg, rgba(8, 19, 14, 0.78), rgba(8, 19, 14, 0.54) 45%, rgba(8, 19, 14, 0.82));
 }
 
 .page-hero img {
@@ -1098,10 +1101,12 @@ select {
   width: min(100%, 900px);
   margin: 0 auto;
   text-align: center;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.72);
 }
 
 .page-hero-copy .eyebrow {
-  color: var(--gold);
+  color: #f2d28f;
+  font-weight: 700;
   letter-spacing: 0.22em;
 }
 
@@ -1110,12 +1115,14 @@ select {
   font-family: 'Playfair Display', serif;
   font-size: clamp(2.7rem, 6vw, 4.8rem);
   line-height: 1.05;
+  color: #ffffff;
 }
 
 .page-hero-copy p {
   max-width: 680px;
   margin: 22px auto 0;
-  color: rgba(255, 255, 255, 0.9);
+  color: #ffffff;
+  font-weight: 500;
   line-height: 1.8;
 }
 
