@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 360" role="img" aria-labelledby="title">
+  <title id="title">Gallop Polo logo</title>
+  <g fill="#155b4d">
+    <text x="40" y="245" font-family="Georgia, 'Times New Roman', serif" font-size="150" font-weight="700" letter-spacing="-8">GA</text>
+    <text x="670" y="245" font-family="Georgia, 'Times New Roman', serif" font-size="150" font-weight="700" letter-spacing="-8">P</text>
+    <text x="290" y="245" font-family="Georgia, 'Times New Roman', serif" font-size="150" font-weight="700" letter-spacing="-8">L</text>
+    <text x="380" y="245" font-family="Georgia, 'Times New Roman', serif" font-size="150" font-weight="700" letter-spacing="-8">L</text>
+  </g>
+  <g stroke="#155b4d" stroke-width="20" stroke-linecap="round">
+    <line x1="492" y1="72" x2="602" y2="220"/>
+    <line x1="704" y1="72" x2="594" y2="220"/>
+    <line x1="512" y1="306" x2="602" y2="210"/>
+    <line x1="684" y1="306" x2="594" y2="210"/>
+  </g>
+  <g fill="#155b4d">
+    <path d="M488 60c11 4 27 19 32 31l-48 66c-7-1-23-8-27-16 8-27 27-58 43-81z"/>
+    <path d="M708 60c-11 4-27 19-32 31l48 66c7-1 23-8 27-16-8-27-27-58-43-81z"/>
+    <path d="M506 318c13-3 31-19 37-31l-50-43c-9 6-22 23-24 34 7 15 22 30 37 40z"/>
+    <path d="M688 318c-13-3-31-19-37-31l50-43c9 6 22 23 24 34-7 15-22 30-37 40z"/>
+    <circle cx="598" cy="204" r="92"/>
+  </g>
+  <text x="598" y="228" text-anchor="middle" fill="#ffffff" font-family="Georgia, 'Times New Roman', serif" font-size="58" font-weight="700">POLO</text>
+  <g fill="none" stroke="#155b4d" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M278 148c22-27 50-39 84-36 16 1 30 7 42 18"/>
+    <path d="M292 166c21-4 42-15 61-32"/>
+    <path d="M352 118c-9 36 1 65 30 88"/>
+    <path d="M404 146c27-26 58-36 89-28 15 4 26 13 34 27"/>
+    <path d="M424 166c19-4 38-17 58-39"/>
+    <path d="M482 123c-11 38-1 68 30 92"/>
+    <path d="M270 176c16 22 38 34 64 35"/>
+    <path d="M386 210c24 8 49 6 74-7"/>
+    <path d="M334 210l-22 45c-20 5-36-4-46-26l23-43"/>
+    <path d="M456 210l-20 51c-18 5-35-3-47-24l23-50"/>
+  </g>
+</svg>
