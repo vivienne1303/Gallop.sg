@@ -828,6 +828,14 @@ select {
   margin-bottom: 0;
 }
 
+.about-story-copy .about-story-closing {
+  color: var(--text-dark);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
 .scroll-gallery-section {
   overflow: hidden;
   padding: 88px 0;

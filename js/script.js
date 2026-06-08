@@ -25,7 +25,14 @@ const renderPrimaryNav = () => {
       </div>
     </div>
     <a href="${prefix}promotions.html">Promotions</a>
-    <a href="${prefix}gallop-care.html">Gallop Cares</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-toggle" type="button">Gallop Cares</button>
+      <div class="nav-dropdown-menu">
+        <a href="${prefix}gallop-care.html">Gallop Cares</a>
+        <a href="${prefix}adopt-a-horse.html">Adopt a Horse</a>
+        <a href="${prefix}lease-a-horse.html">Lease a Horse</a>
+      </div>
+    </div>
     <a href="${prefix}join.html">Join the Team</a>
     <a href="${prefix}contact.html">Contact Us</a>
   `;
@@ -148,6 +155,18 @@ const pageGalleryImages = {
     ['child_pat_pony.jpeg', 'A child connecting with a gentle pony'],
     ['minister.jpeg', 'A community visit with Gallop Stable'],
     ['Child_and_horse.jpeg', 'A joyful riding experience for a child']
+  ],
+  'adopt-a-horse.html': [
+    ['smiling_with_horse.jpeg', 'A rescued horse with a member of the Gallop Stable team'],
+    ['Sunset_with_horses.jpeg', 'Horses enjoying the pasture at sunset'],
+    ['horses_linedup_portrait.jpeg', 'Gallop Stable horses in the arena'],
+    ['Child_and_pony.jpeg', 'A child sharing a gentle moment with a pony']
+  ],
+  'lease-a-horse.html': [
+    ['riding_horse.jpeg', 'A rider building a partnership with a horse'],
+    ['riding_training.jpeg', 'Horse and rider training together'],
+    ['horse_stable_lifestyle.jpg', 'A rider spending time with a horse'],
+    ['riding_with_logo.jpeg', 'A Gallop Stable riding experience']
   ],
   'events.html': [
     ['minister.jpeg', 'Guests attending a Gallop Stable event'],
