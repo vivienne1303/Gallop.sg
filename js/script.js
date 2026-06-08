@@ -256,7 +256,7 @@ const addPageGallery = () => {
   `);
 };
 
-addPageGallery();
+//addPageGallery();
 
 const pageGallerySlider = document.querySelector('.page-gallery-slider');
 
