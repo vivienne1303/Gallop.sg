@@ -411,7 +411,7 @@ select {
 .hero-copy {
   color: var(--ivory);
   display: grid;
-  gap: 22px;
+  gap: 28px;
   width: 100%;
   min-width: 0;
   max-width: 1600px;
@@ -438,10 +438,11 @@ select {
 
 .hero-copy p {
   margin: 0;
-  max-width: 700px;
+  max-width: 940px;
   color: rgba(255,255,255,0.92);
-  line-height: 1.8;
-  font-size: 1.05rem;
+  font-size: clamp(1.02rem, 1.25vw, 1.14rem);
+  line-height: 1.95;
+  letter-spacing: 0.01em;
 }
 
 .hero-actions {
@@ -2003,11 +2004,12 @@ select {
   }
 
   .hero-copy {
-    gap: 18px;
+    gap: 22px;
   }
 
   .hero-copy p {
     font-size: 0.98rem;
+    line-height: 1.8;
   }
 
   .hero-actions {
