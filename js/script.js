@@ -313,6 +313,21 @@ if (pageGallerySlider) {
   startGalleryTimer();
 }
 
+document.querySelectorAll('[data-horse-gallery]').forEach(gallery => {
+  const mainImage = gallery.querySelector('[data-gallery-main]');
+  const thumbnails = [...gallery.querySelectorAll('[data-gallery-src]')];
+
+  thumbnails.forEach(thumbnail => {
+    thumbnail.addEventListener('click', () => {
+      if (!mainImage) return;
+
+      mainImage.src = thumbnail.dataset.gallerySrc;
+      mainImage.alt = thumbnail.dataset.galleryAlt || 'Horse photo';
+      thumbnails.forEach(item => item.classList.toggle('active', item === thumbnail));
+    });
+  });
+});
+
 const navLinks = document.querySelectorAll('.main-nav a');
 const navToggle = document.querySelector('.nav-toggle');
 const navDropdowns = document.querySelectorAll('.nav-dropdown');

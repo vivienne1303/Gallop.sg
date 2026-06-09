@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Horse Name | Adopt a Horse | Gallop SG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="../index.html">
+        <img src="../images/care_logo.png" alt="Gallop Stable logo" class="logo-img" />
+        <div class="brand-copy"><p class="eyebrow">Gallop SG</p><h1>Gallop Stable</h1></div>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+      <nav class="main-nav" id="primary-nav" aria-label="Primary navigation"></nav>
+    </div>
+  </header>
+
+  <main class="horse-profile-page">
+    <section class="horse-profile-hero">
+      <div class="horse-profile-shell">
+        <a class="horse-profile-back" href="adopt-a-horse.html">&larr; Back to adoptable horses</a>
+        <p class="eyebrow">Adopt a Horse</p>
+        <h1>Horse Name</h1>
+        <p class="horse-profile-intro">Add a short introduction about this horse and what makes them special.</p>
+
+        <div class="horse-profile-gallery" data-horse-gallery>
+          <div class="horse-profile-main-image">
+            <img src="../images/horse-placeholder.svg" alt="Add the main photo for Horse Name" data-gallery-main />
+          </div>
+          <div class="horse-profile-thumbnails" aria-label="Choose a horse photo">
+            <button class="horse-profile-thumbnail active" type="button" data-gallery-src="../images/horse-placeholder.svg" data-gallery-alt="Main photo of Horse Name" aria-label="Show main horse photo">
+              <img src="../images/horse-placeholder.svg" alt="" />
+            </button>
+            <button class="horse-profile-thumbnail" type="button" data-gallery-src="../images/horse-placeholder.svg" data-gallery-alt="Second photo of Horse Name" aria-label="Show second horse photo">
+              <img src="../images/horse-placeholder.svg" alt="" />
+            </button>
+            <button class="horse-profile-thumbnail" type="button" data-gallery-src="../images/horse-placeholder.svg" data-gallery-alt="Third photo of Horse Name" aria-label="Show third horse photo">
+              <img src="../images/horse-placeholder.svg" alt="" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="horse-profile-details">
+      <div class="horse-profile-content">
+        <aside class="horse-facts-card reveal">
+          <p class="eyebrow">At a glance</p>
+          <dl class="horse-facts">
+            <div><dt>Sex</dt><dd>Gelding</dd></div>
+            <div><dt>Age</dt><dd>12 years old</dd></div>
+            <div><dt>Breed</dt><dd>Thoroughbred</dd></div>
+            <div><dt>Colour</dt><dd>Bay</dd></div>
+            <div><dt>Location</dt><dd>Admiralty</dd></div>
+            <div><dt>Programme</dt><dd>Adoption</dd></div>
+          </dl>
+          <a class="btn btn-primary" href="contact.html">Adopt This Horse</a>
+        </aside>
+
+        <article class="horse-story reveal">
+          <p class="eyebrow">Their story</p>
+          <h2>Personality</h2>
+          <p>Use this space to introduce the horse's personality. You can describe what they enjoy, how they interact with people, and the little habits that make them memorable.</p>
+          <p>Add their background here, including their life before Gallop Stable, how they came into the programme, and the care or rehabilitation they have received.</p>
+          <p>You can also explain what adoption supports, such as feed, grooming, veterinary care, farrier visits and a safe home at the stable.</p>
+
+          <h2>Best known for</h2>
+          <div class="horse-trait-list">
+            <div><span>People friendly</span><strong>Excellent</strong></div>
+            <div><span>Enjoys grooming</span><strong>Very much</strong></div>
+            <div><span>Energy level</span><strong>Calm</strong></div>
+            <div><span>Favourite treat</span><strong>Add here</strong></div>
+          </div>
+
+          <div class="horse-profile-callout">
+            <h2>Be part of Horse Name's story</h2>
+            <p>Your support helps provide consistent care and a secure home for this horse.</p>
+            <a class="btn btn-primary" href="contact.html">Ask About Adoption</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><p>&copy; 2026 Gallop Stable. Horse riding experiences across Singapore.</p></footer>
+  <script src="../js/script.js"></script>
+</body>
+</html>

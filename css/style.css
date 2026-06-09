@@ -1,16 +1,16 @@
 ﻿:root {
   color-scheme: light;
-  --dark-green: #68756b;
-  --deep-green: #4f5d54;
-  --forest: #7b887d;
-  --sage: #aeb8aa;
-  --cream: #eee8dc;
-  --ivory: #fff5e3;
-  --gold: #d4b478;
-  --text-dark: #35443b;
-  --text-light: #ffffff;
-  --border: rgba(53, 68, 59, 0.12);
-  --shadow: 0 28px 80px rgba(53, 68, 59, 0.16);
+  --dark-green: #465044;
+  --deep-green: #303a31;
+  --forest: #66705d;
+  --sage: #a5aa96;
+  --cream: #e9e0d2;
+  --ivory: #f8f1e4;
+  --gold: #c5a15d;
+  --text-dark: #40392f;
+  --text-light: #fffaf0;
+  --border: rgba(64, 57, 47, 0.14);
+  --shadow: 0 28px 80px rgba(48, 42, 34, 0.18);
 }
 
 * {
@@ -58,14 +58,14 @@ select {
   left: 0;
   right: 0;
   z-index: 30;
-  background: #68756b;
+  background: var(--dark-green);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 10px 28px rgba(6, 18, 12, 0.18);
   transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .site-header.header-scrolled {
-  background: #68756b;
+  background: var(--dark-green);
   border-bottom-color: rgba(255, 255, 255, 0.08);
   box-shadow: 0 10px 28px rgba(6, 18, 12, 0.18);
 }
@@ -349,7 +349,7 @@ select {
   width: 100%;
   height: clamp(500px, 70vh, 820px);
   overflow: hidden;
-  background: #68756b;
+  background: var(--dark-green);
 }
 
 .home-banner::after {
@@ -357,7 +357,7 @@ select {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(180deg, transparent 48%, rgba(63, 75, 66, 0.76) 100%);
+  background: linear-gradient(180deg, rgba(67, 54, 40, 0.04) 35%, rgba(48, 58, 49, 0.82) 100%);
   opacity: var(--banner-dim);
   pointer-events: none;
 }
@@ -382,13 +382,17 @@ select {
   position: relative;
   overflow: hidden;
   padding: 96px 24px 72px;
-  background: linear-gradient(180deg, #7f8c81, var(--deep-green));
+  background:
+    linear-gradient(135deg, rgba(122, 92, 61, 0.26), transparent 48%),
+    linear-gradient(180deg, var(--forest), var(--deep-green));
 }
 
 .hero-background {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top right, rgba(201, 165, 107, 0.14), transparent 34%);
+  background:
+    radial-gradient(circle at top right, rgba(197, 161, 93, 0.18), transparent 34%),
+    radial-gradient(circle at bottom left, rgba(112, 78, 48, 0.2), transparent 38%);
   pointer-events: none;
 }
 
@@ -460,8 +464,8 @@ select {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: 28px;
-  background: #ffffff;
-  border: 1px solid rgba(31, 60, 47, 0.14);
+  background: var(--ivory);
+  border: 1px solid rgba(93, 72, 49, 0.2);
   padding: 30px;
   border-radius: 20px;
   box-shadow: 0 24px 70px rgba(5, 16, 11, 0.18);
@@ -516,7 +520,7 @@ select {
 }
 
 .hero-search-card .field select {
-  background: #f3eee3;
+  background: #ddd2c0;
 }
 
 .btn {
@@ -642,7 +646,7 @@ select {
 }
 
 .section-alt {
-  background: #68756b;
+  background: var(--dark-green);
 }
 
 .section-head {
@@ -745,7 +749,7 @@ select {
   height: 100%;
   padding: 28px;
   align-content: start;
-  background: #4f5d54;
+  background: var(--deep-green);
 }
 
 .service-card-body .eyebrow {
@@ -822,11 +826,11 @@ select {
 }
 
 .about-story-section {
-  background: #f3eee4;
+  background: #e8dfd1;
 }
 
 .about-story-alt {
-  background: #e3dccd;
+  background: #c9bba6;
 }
 
 .about-story {
@@ -860,7 +864,7 @@ select {
 .scroll-gallery-section {
   overflow: hidden;
   padding: 88px 0;
-  background: #68756b;
+  background: var(--deep-green);
 }
 
 .scroll-gallery-heading {
@@ -1121,7 +1125,7 @@ select {
 }
 
 .page-gallery-section {
-  background: #f3eee4;
+  background: #e8dfd1;
 }
 
 .page-gallery-slider {
@@ -1502,12 +1506,385 @@ select {
 }
 
 .site-footer {
-  color: #4f513d;
+  color: #494137;
   background:
-    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.55), transparent 32%),
-    radial-gradient(circle at 82% 76%, rgba(192, 172, 126, 0.13), transparent 34%),
-    #e9e1d1;
-  border-top: 1px solid rgba(79, 81, 61, 0.14);
+    radial-gradient(circle at 12% 18%, rgba(255, 250, 240, 0.5), transparent 32%),
+    radial-gradient(circle at 82% 76%, rgba(87, 98, 77, 0.14), transparent 34%),
+    #d8cbb8;
+  border-top: 1px solid rgba(73, 65, 55, 0.16);
+}
+
+/* Horse directories and profile templates */
+.horse-directory-section {
+  background: var(--ivory);
+}
+
+.horse-directory-heading {
+  max-width: 820px;
+}
+
+.horse-directory-heading > p:last-child {
+  margin: 18px auto 0;
+  color: rgba(64, 57, 47, 0.78);
+  line-height: 1.75;
+}
+
+.horse-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 34px 26px;
+  width: min(100%, 1200px);
+  margin: 0 auto;
+}
+
+.horse-card {
+  overflow: hidden;
+  border: 1px solid rgba(64, 57, 47, 0.13);
+  border-radius: 22px;
+  background: #fdf9f1;
+  box-shadow: 0 18px 46px rgba(48, 42, 34, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.horse-card:hover,
+.horse-card:focus-visible {
+  transform: translateY(-7px);
+  box-shadow: 0 26px 58px rgba(48, 42, 34, 0.2);
+  outline: none;
+}
+
+.horse-card > img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: #d8cbb8;
+  transition: transform 0.45s ease;
+}
+
+.horse-card:hover > img,
+.horse-card:focus-visible > img {
+  transform: scale(1.035);
+}
+
+.horse-card-body {
+  display: grid;
+  gap: 12px;
+  padding: 22px;
+}
+
+.horse-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.horse-card-meta span {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(102, 112, 93, 0.13);
+  color: var(--dark-green);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.horse-card h3 {
+  margin: 0;
+  color: var(--text-dark);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.7rem;
+}
+
+.horse-card p {
+  margin: 0;
+  color: rgba(64, 57, 47, 0.76);
+  line-height: 1.65;
+}
+
+.horse-card-link {
+  color: #8a6937;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.horse-card-link::after {
+  content: ' \2192';
+}
+
+.horse-profile-page {
+  background: var(--ivory);
+}
+
+.horse-profile-hero {
+  padding: clamp(64px, 8vw, 112px) 24px clamp(76px, 9vw, 124px);
+  background:
+    radial-gradient(circle at 85% 20%, rgba(197, 161, 93, 0.2), transparent 28%),
+    linear-gradient(180deg, #d8cbb8, var(--ivory));
+}
+
+.horse-profile-shell {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+}
+
+.horse-profile-back {
+  display: inline-block;
+  margin-bottom: 42px;
+  color: var(--dark-green);
+  font-weight: 700;
+}
+
+.horse-profile-shell > .eyebrow {
+  margin: 0 0 10px;
+  color: #8a6937;
+}
+
+.horse-profile-shell h1 {
+  margin: 0;
+  color: var(--text-dark);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(3.2rem, 7vw, 6.4rem);
+  font-weight: 600;
+  line-height: 0.98;
+}
+
+.horse-profile-intro {
+  max-width: 720px;
+  margin: 20px 0 46px;
+  color: rgba(64, 57, 47, 0.78);
+  font-size: 1.08rem;
+  line-height: 1.8;
+}
+
+.horse-profile-gallery {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  gap: 14px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.horse-profile-main-image {
+  overflow: hidden;
+  min-height: 540px;
+  border-radius: 26px;
+  background: #d8cbb8;
+  box-shadow: var(--shadow);
+}
+
+.horse-profile-main-image img {
+  width: 100%;
+  height: 100%;
+  min-height: 540px;
+  object-fit: cover;
+}
+
+.horse-profile-thumbnails {
+  display: grid;
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.horse-profile-thumbnail {
+  overflow: hidden;
+  padding: 0;
+  border: 3px solid transparent;
+  border-radius: 16px;
+  background: #d8cbb8;
+  cursor: pointer;
+  opacity: 0.72;
+  transition: border-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.horse-profile-thumbnail:hover,
+.horse-profile-thumbnail:focus-visible,
+.horse-profile-thumbnail.active {
+  border-color: var(--gold);
+  opacity: 1;
+  transform: translateX(-3px);
+  outline: none;
+}
+
+.horse-profile-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.horse-profile-details {
+  padding: clamp(72px, 9vw, 128px) 24px;
+  background: #fffdf8;
+}
+
+.horse-profile-content {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.55fr);
+  gap: clamp(42px, 7vw, 96px);
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.horse-facts-card {
+  position: sticky;
+  top: 120px;
+  padding: 32px;
+  border-radius: 24px;
+  background: #e8dfd1;
+  box-shadow: 0 20px 50px rgba(48, 42, 34, 0.12);
+}
+
+.horse-facts-card .eyebrow,
+.horse-story > .eyebrow {
+  margin: 0 0 18px;
+  color: #8a6937;
+}
+
+.horse-facts {
+  display: grid;
+  gap: 0;
+  margin: 0 0 28px;
+}
+
+.horse-facts div {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid rgba(64, 57, 47, 0.13);
+}
+
+.horse-facts dt {
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+.horse-facts dd {
+  margin: 0;
+  color: rgba(64, 57, 47, 0.75);
+}
+
+.horse-story h2 {
+  margin: 0 0 22px;
+  color: var(--text-dark);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.4rem, 4vw, 3.7rem);
+  line-height: 1.08;
+}
+
+.horse-story p {
+  margin: 0 0 22px;
+  color: rgba(64, 57, 47, 0.84);
+  font-size: 1.02rem;
+  line-height: 1.9;
+}
+
+.horse-story p + h2 {
+  margin-top: 62px;
+}
+
+.horse-trait-list {
+  display: grid;
+  gap: 0;
+  margin-bottom: 64px;
+  border-top: 1px solid rgba(64, 57, 47, 0.14);
+}
+
+.horse-trait-list div {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(64, 57, 47, 0.14);
+}
+
+.horse-trait-list span {
+  color: rgba(64, 57, 47, 0.72);
+}
+
+.horse-trait-list strong {
+  color: var(--dark-green);
+}
+
+.horse-profile-callout {
+  padding: clamp(30px, 5vw, 52px);
+  border-radius: 28px;
+  background: var(--deep-green);
+  color: var(--ivory);
+}
+
+.horse-profile-callout h2,
+.horse-profile-callout p {
+  color: inherit;
+}
+
+.horse-profile-callout h2 {
+  font-size: clamp(2rem, 3vw, 3rem);
+}
+
+@media (max-width: 900px) {
+  .horse-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .horse-profile-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .horse-profile-thumbnails {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: none;
+  }
+
+  .horse-profile-thumbnail {
+    aspect-ratio: 4 / 3;
+  }
+
+  .horse-profile-thumbnail:hover,
+  .horse-profile-thumbnail:focus-visible,
+  .horse-profile-thumbnail.active {
+    transform: translateY(-3px);
+  }
+
+  .horse-profile-content {
+    grid-template-columns: 1fr;
+  }
+
+  .horse-facts-card {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .horse-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .horse-profile-hero,
+  .horse-profile-details {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .horse-profile-main-image,
+  .horse-profile-main-image img {
+    min-height: 340px;
+  }
+
+  .horse-facts-card {
+    padding: 24px;
+  }
+
+  .horse-facts div {
+    grid-template-columns: 90px 1fr;
+  }
+
+  .horse-trait-list div {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
 }
 
 .footer-main {

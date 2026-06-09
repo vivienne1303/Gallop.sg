@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title description">
+  <title id="title">Horse photo placeholder</title>
+  <desc id="description">A placeholder showing where to add a horse photograph.</desc>
+  <rect width="1200" height="800" fill="#d8cbb8"/>
+  <circle cx="600" cy="335" r="150" fill="#a5aa96"/>
+  <path d="M462 334c28-101 70-176 137-176 55 0 90 48 111 111l54-63 30 118-64 86c-20 67-62 111-130 111-91 0-158-75-138-187Z" fill="#465044"/>
+  <path d="M511 208 474 89l92 84m101 24 61-108 17 137" fill="none" stroke="#465044" stroke-linecap="round" stroke-linejoin="round" stroke-width="35"/>
+  <circle cx="650" cy="300" r="11" fill="#f8f1e4"/>
+  <path d="M638 397c25 19 54 19 82-3" fill="none" stroke="#f8f1e4" stroke-linecap="round" stroke-width="12"/>
+  <text x="600" y="620" fill="#40392f" font-family="Arial, sans-serif" font-size="54" font-weight="700" text-anchor="middle">ADD HORSE PHOTO</text>
+  <text x="600" y="680" fill="#40392f" font-family="Arial, sans-serif" font-size="28" text-anchor="middle">Replace this image file or update the image src</text>
+</svg>
