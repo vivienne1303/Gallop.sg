@@ -520,7 +520,6 @@ const homeBanner = document.querySelector('.home-banner');
 const pageHero = document.querySelector('.page-hero');
 
 const renderHorseAssistant = () => {
-  const contactLink = window.location.pathname.includes('/pages/') ? 'contact.html' : 'pages/contact.html';
   const chatLink = window.location.pathname.includes('/pages/') ? 'gallop-ai.html' : 'pages/gallop-ai.html';
 
   return `
@@ -533,12 +532,6 @@ const renderHorseAssistant = () => {
           <span class="horse-assistant-beta">Beta</span>
         </div>
         <p class="horse-assistant-greeting">Hi, welcome to Gallop SG! I am here to assist you.</p>
-        <div class="horse-assistant-actions">
-          <a href="${window.location.pathname.includes('/pages/') ? 'riding-lessons.html' : 'pages/riding-lessons.html'}">Riding lessons</a>
-          <a href="${window.location.pathname.includes('/pages/') ? 'adopt-a-horse.html' : 'pages/adopt-a-horse.html'}">Adopt a horse</a>
-          <a href="${window.location.pathname.includes('/pages/') ? 'lease-a-horse.html' : 'pages/lease-a-horse.html'}">Lease a horse</a>
-          <a href="${contactLink}">Contact us</a>
-        </div>
       </div>
       <a class="horse-assistant-toggle" href="${chatLink}" aria-label="Chat with Gallop AI">
         <img src="${window.location.pathname.includes('/pages/') ? '../images/gallop-ai-horse.png' : 'images/gallop-ai-horse.png'}" alt="" />

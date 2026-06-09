@@ -2680,34 +2680,6 @@ body.gallery-lightbox-open {
   line-height: 1.55;
 }
 
-.horse-assistant-actions {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-}
-
-.horse-assistant-actions a {
-  padding: 9px 10px;
-  border: 1px solid rgba(70, 80, 68, 0.15);
-  border-radius: 10px;
-  background: rgba(102, 112, 93, 0.08);
-  color: var(--dark-green);
-  font-size: 0.74rem;
-  font-weight: 700;
-  line-height: 1.25;
-  text-align: center;
-  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.horse-assistant-actions a:hover,
-.horse-assistant-actions a:focus-visible {
-  background: var(--dark-green);
-  color: var(--ivory);
-  text-decoration: none;
-  transform: translateY(-1px);
-  outline: none;
-}
-
 .horse-assistant-close {
   position: absolute;
   top: 8px;
