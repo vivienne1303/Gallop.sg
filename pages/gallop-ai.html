@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallop AI Beta | Gallop SG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body class="gallop-ai-page">
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="site-brand" href="../index.html">
+        <img src="../images/stable_logo.png" alt="Gallop Stable logo" class="logo-img" />
+        <div class="brand-copy"><p class="eyebrow">Gallop SG</p><h1>Gallop Stable</h1></div>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation menu"><span></span><span></span><span></span></button>
+      <nav class="main-nav" id="primary-nav" aria-label="Primary navigation"></nav>
+    </div>
+  </header>
+
+  <main class="ai-chat-page">
+    <section class="ai-chat-intro">
+      <div>
+        <p class="eyebrow">Gallop AI Beta</p>
+        <h1>Ask our stable assistant</h1>
+        <p>Get quick answers about lessons, activities, adoption, leasing, locations and opening hours.</p>
+      </div>
+      <img src="../images/gallop-ai-horse.png" alt="Gallop AI horse assistant" />
+    </section>
+
+    <section class="ai-chat-shell" aria-label="Chat with Gallop AI">
+      <div class="ai-chat-header">
+        <img src="../images/gallop-ai-horse.png" alt="" />
+        <div>
+          <div class="ai-chat-title"><h2>Gallop AI</h2><span>Beta</span></div>
+          <p><span class="ai-online-dot"></span> Online to help</p>
+        </div>
+      </div>
+
+      <div class="ai-chat-messages" id="ai-chat-messages" aria-live="polite">
+        <div class="ai-message ai-message-bot">
+          <img src="../images/gallop-ai-horse.png" alt="" />
+          <div>
+            <p>Hi, welcome to Gallop SG! I can help answer common questions. What would you like to know?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ai-chat-suggestions" aria-label="Suggested questions">
+        <button type="button">Where are your stables?</button>
+        <button type="button">Tell me about riding lessons</button>
+        <button type="button">How can I adopt a horse?</button>
+        <button type="button">What are your opening hours?</button>
+      </div>
+
+      <form class="ai-chat-form" id="ai-chat-form">
+        <label class="sr-only" for="ai-chat-input">Ask Gallop AI a question</label>
+        <input id="ai-chat-input" name="message" type="text" autocomplete="off" placeholder="Type your question..." required />
+        <button type="submit" aria-label="Send message">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 17-8-7 18-2-7-8-3Zm8 3 4-5" /></svg>
+        </button>
+      </form>
+      <p class="ai-chat-disclaimer">Gallop AI Beta provides general information. Confirm bookings, prices and availability with our team.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer"><p>&copy; 2026 Gallop Stable. Horse riding experiences across Singapore.</p></footer>
+  <script src="../js/script.js"></script>
+</body>
+</html>

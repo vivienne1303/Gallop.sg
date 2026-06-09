@@ -231,86 +231,117 @@ const addPageGallery = () => {
 
   if (!main || !images || main.querySelector('.page-gallery-section')) return;
 
-  const slides = images.map(([src, alt], index) => `
-    <figure class="page-gallery-slide${index === 0 ? ' active' : ''}" aria-hidden="${index === 0 ? 'false' : 'true'}">
-      <img class="page-gallery-backdrop" src="../images/${src}" alt="" aria-hidden="true" loading="lazy" />
-      <img class="page-gallery-image" src="../images/${src}" alt="${alt}" loading="lazy" />
+  const getGalleryCategory = ([src, alt]) => {
+    const description = `${src} ${alt}`.toLowerCase();
+
+    if (/wedding|event|party|minister|group|team|career/.test(description)) return 'events';
+    if (/rider|riding|lesson|training|trail|competition|polo/.test(description)) return 'riding';
+    if (/child|family|couple|volunteer|member|guest/.test(description)) return 'people';
+    return 'horses';
+  };
+
+  const galleryItems = images.map(image => ({
+    src: image[0],
+    alt: image[1],
+    category: getGalleryCategory(image)
+  }));
+  const availableCategories = [...new Set(galleryItems.map(image => image.category))];
+  const categoryLabels = {
+    horses: 'Horses',
+    riding: 'Riding',
+    people: 'People',
+    events: 'Events'
+  };
+
+  const items = galleryItems.map(({ src, alt, category }) => `
+    <figure class="page-gallery-item" data-gallery-category="${category}">
+      <button class="page-gallery-open" type="button" data-gallery-src="../images/${src}" data-gallery-alt="${alt}" aria-label="Enlarge: ${alt}">
+        <img src="../images/${src}" alt="${alt}" loading="lazy" />
+        <span>${alt}</span>
+      </button>
     </figure>
   `).join('');
 
   main.insertAdjacentHTML('beforeend', `
     <section class="section page-gallery-section reveal" aria-labelledby="page-gallery-title">
-      <div class="section-head">
+      <div class="page-gallery-header">
         <p class="eyebrow">More From Gallop</p>
         <h2 id="page-gallery-title">Experience it in pictures</h2>
       </div>
-      <div class="page-gallery-slider" aria-roledescription="carousel">
-        <div class="page-gallery-slides">${slides}</div>
-        <button class="page-gallery-arrow page-gallery-prev" type="button" aria-label="Previous image">&lsaquo;</button>
-        <button class="page-gallery-arrow page-gallery-next" type="button" aria-label="Next image">&rsaquo;</button>
-        <div class="page-gallery-dots" aria-label="Choose gallery image">
-          ${images.map((_, index) => `<button class="page-gallery-dot${index === 0 ? ' active' : ''}" type="button" aria-label="Show image ${index + 1}" aria-current="${index === 0 ? 'true' : 'false'}"></button>`).join('')}
-        </div>
+      <div class="page-gallery-filters" aria-label="Filter gallery">
+        <button class="page-gallery-filter active" type="button" data-gallery-filter="all" aria-pressed="true">All</button>
+        ${availableCategories.map(category => `<button class="page-gallery-filter" type="button" data-gallery-filter="${category}" aria-pressed="false">${categoryLabels[category]}</button>`).join('')}
+      </div>
+      <div class="page-gallery-masonry">${items}</div>
+      <div class="page-gallery-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged gallery image" aria-hidden="true">
+        <button class="page-gallery-lightbox-close" type="button" aria-label="Close enlarged image">&times;</button>
+        <img src="" alt="" />
+        <p></p>
       </div>
     </section>
   `);
 };
 
-//addPageGallery();
+addPageGallery();
 
-const pageGallerySlider = document.querySelector('.page-gallery-slider');
+const pageGallery = document.querySelector('.page-gallery-section');
 
-if (pageGallerySlider) {
-  const slides = [...pageGallerySlider.querySelectorAll('.page-gallery-slide')];
-  const dots = [...pageGallerySlider.querySelectorAll('.page-gallery-dot')];
-  const previousButton = pageGallerySlider.querySelector('.page-gallery-prev');
-  const nextButton = pageGallerySlider.querySelector('.page-gallery-next');
-  let activeSlide = 0;
-  let galleryTimer;
+if (pageGallery) {
+  const filters = [...pageGallery.querySelectorAll('.page-gallery-filter')];
+  const items = [...pageGallery.querySelectorAll('.page-gallery-item')];
+  const lightbox = pageGallery.querySelector('.page-gallery-lightbox');
+  const lightboxImage = lightbox?.querySelector('img');
+  const lightboxCaption = lightbox?.querySelector('p');
+  const lightboxClose = lightbox?.querySelector('.page-gallery-lightbox-close');
 
-  const showGallerySlide = index => {
-    activeSlide = (index + slides.length) % slides.length;
+  if (lightbox) {
+    document.body.appendChild(lightbox);
+  }
 
-    slides.forEach((slide, slideIndex) => {
-      const isActive = slideIndex === activeSlide;
-      slide.classList.toggle('active', isActive);
-      slide.setAttribute('aria-hidden', String(!isActive));
-      dots[slideIndex].classList.toggle('active', isActive);
-      dots[slideIndex].setAttribute('aria-current', String(isActive));
-    });
-  };
+  filters.forEach(filter => {
+    filter.addEventListener('click', () => {
+      const selectedCategory = filter.dataset.galleryFilter;
 
-  const startGalleryTimer = () => {
-    window.clearInterval(galleryTimer);
-    galleryTimer = window.setInterval(() => showGallerySlide(activeSlide + 1), 4500);
-  };
+      filters.forEach(button => {
+        const isActive = button === filter;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-pressed', String(isActive));
+      });
 
-  previousButton.addEventListener('click', () => {
-    showGallerySlide(activeSlide - 1);
-    startGalleryTimer();
-  });
-
-  nextButton.addEventListener('click', () => {
-    showGallerySlide(activeSlide + 1);
-    startGalleryTimer();
-  });
-
-  dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-      showGallerySlide(index);
-      startGalleryTimer();
+      items.forEach(item => {
+        const isVisible = selectedCategory === 'all' || item.dataset.galleryCategory === selectedCategory;
+        item.classList.toggle('gallery-hidden', !isVisible);
+      });
     });
   });
 
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      window.clearInterval(galleryTimer);
-    } else {
-      startGalleryTimer();
-    }
+  const closeGalleryLightbox = () => {
+    if (!lightbox) return;
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('gallery-lightbox-open');
+  };
+
+  pageGallery.querySelectorAll('.page-gallery-open').forEach(button => {
+    button.addEventListener('click', () => {
+      if (!lightbox || !lightboxImage || !lightboxCaption) return;
+      lightboxImage.src = button.dataset.gallerySrc;
+      lightboxImage.alt = button.dataset.galleryAlt;
+      lightboxCaption.textContent = button.dataset.galleryAlt;
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('gallery-lightbox-open');
+      lightboxClose?.focus();
+    });
   });
 
-  startGalleryTimer();
+  lightboxClose?.addEventListener('click', closeGalleryLightbox);
+  lightbox?.addEventListener('click', event => {
+    if (event.target === lightbox) closeGalleryLightbox();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeGalleryLightbox();
+  });
 }
 
 document.querySelectorAll('[data-horse-gallery]').forEach(gallery => {
@@ -328,6 +359,158 @@ document.querySelectorAll('[data-horse-gallery]').forEach(gallery => {
   });
 });
 
+const aiChatForm = document.querySelector('#ai-chat-form');
+
+if (aiChatForm) {
+  const chatMessages = document.querySelector('#ai-chat-messages');
+  const chatInput = document.querySelector('#ai-chat-input');
+  const suggestionButtons = document.querySelectorAll('.ai-chat-suggestions button');
+  const whatsappNumber = '6583836425';
+
+  const createWhatsAppLink = question => {
+    const message = `Hi Gallop Stable, I was chatting with Gallop AI and would like help with: ${question}`;
+    return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  };
+
+  const getGallopAnswer = question => {
+    const text = question.toLowerCase();
+
+    if (/\b(hello|hi|hey|good morning|good afternoon)\b/.test(text)) {
+      return 'Hi! I can help with riding lessons, activities, adoption, leasing, locations, opening hours and contact details.';
+    }
+
+    if (/location|address|where.*stable|where are/.test(text)) {
+      return 'Gallop Stable has locations at Admiralty (8 Admiralty Road East), Pasir Ris Park (61 Pasir Ris Green, Carpark C), and Downtown East (1 Pasir Ris Close).';
+    }
+
+    if (/opening|hours|open|closing|what time/.test(text)) {
+      return 'Admiralty is open daily, 8:30 AM-11:45 AM and 2:30 PM-6:45 PM. Pasir Ris Park opens Tuesdays-Sundays, 10:00 AM-11:45 AM and 2:00 PM-6:45 PM. Downtown East opens Wednesdays-Mondays, 9:00 AM-11:45 AM and 2:00 PM-6:45 PM.';
+    }
+
+    if (/lesson|learn.*ride|riding class|beginner.*ride/.test(text)) {
+      return 'Gallop Stable offers riding lessons and introductory horse experiences for different ages and riding levels. Lesson suitability, schedules and availability should be confirmed with the stable team.';
+    }
+
+    if (/adopt|rescue|support.*horse/.test(text)) {
+      return {
+        text: 'The Adopt a Horse programme lets you support a rescued horse and contribute toward feed, grooming, stable care and other daily needs. You can view the available horses on the Adopt a Horse page. To arrange an adoption, contact the team at +65 8383 6425 on WhatsApp.',
+        whatsapp: true
+      };
+    }
+
+    if (/lease/.test(text)) {
+      return 'Horse leasing offers more consistent time with a suitable horse while developing riding and horsemanship skills. The team matches riders according to experience, goals, availability and horse wellbeing.';
+    }
+
+    if (/pony ride|pony feeding|feed.*pony/.test(text)) {
+      return 'Pony rides and feeding experiences are available at selected locations and times. Availability can change because of weather, horse welfare or private events, so please check with the team before visiting.';
+    }
+
+    if (/birthday|party/.test(text)) {
+      return 'Gallop Stable can host horse and pony birthday experiences, with activities arranged according to the group and location. Contact the team to discuss the date, group size and package options.';
+    }
+
+    if (/camp|workshop/.test(text)) {
+      return 'Gallop Stable offers camps, stable tours and riding workshops, including hands-on horse care and riding activities. Programmes vary by date and location.';
+    }
+
+    if (/photo|wedding|shoot/.test(text)) {
+      return 'Photoshoots and videoshoots with horses are available by advance enquiry for couples, families, riders and special occasions.';
+    }
+
+    if (/event|corporate|team building|group/.test(text)) {
+      return 'Gallop Stable supports corporate events, group activities, team building, celebrations and selected outside pony or horse hire arrangements.';
+    }
+
+    if (/price|cost|fee|how much|rate/.test(text)) {
+      return {
+        text: 'Prices depend on the activity, location, rider and booking date. Please message the Gallop Stable team on WhatsApp for the latest confirmed rate.',
+        whatsapp: true
+      };
+    }
+
+    if (/book|availability|available|reserve|appointment/.test(text)) {
+      return {
+        text: 'Bookings and live availability need confirmation from the Gallop Stable team. You can send them your preferred activity, location, date, time and number of participants on WhatsApp.',
+        whatsapp: true
+      };
+    }
+
+    if (/phone|contact|whatsapp|manager|staff|human|person/.test(text)) {
+      return {
+        text: 'You can contact the Gallop Stable team or manager on WhatsApp at +65 8383 6425.',
+        whatsapp: true
+      };
+    }
+
+    return {
+      text: 'I do not have a confident answer for that yet. Please send your question to the Gallop Stable team on WhatsApp at +65 8383 6425, and they can assist you directly.',
+      whatsapp: true
+    };
+  };
+
+  const appendChatMessage = (content, sender, originalQuestion = '') => {
+    const message = document.createElement('div');
+    message.className = `ai-message ai-message-${sender}`;
+
+    if (sender === 'bot') {
+      const avatar = document.createElement('img');
+      avatar.src = '../images/gallop-ai-horse.png';
+      avatar.alt = '';
+      message.appendChild(avatar);
+    }
+
+    const bubble = document.createElement('div');
+    const text = document.createElement('p');
+    const answer = typeof content === 'string' ? { text: content } : content;
+    text.textContent = answer.text;
+    bubble.appendChild(text);
+
+    if (answer.whatsapp) {
+      const whatsappLink = document.createElement('a');
+      whatsappLink.className = 'ai-whatsapp-link';
+      whatsappLink.href = createWhatsAppLink(originalQuestion);
+      whatsappLink.target = '_blank';
+      whatsappLink.rel = 'noopener noreferrer';
+      whatsappLink.textContent = 'Message the team on WhatsApp';
+      bubble.appendChild(whatsappLink);
+    }
+
+    message.appendChild(bubble);
+    chatMessages.appendChild(message);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  };
+
+  const sendChatQuestion = question => {
+    const trimmedQuestion = question.trim();
+    if (!trimmedQuestion) return;
+
+    appendChatMessage({ text: trimmedQuestion }, 'user');
+    chatInput.value = '';
+    chatInput.focus();
+
+    const typing = document.createElement('div');
+    typing.className = 'ai-message ai-message-bot ai-message-typing';
+    typing.innerHTML = '<img src="../images/gallop-ai-horse.png" alt=""><div><span></span><span></span><span></span></div>';
+    chatMessages.appendChild(typing);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    window.setTimeout(() => {
+      typing.remove();
+      appendChatMessage(getGallopAnswer(trimmedQuestion), 'bot', trimmedQuestion);
+    }, 550);
+  };
+
+  aiChatForm.addEventListener('submit', event => {
+    event.preventDefault();
+    sendChatQuestion(chatInput.value);
+  });
+
+  suggestionButtons.forEach(button => {
+    button.addEventListener('click', () => sendChatQuestion(button.textContent));
+  });
+}
+
 const navLinks = document.querySelectorAll('.main-nav a');
 const navToggle = document.querySelector('.nav-toggle');
 const navDropdowns = document.querySelectorAll('.nav-dropdown');
@@ -336,8 +519,44 @@ const siteHeader = document.querySelector('.site-header');
 const homeBanner = document.querySelector('.home-banner');
 const pageHero = document.querySelector('.page-hero');
 
+const renderHorseAssistant = () => {
+  const contactLink = window.location.pathname.includes('/pages/') ? 'contact.html' : 'pages/contact.html';
+  const chatLink = window.location.pathname.includes('/pages/') ? 'gallop-ai.html' : 'pages/gallop-ai.html';
+
+  return `
+    <div class="horse-assistant assistant-open">
+      <div class="horse-assistant-message" id="horse-assistant-message">
+        <button class="horse-assistant-close" type="button" aria-label="Close welcome message">&times;</button>
+        <div class="horse-assistant-heading">
+          <span class="horse-assistant-status"></span>
+          <strong>Gallop AI</strong>
+          <span class="horse-assistant-beta">Beta</span>
+        </div>
+        <p class="horse-assistant-greeting">Hi, welcome to Gallop SG! I am here to assist you.</p>
+        <div class="horse-assistant-actions">
+          <a href="${window.location.pathname.includes('/pages/') ? 'riding-lessons.html' : 'pages/riding-lessons.html'}">Riding lessons</a>
+          <a href="${window.location.pathname.includes('/pages/') ? 'adopt-a-horse.html' : 'pages/adopt-a-horse.html'}">Adopt a horse</a>
+          <a href="${window.location.pathname.includes('/pages/') ? 'lease-a-horse.html' : 'pages/lease-a-horse.html'}">Lease a horse</a>
+          <a href="${contactLink}">Contact us</a>
+        </div>
+      </div>
+      <a class="horse-assistant-toggle" href="${chatLink}" aria-label="Chat with Gallop AI">
+        <img src="${window.location.pathname.includes('/pages/') ? '../images/gallop-ai-horse.png' : 'images/gallop-ai-horse.png'}" alt="" />
+        <span>AI</span>
+      </a>
+    </div>
+  `;
+};
+
 const addSocialFloat = () => {
-  if (document.querySelector('.social-float')) return;
+  const existingSocialFloat = document.querySelector('.social-float');
+
+  if (existingSocialFloat) {
+    if (!existingSocialFloat.querySelector('.horse-assistant')) {
+      existingSocialFloat.insertAdjacentHTML('beforeend', renderHorseAssistant());
+    }
+    return;
+  }
 
   document.body.insertAdjacentHTML('beforeend', `
     <div class="social-float" aria-label="Social links">
@@ -358,6 +577,7 @@ const addSocialFloat = () => {
       <button class="social-float-toggle" type="button" aria-expanded="false" aria-controls="social-float-links" aria-label="Open social links">
         <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 5.5h20a3.5 3.5 0 0 1 3.5 3.5v11A3.5 3.5 0 0 1 26 23.5H15l-6.8 4.2c-.8.5-1.7-.1-1.7-1v-3.2H6A3.5 3.5 0 0 1 2.5 20V9A3.5 3.5 0 0 1 6 5.5Zm4 7.5a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Zm6 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" /></svg>
       </button>
+      ${renderHorseAssistant()}
     </div>
   `);
 };
@@ -366,6 +586,8 @@ addSocialFloat();
 
 const socialFloat = document.querySelector('.social-float');
 const socialToggle = document.querySelector('.social-float-toggle');
+const horseAssistant = document.querySelector('.horse-assistant');
+const horseAssistantClose = document.querySelector('.horse-assistant-close');
 
 const setSocialOpen = isOpen => {
   if (!socialFloat || !socialToggle) return;
@@ -383,6 +605,17 @@ socialToggle?.addEventListener('click', event => {
 socialFloat?.addEventListener('click', event => event.stopPropagation());
 
 document.addEventListener('click', () => setSocialOpen(false));
+
+const setHorseAssistantOpen = isOpen => {
+  if (!horseAssistant) return;
+
+  horseAssistant.classList.toggle('assistant-open', isOpen);
+};
+
+horseAssistantClose?.addEventListener('click', event => {
+  event.stopPropagation();
+  setHorseAssistantOpen(false);
+});
 
 const setNavOpen = isOpen => {
   if (!siteHeader || !navToggle) return;
