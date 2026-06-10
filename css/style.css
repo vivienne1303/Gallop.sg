@@ -425,8 +425,9 @@ select {
 }
 
 .hero-copy .eyebrow {
-  color: var(--gold);
+  color: #ffffff;
   font-size: 0.95rem;
+  font-weight: 600;
   letter-spacing: 0.24em;
 }
 
@@ -646,10 +647,7 @@ select {
 }
 
 .section-alt {
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.045) 25%, transparent 25%) 0 0 / 240px 240px,
-    linear-gradient(225deg, rgba(255, 255, 255, 0.035) 25%, transparent 25%) 0 0 / 240px 240px,
-    var(--dark-green);
+  background: var(--dark-green);
 }
 
 .section-head {
@@ -660,7 +658,7 @@ select {
 
 .section-head .eyebrow {
   margin-bottom: 12px;
-  color: var(--gold);
+  color: #8a682c;
 }
 
 .section-head h2 {
@@ -784,7 +782,7 @@ select {
 
 .content-copy .eyebrow {
   margin: 0 0 16px;
-  color: var(--gold);
+  color: #8a682c;
 }
 
 .content-copy h2 {
@@ -867,10 +865,7 @@ select {
 .scroll-gallery-section {
   overflow: hidden;
   padding: 88px 0;
-  background:
-    linear-gradient(45deg, rgba(255, 255, 255, 0.04) 25%, transparent 25%) 0 0 / 280px 280px,
-    linear-gradient(315deg, rgba(130, 160, 149, 0.14) 25%, transparent 25%) 0 0 / 280px 280px,
-    var(--deep-green);
+  background: var(--deep-green);
 }
 
 .scroll-gallery-heading {
@@ -995,10 +990,7 @@ select {
 .promotions-poster-section {
   min-height: 100vh;
   padding: clamp(56px, 7vw, 96px) 24px;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.045) 25%, transparent 25%) 0 0 / 240px 240px,
-    linear-gradient(225deg, rgba(255, 255, 255, 0.035) 25%, transparent 25%) 0 0 / 240px 240px,
-    var(--dark-green);
+  background: var(--dark-green);
 }
 
 .promotions-poster-grid {
@@ -1522,7 +1514,7 @@ select {
 
 .about-card .eyebrow {
   margin: 0 0 12px;
-  color: var(--gold);
+  color: #8a682c;
 }
 
 .about-card h2 {
@@ -1564,7 +1556,7 @@ select {
 
 .faq-intro .eyebrow {
   margin: 0 0 10px;
-  color: var(--gold);
+  color: #8a682c;
 }
 
 .faq-intro h2 {
@@ -1634,6 +1626,14 @@ select {
 
 .faq-answer p + p {
   margin-top: 12px;
+}
+
+.faq-answer a {
+  color: var(--dark-green);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgba(15, 81, 69, 0.35);
+  text-underline-offset: 3px;
 }
 
 .faq-contact {
@@ -1815,7 +1815,7 @@ select {
 }
 
 .contact-copy .eyebrow {
-  color: var(--gold);
+  color: #8a682c;
   margin-bottom: 12px;
 }
 
