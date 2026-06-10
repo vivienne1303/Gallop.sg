@@ -382,17 +382,13 @@ select {
   position: relative;
   overflow: hidden;
   padding: 96px 24px 72px;
-  background:
-    linear-gradient(135deg, rgba(122, 92, 61, 0.26), transparent 48%),
-    linear-gradient(180deg, var(--forest), var(--deep-green));
+  background: var(--dark-green);
 }
 
 .hero-background {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at top right, rgba(197, 161, 93, 0.18), transparent 34%),
-    radial-gradient(circle at bottom left, rgba(112, 78, 48, 0.2), transparent 38%);
+  background: transparent;
   pointer-events: none;
 }
 
