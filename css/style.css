@@ -47,6 +47,10 @@ a {
   text-decoration: none;
 }
 
+.eyebrow {
+  display: none !important;
+}
+
 button,
 select {
   font: inherit;
@@ -362,20 +366,16 @@ select {
   pointer-events: none;
 }
 
-.home-banner video {
+.home-banner-media {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center 43%;
   pointer-events: none;
   transform: translateY(var(--banner-shift)) scale(var(--banner-scale));
   transform-origin: center;
   will-change: transform;
-}
-
-.home-banner video::-webkit-media-controls {
-  display: none !important;
 }
 
 .hero-section {
@@ -895,7 +895,7 @@ select {
 .scroll-gallery-track {
   display: flex;
   width: max-content;
-  animation: gallery-scroll 38s linear infinite;
+  animation: gallery-scroll 210s linear infinite;
 }
 
 .scroll-gallery-group {
@@ -2873,8 +2873,8 @@ select {
     opacity: 1;
   }
 
-  .home-banner video {
-    object-position: center 52%;
+  .home-banner-media {
+    object-position: center 43%;
   }
 
   .hero-section {
@@ -3072,7 +3072,7 @@ select {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-banner video {
+  .home-banner-media {
     transform: none;
   }
 
