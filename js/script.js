@@ -14,26 +14,22 @@ const renderPrimaryNav = () => {
         <a href="${prefix}archery.html">Archery</a>
         <a href="${prefix}birthday-party.html">Birthday Parties</a>
         <a href="${prefix}camps-workshops.html">Camps/Workshops</a>
-        <a href="${prefix}gallop-care.html">Community Outreach</a>
         <a href="${prefix}events.html">Corporate/Group Events</a>
         <a href="${prefix}activities.html">Learning Journey</a>
         <a href="${prefix}birthday-party.html">Outdoor Pony Hire</a>
         <a href="${prefix}photoshoot.html">Photoshoots</a>
         <a href="${prefix}activities.html">Pony Rides/Feeding</a>
         <a href="${prefix}polo.html">Polo</a>
-        <a href="${prefix}riding-lessons.html">Trail/Track Rides</a>
-      </div>
-    </div>
-    <a href="${prefix}promotions.html">Promotions</a>
-    <div class="nav-dropdown">
-      <button class="nav-dropdown-toggle" type="button">Gallop Cares</button>
-      <div class="nav-dropdown-menu">
-        <a href="${prefix}gallop-care.html">Gallop Cares</a>
+        <a href="${prefix}riding-lessons.html">Riding Lessons</a>
+        <a href="${prefix}riding.html">Trail/Track Rides</a>
         <a href="${prefix}adopt-a-horse.html">Adopt a Horse</a>
         <a href="${prefix}lease-a-horse.html">Lease a Horse</a>
       </div>
     </div>
+    <a href="${prefix}promotions.html">Promotions</a>
+    <a href="${prefix}gallop-care.html">Gallop Cares</a>
     <a href="${prefix}join.html">Join the Team</a>
+    <a href="${prefix}faq.html">FAQs</a>
     <a href="${prefix}contact.html">Contact Us</a>
   `;
 };
@@ -44,305 +40,62 @@ const renderSiteFooter = () => {
   const footer = document.querySelector('.site-footer');
   if (!footer) return;
 
-  const onHomePage = !window.location.pathname.includes('/pages/');
-  const prefix = onHomePage ? 'pages/' : '';
-  const imagePrefix = onHomePage ? 'images/' : '../images/';
-  const homeLink = onHomePage ? '#about' : '../index.html#about';
-
   footer.innerHTML = `
     <div class="footer-main">
-      <div class="footer-brand">
-        <a class="footer-logo" href="${onHomePage ? '#home' : '../index.html'}" aria-label="Gallop Stable home">
-          <img src="${imagePrefix}stable_logo.png" alt="Gallop Stable" />
-        </a>
-        <p>Creating memorable and accessible horse experiences in Singapore since 2003.</p>
+      <div class="footer-heading footer-heading-visit">
+        <h2>Visit Us</h2>
+      </div>
+      <div class="footer-heading footer-heading-hours">
+        <h2>Opening Hours</h2>
       </div>
 
-      <div class="footer-column">
-        <h2>Visit Us</h2>
-        <div class="footer-locations">
-          <div>
+      <div class="footer-location-list">
+        <article class="footer-location-card">
+          <div class="footer-location-details">
             <h3>Admiralty</h3>
             <p>8 Admiralty Rd East, Singapore 759991</p>
-            <p>Tel: 6463 6012 / 8383 6425</p>
+            <a href="tel:+6564636012">6463 6012</a>
+            <span aria-hidden="true"> / </span>
+            <a href="tel:+6583836425">8383 6425</a>
           </div>
-          <div>
+          <div class="footer-location-hours">
+            <p class="footer-days">Daily</p>
+            <p>8:30 AM - 11:45 AM</p>
+            <p>2:30 PM - 6:45 PM</p>
+          </div>
+        </article>
+
+        <article class="footer-location-card">
+          <div class="footer-location-details">
             <h3>Pasir Ris Park</h3>
             <p>61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225</p>
-            <p>Tel: 6583 9665</p>
+            <a href="tel:+6565839665">6583 9665</a>
           </div>
-          <div>
+          <div class="footer-location-hours">
+            <p class="footer-days">Tuesdays - Sundays</p>
+            <p>10:00 AM - 11:45 AM</p>
+            <p>2:00 PM - 6:45 PM</p>
+          </div>
+        </article>
+
+        <article class="footer-location-card">
+          <div class="footer-location-details">
             <h3>Downtown East</h3>
             <p>1 Pasir Ris Close, Singapore 519599</p>
-            <p>Tel: 8787 5377</p>
+            <a href="tel:+6587875377">8787 5377</a>
           </div>
-        </div>
+          <div class="footer-location-hours">
+            <p class="footer-days">Wednesdays - Mondays</p>
+            <p>9:00 AM - 11:45 AM</p>
+            <p>2:00 PM - 6:45 PM</p>
+          </div>
+        </article>
       </div>
-
-      <div class="footer-column">
-        <h2>Opening Hours</h2>
-        <div class="footer-hours">
-          <div>
-            <h3>Admiralty</h3>
-            <p>Daily</p>
-            <p>8:30 AM-11:45 AM</p>
-            <p>2:30 PM-6:45 PM</p>
-          </div>
-          <div>
-            <h3>Pasir Ris Park</h3>
-            <p>Tuesdays-Sundays</p>
-            <p>10:00 AM-11:45 AM</p>
-            <p>2:00 PM-6:45 PM</p>
-          </div>
-          <div>
-            <h3>Downtown East</h3>
-            <p>Wednesdays-Mondays</p>
-            <p>9:00 AM-11:45 AM</p>
-            <p>2:00 PM-6:45 PM</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer-column">
-        <h2>Quick Links</h2>
-        <nav class="footer-links" aria-label="Footer navigation">
-          <a href="${homeLink}">Home</a>
-          <a href="${prefix}activities.html">Activities</a>
-          <a href="${prefix}promotions.html">Promotions</a>
-          <a href="${prefix}gallop-care.html">Gallop Cares</a>
-          <a href="${prefix}join.html">Join the Team</a>
-          <a href="${prefix}contact.html">Contact Us</a>
-        </nav>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <p>&copy; 2026 Gallop Stable. All rights reserved.</p>
-      <p>Horse riding experiences across Singapore.</p>
     </div>
   `;
 };
 
 renderSiteFooter();
-
-const pageGalleryImages = {
-  'activities.html': [
-    ['pony_ride.jpeg', 'A child enjoying a pony ride'],
-    ['Child_and_pony.jpeg', 'A child caring for a pony'],
-    ['Trail_Rides_1.jpeg', 'Guests taking part in a trail ride'],
-    ['Sunset_with_horses.jpeg', 'Horses at the stable during sunset']
-  ],
-  'archery.html': [
-    ['IMG_8224.jpg', 'Young riders enjoying an outdoor horse activity'],
-    ['competition_1.jpg', 'A rider and horse in action'],
-    ['riding_training.jpeg', 'Horse riding training at Gallop Stable'],
-    ['horses_linedup.jpeg', 'Horses lined up at the stable']
-  ],
-  'birthday-party.html': [
-    ['Child_and_horse.jpeg', 'A smiling child riding a horse'],
-    ['pony_ride.jpeg', 'A pony ride at a family event'],
-    ['child_pat_pony.jpeg', 'A child gently patting a pony'],
-    ['Private_pony_hire_2024-1024x576.jpg', 'A private pony experience']
-  ],
-  'camps-workshops.html': [
-    ['Camps-and-workshops_1.jpg', 'A Gallop Stable camp and workshop'],
-    ['Sunset_with_horses.jpeg', 'Horses together at sunset'],
-    ['Sembawang_park.jpeg', 'A green outdoor setting near the stable'],
-    ['horses_linedup_portrait.jpeg', 'Horses waiting in the riding arena']
-  ],
-  'gallop-care.html': [
-    ['Child_and_pony.jpeg', 'A child caring for a white pony'],
-    ['child_pat_pony.jpeg', 'A child connecting with a gentle pony'],
-    ['minister.jpeg', 'A community visit with Gallop Stable'],
-    ['Child_and_horse.jpeg', 'A joyful riding experience for a child']
-  ],
-  'adopt-a-horse.html': [
-    ['smiling_with_horse.jpeg', 'A rescued horse with a member of the Gallop Stable team'],
-    ['Sunset_with_horses.jpeg', 'Horses enjoying the pasture at sunset'],
-    ['horses_linedup_portrait.jpeg', 'Gallop Stable horses in the arena'],
-    ['Child_and_pony.jpeg', 'A child sharing a gentle moment with a pony']
-  ],
-  'lease-a-horse.html': [
-    ['riding_horse.jpeg', 'A rider building a partnership with a horse'],
-    ['riding_training.jpeg', 'Horse and rider training together'],
-    ['horse_stable_lifestyle.jpg', 'A rider spending time with a horse'],
-    ['riding_with_logo.jpeg', 'A Gallop Stable riding experience']
-  ],
-  'events.html': [
-    ['minister.jpeg', 'Guests attending a Gallop Stable event'],
-    ['pony_ride.jpeg', 'A pony ride during a group event'],
-    ['horses_linedup.jpeg', 'Horses prepared for a stable activity'],
-    ['Sembawang_park.jpeg', 'An outdoor venue surrounded by greenery']
-  ],
-  'photoshoot.html': [
-    ['wedding_photoshoot.jpeg', 'A wedding photoshoot with a horse'],
-    ['wedding_photoshoot2.jpeg', 'A couple posing with a horse'],
-    ['wedding_photoshoot3.jpeg', 'A wedding couple walking with a horse'],
-    ['wedding_photoshoot4.jpeg', 'An elegant equestrian wedding portrait']
-  ],
-  'polo.html': [
-    ['competition_1.jpg', 'A horse activity in the riding arena'],
-    ['riding_horse.jpeg', 'An experienced rider on horseback'],
-    ['riding_training.jpeg', 'Horse and rider during training'],
-    ['horse_stable_lifestyle.jpg', 'A rider enjoying time with a horse']
-  ],
-  'riding-lessons.html': [
-    ['riding_horse.jpeg', 'A riding lesson at Gallop Stable'],
-    ['riding_training.jpeg', 'A rider practising in the arena'],
-    ['Trail_Rides_1.jpeg', 'A guided trail riding experience'],
-    ['horse_stable_lifestyle.jpg', 'A rider building confidence on horseback']
-  ],
-  'riding.html': [
-    ['riding_horse.jpeg', 'A rider on horseback'],
-    ['riding_with_logo.jpeg', 'A Gallop Stable riding experience'],
-    ['riding_training.jpeg', 'Riding training at the stable'],
-    ['Trail_Rides_1.jpeg', 'Riders exploring a trail']
-  ],
-  'promotions.html': [
-    ['Jan_Promo-1024x576.jpeg', 'A Gallop Stable promotion'],
-    ['joy-of-riding-website-banner-1024x576.jpg', 'The joy of horse riding'],
-    ['Riding-Experience-website-1024x576.jpg', 'A Gallop Stable riding experience'],
-    ['Private_pony_hire_2024-1024x576.jpg', 'A private pony hire experience']
-  ],
-  'career.html': [
-    ['career_1.jpg', 'The Gallop Stable team'],
-    ['smiling_with_horse.jpeg', 'A team member smiling with a horse'],
-    ['riding_with_logo.jpeg', 'A Gallop Stable rider'],
-    ['horses_linedup.jpeg', 'Horses ready for the day']
-  ],
-  'join.html': [
-    ['career_1.jpg', 'The Gallop Stable team'],
-    ['smiling_with_horse.jpeg', 'A team member with a horse'],
-    ['riding_training.jpeg', 'A team member training a horse'],
-    ['horses_linedup_portrait.jpeg', 'Horses in the Gallop Stable arena']
-  ],
-  'volunteer.html': [
-    ['smiling_with_horse.jpeg', 'A volunteer spending time with a horse'],
-    ['child_pat_pony.jpeg', 'Supporting a child during a pony activity'],
-    ['Child_and_pony.jpeg', 'Helping with a community pony experience'],
-    ['minister.jpeg', 'A Gallop Stable community programme']
-  ]
-};
-
-const addPageGallery = () => {
-  const main = document.querySelector('main');
-  const pageName = window.location.pathname.split('/').pop();
-  const images = pageGalleryImages[pageName];
-
-  if (!main || !images || main.querySelector('.page-gallery-section')) return;
-
-  const getGalleryCategory = ([src, alt]) => {
-    const description = `${src} ${alt}`.toLowerCase();
-
-    if (/wedding|event|party|minister|group|team|career/.test(description)) return 'events';
-    if (/rider|riding|lesson|training|trail|competition|polo/.test(description)) return 'riding';
-    if (/child|family|couple|volunteer|member|guest/.test(description)) return 'people';
-    return 'horses';
-  };
-
-  const galleryItems = images.map(image => ({
-    src: image[0],
-    alt: image[1],
-    category: getGalleryCategory(image)
-  }));
-  const availableCategories = [...new Set(galleryItems.map(image => image.category))];
-  const categoryLabels = {
-    horses: 'Horses',
-    riding: 'Riding',
-    people: 'People',
-    events: 'Events'
-  };
-
-  const items = galleryItems.map(({ src, alt, category }) => `
-    <figure class="page-gallery-item" data-gallery-category="${category}">
-      <button class="page-gallery-open" type="button" data-gallery-src="../images/${src}" data-gallery-alt="${alt}" aria-label="Enlarge: ${alt}">
-        <img src="../images/${src}" alt="${alt}" loading="lazy" />
-        <span>${alt}</span>
-      </button>
-    </figure>
-  `).join('');
-
-  main.insertAdjacentHTML('beforeend', `
-    <section class="section page-gallery-section reveal" aria-labelledby="page-gallery-title">
-      <div class="page-gallery-header">
-        <p class="eyebrow">More From Gallop</p>
-        <h2 id="page-gallery-title">Experience it in pictures</h2>
-      </div>
-      <div class="page-gallery-filters" aria-label="Filter gallery">
-        <button class="page-gallery-filter active" type="button" data-gallery-filter="all" aria-pressed="true">All</button>
-        ${availableCategories.map(category => `<button class="page-gallery-filter" type="button" data-gallery-filter="${category}" aria-pressed="false">${categoryLabels[category]}</button>`).join('')}
-      </div>
-      <div class="page-gallery-masonry">${items}</div>
-      <div class="page-gallery-lightbox" role="dialog" aria-modal="true" aria-label="Enlarged gallery image" aria-hidden="true">
-        <button class="page-gallery-lightbox-close" type="button" aria-label="Close enlarged image">&times;</button>
-        <img src="" alt="" />
-        <p></p>
-      </div>
-    </section>
-  `);
-};
-
-addPageGallery();
-
-const pageGallery = document.querySelector('.page-gallery-section');
-
-if (pageGallery) {
-  const filters = [...pageGallery.querySelectorAll('.page-gallery-filter')];
-  const items = [...pageGallery.querySelectorAll('.page-gallery-item')];
-  const lightbox = pageGallery.querySelector('.page-gallery-lightbox');
-  const lightboxImage = lightbox?.querySelector('img');
-  const lightboxCaption = lightbox?.querySelector('p');
-  const lightboxClose = lightbox?.querySelector('.page-gallery-lightbox-close');
-
-  if (lightbox) {
-    document.body.appendChild(lightbox);
-  }
-
-  filters.forEach(filter => {
-    filter.addEventListener('click', () => {
-      const selectedCategory = filter.dataset.galleryFilter;
-
-      filters.forEach(button => {
-        const isActive = button === filter;
-        button.classList.toggle('active', isActive);
-        button.setAttribute('aria-pressed', String(isActive));
-      });
-
-      items.forEach(item => {
-        const isVisible = selectedCategory === 'all' || item.dataset.galleryCategory === selectedCategory;
-        item.classList.toggle('gallery-hidden', !isVisible);
-      });
-    });
-  });
-
-  const closeGalleryLightbox = () => {
-    if (!lightbox) return;
-    lightbox.classList.remove('open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    document.body.classList.remove('gallery-lightbox-open');
-  };
-
-  pageGallery.querySelectorAll('.page-gallery-open').forEach(button => {
-    button.addEventListener('click', () => {
-      if (!lightbox || !lightboxImage || !lightboxCaption) return;
-      lightboxImage.src = button.dataset.gallerySrc;
-      lightboxImage.alt = button.dataset.galleryAlt;
-      lightboxCaption.textContent = button.dataset.galleryAlt;
-      lightbox.classList.add('open');
-      lightbox.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('gallery-lightbox-open');
-      lightboxClose?.focus();
-    });
-  });
-
-  lightboxClose?.addEventListener('click', closeGalleryLightbox);
-  lightbox?.addEventListener('click', event => {
-    if (event.target === lightbox) closeGalleryLightbox();
-  });
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') closeGalleryLightbox();
-  });
-}
 
 document.querySelectorAll('[data-horse-gallery]').forEach(gallery => {
   const mainImage = gallery.querySelector('[data-gallery-main]');
