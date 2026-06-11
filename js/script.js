@@ -21,15 +21,17 @@ const renderPrimaryNav = () => {
         <a href="${prefix}activities.html">Pony Rides/Feeding</a>
         <a href="${prefix}riding.html">Trail/Track Rides</a>
         ${onJackudaPage ? '' : stableActivityLinks}`;
-
-  nav.innerHTML = `
-    <a href="${homeLink}">Home</a>
+  const activitiesMenu = onStablePage || onJackudaPage ? `
     <div class="nav-dropdown">
       <button class="nav-dropdown-toggle" type="button">Activities</button>
       <div class="nav-dropdown-menu activities-menu">
         ${activityLinks}
       </div>
-    </div>
+    </div>` : '';
+
+  nav.innerHTML = `
+    <a href="${homeLink}">Home</a>
+    ${activitiesMenu}
     <a href="${prefix}promotions.html">Promotions</a>
     <a href="${prefix}gallop-care.html">Gallop Cares</a>
     <a href="${prefix}join.html">Join the Team</a>

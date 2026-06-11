@@ -353,7 +353,7 @@ select {
   width: 100%;
   height: clamp(500px, 70vh, 820px);
   overflow: hidden;
-  background: var(--dark-green);
+  background: #0d594f;
 }
 
 .home-banner::after {
@@ -376,6 +376,43 @@ select {
   transform: translateY(var(--banner-shift)) scale(var(--banner-scale));
   transform-origin: center;
   will-change: transform;
+}
+
+.home-banner-video {
+  object-fit: contain;
+  object-position: center;
+}
+
+.home-brand-lockup {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+
+.site-header .home-site-brand,
+.site-header.header-scrolled .home-site-brand,
+.site-header:not(.header-scrolled) .home-site-brand {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.home-brand-oval {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 34px rgba(6, 18, 12, 0.18);
+}
+
+.home-brand-tagline {
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 .venture-section {
