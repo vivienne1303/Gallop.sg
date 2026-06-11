@@ -378,6 +378,121 @@ select {
   will-change: transform;
 }
 
+.venture-section {
+  padding: 88px 32px 104px;
+  background: #f2eaea;
+}
+
+.venture-section-title {
+  margin: 0 0 58px;
+  color: var(--dark-green);
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  text-align: center;
+}
+
+.venture-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 72px 48px;
+  width: min(100%, 1120px);
+  margin: 0 auto;
+}
+
+.venture-link {
+  display: grid;
+  justify-items: center;
+  min-width: 0;
+  color: #071f1a;
+  text-align: center;
+  transition: transform 0.25s ease;
+}
+
+.venture-link h3 {
+  min-height: 2.5em;
+  margin: 0 0 8px;
+  color: var(--deep-green);
+  font-size: clamp(1.2rem, 2.1vw, 1.65rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.venture-mark {
+  position: relative;
+  display: grid;
+  width: min(100%, 260px);
+  aspect-ratio: 180 / 190;
+  place-items: center;
+}
+
+.venture-mark svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.horseshoe,
+.horseshoe-cap {
+  fill: none;
+  stroke: #cfc2b3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.horseshoe {
+  stroke-width: 18;
+}
+
+.horseshoe-cap {
+  stroke-width: 20;
+}
+
+.horseshoe-nails {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.82);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 5 18;
+}
+
+.venture-sage .horseshoe,
+.venture-sage .horseshoe-cap {
+  stroke: #c8d0ce;
+}
+
+.venture-mark p {
+  position: relative;
+  z-index: 1;
+  width: 82%;
+  margin: 0;
+  color: #101010;
+  font-size: clamp(0.88rem, 1.3vw, 1.05rem);
+  font-weight: 500;
+  line-height: 1.48;
+}
+
+.venture-link:hover,
+.venture-link:focus-visible {
+  transform: translateY(-7px);
+  outline: none;
+}
+
+.venture-link:hover h3,
+.venture-link:focus-visible h3 {
+  color: var(--gold);
+}
+
+.venture-link:hover .horseshoe,
+.venture-link:hover .horseshoe-cap,
+.venture-link:focus-visible .horseshoe,
+.venture-link:focus-visible .horseshoe-cap {
+  stroke: var(--gold);
+}
+
 .hero-section {
   position: relative;
   overflow: hidden;
@@ -888,10 +1003,23 @@ select {
   overflow: hidden;
 }
 
+.scroll-gallery-row + .scroll-gallery-row {
+  margin-top: 18px;
+}
+
 .scroll-gallery-track {
   display: flex;
   width: max-content;
-  animation: gallery-scroll 210s linear infinite;
+  animation: gallery-scroll var(--gallery-speed, 130s) linear infinite;
+}
+
+.scroll-gallery-row-right .scroll-gallery-track {
+  --gallery-speed: 42s;
+  animation-direction: reverse;
+}
+
+.scroll-gallery-placeholder-row .scroll-gallery-track {
+  --gallery-speed: 42s;
 }
 
 .scroll-gallery-group {
@@ -902,11 +1030,25 @@ select {
 }
 
 .scroll-gallery-card {
-  width: clamp(260px, 25vw, 390px);
-  height: clamp(390px, 43vw, 620px);
+  width: clamp(135px, 12.5vw, 200px);
+  height: clamp(195px, 21.5vw, 310px);
   margin: 0;
   overflow: hidden;
   background: #182a21;
+}
+
+.gallery-placeholder {
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgba(247, 244, 234, 0.35);
+  background: rgba(247, 244, 234, 0.08);
+  color: rgba(247, 244, 234, 0.7);
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .scroll-gallery-card img {
@@ -2609,6 +2751,10 @@ select {
 }
 
 @media (max-width: 1140px) {
+  .venture-grid {
+    gap: 64px 30px;
+  }
+
   .hero-copy h2 {
     white-space: normal;
   }
@@ -2642,6 +2788,27 @@ select {
     overflow-x: hidden;
   }
 
+  .venture-section {
+    padding: 68px 18px 80px;
+  }
+
+  .venture-section-title {
+    margin-bottom: 46px;
+  }
+
+  .venture-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 54px 18px;
+  }
+
+  .venture-link h3 {
+    font-size: clamp(1rem, 4vw, 1.3rem);
+  }
+
+  .venture-mark p {
+    font-size: clamp(0.78rem, 2.6vw, 0.95rem);
+  }
+
   .scroll-gallery-section {
     padding: 72px 0;
   }
@@ -2652,9 +2819,8 @@ select {
   }
 
   .scroll-gallery-card {
-    width: 72vw;
-    height: 100vw;
-    max-height: 520px;
+    width: clamp(130px, 38vw, 180px);
+    height: clamp(190px, 52vw, 270px);
   }
 
   .about-story-image {
@@ -2964,6 +3130,24 @@ select {
 }
 
 @media (max-width: 480px) {
+  .venture-grid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .venture-link h3 {
+    min-height: 0;
+    font-size: 1.3rem;
+  }
+
+  .venture-mark {
+    width: min(100%, 270px);
+  }
+
+  .venture-mark p {
+    font-size: 0.98rem;
+  }
+
   .brand-copy .eyebrow {
     font-size: 0.58rem;
     letter-spacing: 0.18em;
