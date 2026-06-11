@@ -937,6 +937,36 @@ select {
   object-fit: cover;
 }
 
+.service-detail-section {
+  background: #dfe9e4;
+}
+
+.service-detail {
+  grid-template-columns: minmax(0, 1.2fr) minmax(400px, 1fr);
+  gap: clamp(48px, 6vw, 100px);
+  width: min(100%, 1600px);
+  max-width: 1600px;
+  min-height: 560px;
+}
+
+.service-detail .content-copy > p:not(.eyebrow) {
+  margin: 0 0 28px;
+  color: rgba(31, 54, 42, 0.88);
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.service-detail .content-copy ul {
+  margin: 0 0 28px;
+  padding-left: 22px;
+  color: rgba(31, 54, 42, 0.88);
+  line-height: 1.8;
+}
+
+.service-detail-image {
+  height: clamp(430px, 34vw, 560px);
+}
+
 .about-story-section {
   background: #d5e2dc;
 }
@@ -975,13 +1005,13 @@ select {
 
 .scroll-gallery-section {
   overflow: hidden;
-  padding: 88px 0;
+  padding: 48px 0 72px;
   background: var(--deep-green);
 }
 
 .scroll-gallery-heading {
   max-width: 1200px;
-  margin: 0 auto 42px;
+  margin: 0 auto 28px;
   padding: 0 24px;
   text-align: center;
 }
@@ -995,7 +1025,7 @@ select {
   margin: 0;
   color: var(--ivory);
   font-family: 'Playfair Display', serif;
-  font-size: clamp(2.5rem, 4vw, 4rem);
+  font-size: clamp(2.1rem, 3.2vw, 3.2rem);
 }
 
 .scroll-gallery {
@@ -1030,8 +1060,8 @@ select {
 }
 
 .scroll-gallery-card {
-  width: clamp(135px, 12.5vw, 200px);
-  height: clamp(195px, 21.5vw, 310px);
+  width: clamp(190px, 16vw, 270px);
+  height: clamp(290px, 25vw, 420px);
   margin: 0;
   overflow: hidden;
   background: #182a21;
@@ -2463,6 +2493,89 @@ select {
   color: var(--deep-green);
 }
 
+.footer-carpark-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid rgba(15, 81, 69, 0.2);
+  border-radius: 999px;
+  background: rgba(247, 244, 234, 0.55);
+}
+
+.footer-carpark-link[aria-disabled="true"] {
+  opacity: 0.68;
+  pointer-events: none;
+}
+
+.site-footer[data-home-footer] .footer-main {
+  width: min(100% - 72px, 1320px);
+  padding-top: clamp(68px, 7vw, 104px);
+  padding-bottom: clamp(58px, 6vw, 88px);
+}
+
+.site-footer[data-home-footer] .footer-heading h2 {
+  font-size: clamp(2rem, 2.8vw, 2.8rem);
+}
+
+.site-footer[data-home-footer] .footer-location-card {
+  padding: 34px 0;
+}
+
+.site-footer[data-home-footer] .footer-location-card h3 {
+  font-size: clamp(1.35rem, 1.8vw, 1.7rem);
+}
+
+.site-footer[data-home-footer] .footer-location-card p,
+.site-footer[data-home-footer] .footer-location-details a {
+  font-size: clamp(1.05rem, 1.25vw, 1.25rem);
+}
+
+.site-footer[data-home-footer] .footer-carpark-link {
+  justify-content: center;
+  min-height: 56px;
+  padding: 14px 24px;
+  font-size: clamp(1.05rem, 1.25vw, 1.2rem);
+}
+
+.opening-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 620px));
+  justify-content: center;
+  gap: 18px;
+  padding: clamp(24px, 4vw, 56px);
+  background: var(--deep-green);
+}
+
+.opening-gallery h2 {
+  grid-column: 1 / -1;
+  margin: 0 0 10px;
+  color: #fffaf0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  text-align: center;
+}
+
+.opening-gallery-card {
+  height: clamp(300px, 32vw, 500px);
+  margin: 0;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #182a21;
+}
+
+.opening-gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.opening-gallery-card:hover img {
+  transform: scale(1.025);
+  filter: brightness(1.04);
+}
+
 .footer-days {
   margin-bottom: 5px !important;
   color: #78591f !important;
@@ -2470,6 +2583,17 @@ select {
 }
 
 @media (max-width: 620px) {
+  .opening-gallery {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .opening-gallery-card {
+    height: min(110vw, 520px);
+    border-radius: 18px;
+  }
+
   .footer-main {
     grid-template-columns: 1fr;
     width: min(100% - 40px, 1500px);
@@ -2496,6 +2620,20 @@ select {
   .footer-location-hours {
     padding-left: 16px;
     border-left: 2px solid rgba(15, 81, 69, 0.32);
+  }
+
+  .site-footer[data-home-footer] .footer-main {
+    width: min(100% - 36px, 1320px);
+    padding-top: 52px;
+    padding-bottom: 48px;
+  }
+
+  .site-footer[data-home-footer] .footer-heading h2 {
+    font-size: 1.8rem;
+  }
+
+  .site-footer[data-home-footer] .footer-carpark-link {
+    width: 100%;
   }
 }
 
@@ -2788,6 +2926,14 @@ select {
     overflow-x: hidden;
   }
 
+  .service-detail {
+    min-height: 0;
+  }
+
+  .service-detail-image {
+    height: clamp(300px, 76vw, 440px);
+  }
+
   .venture-section {
     padding: 68px 18px 80px;
   }
@@ -2810,17 +2956,17 @@ select {
   }
 
   .scroll-gallery-section {
-    padding: 72px 0;
+    padding: 40px 0 56px;
   }
 
   .scroll-gallery-heading {
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     padding: 0 18px;
   }
 
   .scroll-gallery-card {
-    width: clamp(130px, 38vw, 180px);
-    height: clamp(190px, 52vw, 270px);
+    width: clamp(160px, 46vw, 220px);
+    height: clamp(240px, 66vw, 330px);
   }
 
   .about-story-image {

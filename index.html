@@ -27,26 +27,7 @@
       </button>
       <nav class="main-nav" id="primary-nav" aria-label="Primary navigation">
         <a href="#about">Home</a>
-        <div class="nav-dropdown">
-          <button class="nav-dropdown-toggle" type="button">Activities</button>
-          <div class="nav-dropdown-menu activities-menu">
-            <a href="pages/archery.html">Archery</a>
-            <a href="pages/birthday-party.html">Birthday Parties</a>
-            <a href="pages/camps-workshops.html">Camps/Workshops</a>
-            <a href="pages/events.html">Corporate/Group Events</a>
-            <a href="pages/activities.html">Learning Journey</a>
-            <a href="pages/birthday-party.html">Outdoor Pony Hire</a>
-            <a href="pages/photoshoot.html">Photoshoots</a>
-            <a href="pages/activities.html">Pony Rides/Feeding</a>
-            <a href="pages/polo.html">Polo</a>
-            <a href="pages/riding-lessons.html">Riding Lessons</a>
-            <a href="pages/riding.html">Trail/Track Rides</a>
-            <a href="pages/adopt-a-horse.html">Adopt a Horse</a>
-            <a href="pages/lease-a-horse.html">Lease a Horse</a>
-          </div>
-        </div>
         <a href="pages/promotions.html">Promotions</a>
-        <a href="pages/gallop-care.html">Gallop Cares</a>
         <a href="pages/join.html">Join the Team</a>
         <a href="pages/faq.html">FAQs</a>
         <a href="pages/contact.html">Contact Us</a>
@@ -56,13 +37,16 @@
 
   <main>
     <section id="home" class="home-banner" aria-label="Gallop Stable">
-      <img class="home-banner-media" src="images/main_logo1.jpg" alt="Gallop Stable activities arranged in the shape of Singapore">
+      <video class="home-banner-media" autoplay muted loop playsinline preload="metadata" poster="images/main_logo1.jpg" aria-label="Gallop Stable welcome video">
+        <source src="images/main_video.MOV" type="video/quicktime">
+        Your browser does not support the homepage video.
+      </video>
     </section>
 
     <section class="venture-section reveal" aria-labelledby="venture-title">
       <h2 id="venture-title" class="venture-section-title">Explore Gallop SG</h2>
       <div class="venture-grid">
-        <a class="venture-link venture-sand" href="pages/riding.html">
+        <a class="venture-link venture-sand" href="pages/stable.html">
           <h3>Stable</h3>
           <div class="venture-mark">
             <svg viewBox="0 0 180 190" aria-hidden="true">
@@ -86,7 +70,7 @@
           </div>
         </a>
 
-        <a class="venture-link venture-sand" href="pages/birthday-party.html">
+        <a class="venture-link venture-sand" href="pages/jackuda.html">
           <h3>Jackuda</h3>
           <div class="venture-mark">
             <svg viewBox="0 0 180 190" aria-hidden="true">
@@ -122,7 +106,7 @@
           </div>
         </a>
 
-        <a class="venture-link venture-sage" href="pages/gallop-care.html">
+        <a class="venture-link venture-sage" href="pages/green.html">
           <h3>Green</h3>
           <div class="venture-mark">
             <svg viewBox="0 0 180 190" aria-hidden="true">
@@ -134,7 +118,7 @@
           </div>
         </a>
 
-        <a class="venture-link venture-sand" href="pages/contact.html">
+        <a class="venture-link venture-sand" href="pages/saddlery.html">
           <h3>D'Equestrian Paradise</h3>
           <div class="venture-mark">
             <svg viewBox="0 0 180 190" aria-hidden="true">
@@ -146,7 +130,7 @@
           </div>
         </a>
 
-        <a class="venture-link venture-sage" href="pages/events.html">
+        <a class="venture-link venture-sage" href="pages/catering.html">
           <h3>Catering</h3>
           <div class="venture-mark">
             <svg viewBox="0 0 180 190" aria-hidden="true">
@@ -158,7 +142,7 @@
           </div>
         </a>
 
-        <a class="venture-link venture-sand" href="pages/camps-workshops.html">
+        <a class="venture-link venture-sand" href="pages/resort.html">
           <h3>Resort</h3>
           <div class="venture-mark">
             <svg viewBox="0 0 180 190" aria-hidden="true">
@@ -172,7 +156,7 @@
       </div>
     </section>
 
-    <section class="hero-section reveal" id="about">
+    <section class="hero-section reveal" id="about" hidden>
       <div class="hero-background"></div>
       <div class="hero-shell">
         <div class="hero-copy">
@@ -214,7 +198,7 @@
       </div> -->
     </section>
 
-    <section class="section about-story-section about-story-alt reveal">
+    <section class="section about-story-section about-story-alt reveal" hidden>
       <div class="content-split about-story">
         <div class="content-copy about-story-copy">
           <p class="eyebrow">Our Story</p>
@@ -230,7 +214,7 @@
       </div>
     </section>
 
-    <section class="section about-story-section reveal">
+    <section class="section about-story-section reveal" hidden>
       <div class="content-split about-story">
         <div class="content-image about-story-image">
           <img src="images/home3.jpeg" alt="A child spending time with a pony at Gallop Stable" />
@@ -244,7 +228,7 @@
       </div>
     </section>
 
-    <section class="scroll-gallery-section" aria-labelledby="gallery-title">
+    <section class="scroll-gallery-section" aria-labelledby="gallery-title" hidden>
       <div class="scroll-gallery-heading">
         <h2 id="gallery-title">Gallery</h2>
       </div>
@@ -286,7 +270,7 @@
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.57 PM (1).jpeg" alt="A Gallop Stable riding experience" loading="lazy" /></figure>
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.57 PM (2).jpeg" alt="Guests enjoying the stable grounds" loading="lazy" /></figure>
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.58 PM.jpeg" alt="A recent riding activity" loading="lazy" /></figure>
-            <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.58 PM (1).jpeg" alt="A horse experience at Gallop Stable" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row1pic1.jpeg" alt="A horse experience at Gallop Stable" loading="lazy" /></figure>
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.58 PM (2).jpeg" alt="A memorable day at the stable" loading="lazy" /></figure>
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.58 PM (3).jpeg" alt="A recent moment with a Gallop horse" loading="lazy" /></figure>
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.59 PM.jpeg" alt="Guests taking part in a horse activity" loading="lazy" /></figure>
@@ -331,7 +315,7 @@
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.57 PM (1).jpeg" alt="" loading="lazy" /></figure>
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.57 PM (2).jpeg" alt="" loading="lazy" /></figure>
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.58 PM.jpeg" alt="" loading="lazy" /></figure>
-            <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.58 PM (1).jpeg" alt="" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row1pic1.jpeg" alt="" loading="lazy" /></figure>
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.58 PM (2).jpeg" alt="" loading="lazy" /></figure>
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.58 PM (3).jpeg" alt="" loading="lazy" /></figure>
             <figure class="scroll-gallery-card"><img src="images/WhatsApp Image 2026-06-10 at 3.01.59 PM.jpeg" alt="" loading="lazy" /></figure>
@@ -364,30 +348,40 @@
         </div>
       </div>
 
-      <div class="scroll-gallery scroll-gallery-row scroll-gallery-row-left scroll-gallery-placeholder-row" aria-label="Gallery row three placeholders">
+      <div class="scroll-gallery scroll-gallery-row scroll-gallery-row-left scroll-gallery-placeholder-row" aria-label="Gallop Stable gallery row three">
         <div class="scroll-gallery-track">
           <div class="scroll-gallery-group">
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 1</span></figure>
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 2</span></figure>
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 3</span></figure>
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 4</span></figure>
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 5</span></figure>
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 6</span></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic1.PNG" alt="Children visiting a horse in its stable" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic2.PNG" alt="Visitors meeting a pony at Gallop Stable" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic3.PNG" alt="A guided pony activity at Gallop Stable" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic4.PNG" alt="A child being introduced to a white horse" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic5.PNG" alt="A family spending time with a white horse" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic6.PNG" alt="Visitors enjoying an activity inside the stable" loading="lazy" /></figure>
           </div>
           <div class="scroll-gallery-group" aria-hidden="true">
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 1</span></figure>
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 2</span></figure>
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 3</span></figure>
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 4</span></figure>
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 5</span></figure>
-            <figure class="scroll-gallery-card gallery-placeholder"><span>Row 3<br>Photo 6</span></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic1.PNG" alt="" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic2.PNG" alt="" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic3.PNG" alt="" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic4.PNG" alt="" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic5.PNG" alt="" loading="lazy" /></figure>
+            <figure class="scroll-gallery-card"><img src="images/row3pic6.PNG" alt="" loading="lazy" /></figure>
           </div>
         </div>
       </div>
     </section>
+
+    <section class="opening-gallery" aria-labelledby="opening-gallery-title">
+      <h2 id="opening-gallery-title">Opening ceremony by Mr Ong Ye Kung</h2>
+      <figure class="opening-gallery-card">
+        <img src="images/openingpic6.jpeg" alt="A featured moment at Gallop Stable" loading="lazy" />
+      </figure>
+      <figure class="opening-gallery-card">
+        <img src="images/openingpic7.jpeg" alt="Visitors enjoying Gallop Stable" loading="lazy" />
+      </figure>
+    </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" data-home-footer>
     <p>© 2026 Gallop Stable. Horse riding experiences across Singapore.</p>
   </footer>
 

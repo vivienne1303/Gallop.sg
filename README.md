@@ -16,7 +16,7 @@ Gallop.sg/
 │   ├── polo.html
 │   ├── archery.html
 │   ├── riding-lessons.html
-│   ├── camps-workshops.html
+│   ├── jackuda.html
 │   ├── birthday-party.html
 │   ├── photoshoot.html
 │   ├── events.html

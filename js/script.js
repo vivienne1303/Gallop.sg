@@ -3,27 +3,31 @@ const renderPrimaryNav = () => {
   if (!nav) return;
 
   const onHomePage = !window.location.pathname.includes('/pages/');
+  const onJackudaPage = window.location.pathname.endsWith('/pages/jackuda.html');
+  const onStablePage = window.location.pathname.endsWith('/pages/stable.html');
   const prefix = onHomePage ? 'pages/' : '';
   const homeLink = onHomePage ? '#about' : '../index.html#about';
+  const stableActivityLinks = `
+        <a href="${prefix}riding-lessons.html">Riding Lessons</a>
+        <a href="${prefix}adopt-a-horse.html">Adopt a Horse</a>
+        <a href="${prefix}lease-a-horse.html">Lease a Horse</a>`;
+  const activityLinks = onStablePage ? stableActivityLinks : `
+        <a href="${prefix}birthday-party.html">Birthday Parties</a>
+        <a href="${prefix}jackuda.html">Camps/Workshops</a>
+        <a href="${prefix}events.html">Corporate/Group Events</a>
+        <a href="${prefix}activities.html">Learning Journey</a>
+        <a href="${prefix}birthday-party.html">Outdoor Pony Hire</a>
+        <a href="${prefix}photoshoot.html">Photoshoots</a>
+        <a href="${prefix}activities.html">Pony Rides/Feeding</a>
+        <a href="${prefix}riding.html">Trail/Track Rides</a>
+        ${onJackudaPage ? '' : stableActivityLinks}`;
 
   nav.innerHTML = `
     <a href="${homeLink}">Home</a>
     <div class="nav-dropdown">
       <button class="nav-dropdown-toggle" type="button">Activities</button>
       <div class="nav-dropdown-menu activities-menu">
-        <a href="${prefix}archery.html">Archery</a>
-        <a href="${prefix}birthday-party.html">Birthday Parties</a>
-        <a href="${prefix}camps-workshops.html">Camps/Workshops</a>
-        <a href="${prefix}events.html">Corporate/Group Events</a>
-        <a href="${prefix}activities.html">Learning Journey</a>
-        <a href="${prefix}birthday-party.html">Outdoor Pony Hire</a>
-        <a href="${prefix}photoshoot.html">Photoshoots</a>
-        <a href="${prefix}activities.html">Pony Rides/Feeding</a>
-        <a href="${prefix}polo.html">Polo</a>
-        <a href="${prefix}riding-lessons.html">Riding Lessons</a>
-        <a href="${prefix}riding.html">Trail/Track Rides</a>
-        <a href="${prefix}adopt-a-horse.html">Adopt a Horse</a>
-        <a href="${prefix}lease-a-horse.html">Lease a Horse</a>
+        ${activityLinks}
       </div>
     </div>
     <a href="${prefix}promotions.html">Promotions</a>
@@ -39,6 +43,46 @@ renderPrimaryNav();
 const renderSiteFooter = () => {
   const footer = document.querySelector('.site-footer');
   if (!footer) return;
+
+  if (footer.hasAttribute('data-home-footer')) {
+    footer.innerHTML = `
+      <div class="footer-main">
+        <div class="footer-heading footer-heading-visit">
+          <h2>Visit Us</h2>
+        </div>
+        <div class="footer-heading footer-heading-hours">
+          <h2>Opening Hours</h2>
+        </div>
+
+        <div class="footer-location-list">
+          <article class="footer-location-card">
+            <div class="footer-location-details">
+              <h3>Admiralty</h3>
+              <p>8 Admiralty Rd East, Singapore 759991</p>
+              <a href="tel:+6564636012">6463 6012</a>
+              <span aria-hidden="true"> / </span>
+              <a href="tel:+6583836425">8383 6425</a>
+            </div>
+            <div class="footer-location-hours">
+              <p class="footer-days">Daily</p>
+              <p>7:00 AM - 7:00 PM</p>
+            </div>
+          </article>
+
+          <article class="footer-location-card footer-carpark-card">
+            <div class="footer-location-details">
+              <h3>Carpark</h3>
+              <p>Find the nearest carpark before your visit.</p>
+            </div>
+            <div class="footer-location-hours">
+              <a class="footer-carpark-link" href="https://maps.app.goo.gl/P71RDQeCA8QNJVCfA" target="_blank" rel="noopener noreferrer">View Carpark on Google Maps</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    `;
+    return;
+  }
 
   footer.innerHTML = `
     <div class="footer-main">
