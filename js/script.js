@@ -1,4 +1,53 @@
 const identityTokenPattern = /(?:confirmation_token|invite_token|recovery_token|access_token)=/;
+const sectionFolders = [
+  'stable',
+  'care',
+  'jackuda',
+  'polo',
+  'archery',
+  'green',
+  'd-equestrian-paradise',
+  'catering',
+  'resort'
+];
+
+const sectionPagePrefixes = {
+  stable: 'stable',
+  care: 'care',
+  jackuda: 'jackuda',
+  polo: 'polo',
+  archery: 'archery',
+  green: 'green',
+  'd-equestrian-paradise': 'd_equestrian_paradise',
+  catering: 'catering',
+  resort: 'resort'
+};
+
+const getPageContext = () => {
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  const pagesIndex = pathParts.lastIndexOf('pages');
+  const onHomePage = pagesIndex === -1;
+  const possibleSection = onHomePage ? '' : pathParts[pagesIndex + 1];
+  const section = sectionFolders.includes(possibleSection) ? possibleSection : '';
+
+  return { onHomePage, section };
+};
+
+const pageLink = pathFromPages => {
+  const { onHomePage, section } = getPageContext();
+  if (onHomePage) return `pages/${pathFromPages}`;
+  if (!section) return pathFromPages;
+  if (pathFromPages.startsWith(`${section}/`)) {
+    return pathFromPages.slice(section.length + 1);
+  }
+  return `../${pathFromPages}`;
+};
+
+const rootAsset = assetPath => {
+  const { onHomePage, section } = getPageContext();
+  if (onHomePage) return assetPath;
+  return `${section ? '../../' : '../'}${assetPath}`;
+};
 
 if (identityTokenPattern.test(window.location.hash) && !window.location.pathname.includes('/admin/')) {
   window.location.replace(`https://gallopsg.netlify.app/admin/${window.location.hash}`);
@@ -8,38 +57,30 @@ const renderPrimaryNav = () => {
   const nav = document.querySelector('.main-nav');
   if (!nav) return;
 
-  const onHomePage = !window.location.pathname.includes('/pages/');
-  const jackudaActivityPages = [
-    'jackuda.html',
-    'birthday-party.html',
-    'events.html',
-    'activities.html',
-    'photoshoot.html',
-    'riding.html'
-  ];
-  const onJackudaActivityPage = jackudaActivityPages.some(page => window.location.pathname.endsWith(`/pages/${page}`));
-  const stableActivityPages = [
-    'stable.html',
-    'riding-lessons.html',
-    'adopt-a-horse.html',
-    'lease-a-horse.html'
-  ];
-  const onStableActivityPage = stableActivityPages.some(page => window.location.pathname.endsWith(`/pages/${page}`));
-  const prefix = onHomePage ? 'pages/' : '';
-  const homeLink = onHomePage ? '#about' : '../index.html#about';
+  const { onHomePage, section } = getPageContext();
+  const onJackudaActivityPage = section === 'jackuda';
+  const onStableActivityPage = section === 'stable';
+  const homeLink = onHomePage ? '#about' : `${section ? '../../' : '../'}index.html#about`;
+  const activeSection = section || 'stable';
+  const activePrefix = sectionPagePrefixes[activeSection];
+  const sectionActivityLink = pageLink(`${activeSection}/${activePrefix}_activity.html`);
+  const sectionPromotionLink = pageLink(`${activeSection}/${activePrefix}_promotion.html`);
+  const sectionFaqLink = pageLink(`${activeSection}/${activePrefix}_faq.html`);
   const stableActivityLinks = `
-        <a href="${prefix}riding-lessons.html">Riding Lessons</a>
-        <a href="${prefix}adopt-a-horse.html">Adopt a Horse</a>
-        <a href="${prefix}lease-a-horse.html">Lease a Horse</a>`;
+        <a href="${pageLink('stable/stable_activity.html')}">All Stable Activities</a>
+        <a href="${pageLink('stable/riding-lessons.html')}">Riding Lessons</a>
+        <a href="${pageLink('stable/adopt-a-horse.html')}">Adopt a Horse</a>
+        <a href="${pageLink('stable/lease-a-horse.html')}">Lease a Horse</a>
+        <a href="${pageLink('stable/outdoor-pony-hire.html')}">Outdoor Pony Hire</a>`;
   const activityLinks = onStableActivityPage ? stableActivityLinks : `
-        <a href="${prefix}birthday-party.html">Birthday Parties</a>
-        <a href="${prefix}jackuda.html">Camps/Workshops</a>
-        <a href="${prefix}events.html">Corporate/Group Events</a>
-        <a href="${prefix}activities.html">Learning Journey</a>
-        <a href="${prefix}birthday-party.html">Outdoor Pony Hire</a>
-        <a href="${prefix}photoshoot.html">Photoshoots</a>
-        <a href="${prefix}activities.html">Pony Rides/Feeding</a>
-        <a href="${prefix}riding.html">Trail/Track Rides</a>
+        <a href="${pageLink('jackuda/jackuda_activity.html')}">All Jackuda Activities</a>
+        <a href="${pageLink('jackuda/birthday-party.html')}">Birthday Parties</a>
+        <a href="${pageLink('jackuda/jackuda.html')}">Camps/Workshops</a>
+        <a href="${pageLink('jackuda/events.html')}">Corporate/Group Events</a>
+        <a href="${pageLink('jackuda/jackuda_activity.html')}">Learning Journey</a>
+        <a href="${pageLink('jackuda/photoshoot.html')}">Photoshoots</a>
+        <a href="${pageLink('jackuda/jackuda_activity.html')}">Pony Rides/Feeding</a>
+        <a href="${pageLink('jackuda/riding.html')}">Trail/Track Rides</a>
         ${onJackudaActivityPage ? '' : stableActivityLinks}`;
   const activitiesMenu = onStableActivityPage || onJackudaActivityPage ? `
     <div class="nav-dropdown">
@@ -47,15 +88,15 @@ const renderPrimaryNav = () => {
       <div class="nav-dropdown-menu activities-menu">
         ${activityLinks}
       </div>
-    </div>` : '';
+    </div>` : `<a href="${sectionActivityLink}">Activities</a>`;
 
   nav.innerHTML = `
     <a href="${homeLink}">Home</a>
     ${activitiesMenu}
-    <a href="${prefix}promotions.html">Promotions</a>
-    <a href="${prefix}join.html">Join the Team</a>
-    <a href="${prefix}faq.html">FAQs</a>
-    <a href="${prefix}contact.html">Contact Us</a>
+    <a href="${sectionPromotionLink}">Promotions</a>
+    <a href="${pageLink('join.html')}">Join the Team</a>
+    <a href="${sectionFaqLink}">FAQs</a>
+    <a href="${pageLink('contact.html')}">Contact Us</a>
   `;
 };
 
@@ -290,7 +331,7 @@ const applyCmsContent = content => {
 };
 
 const loadCmsContent = async () => {
-  const contentPath = window.location.pathname.includes('/pages/') ? '../content/site.json' : 'content/site.json';
+  const contentPath = rootAsset('content/site.json');
 
   try {
     const response = await fetch(contentPath, { cache: 'no-cache' });
@@ -542,7 +583,7 @@ if (aiChatForm) {
 
     if (sender === 'bot') {
       const avatar = document.createElement('img');
-      avatar.src = '../images/gallop-ai-horse.png';
+      avatar.src = rootAsset('images/gallop-ai-horse.png');
       avatar.alt = '';
       message.appendChild(avatar);
     }
@@ -578,7 +619,7 @@ if (aiChatForm) {
 
     const typing = document.createElement('div');
     typing.className = 'ai-message ai-message-bot ai-message-typing';
-    typing.innerHTML = '<img src="../images/gallop-ai-horse.png" alt=""><div><span></span><span></span><span></span></div>';
+    typing.innerHTML = `<img src="${rootAsset('images/gallop-ai-horse.png')}" alt=""><div><span></span><span></span><span></span></div>`;
     chatMessages.appendChild(typing);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
@@ -642,7 +683,7 @@ const rememberHorseAssistantWelcome = () => {
 const shouldShowHorseAssistantWelcome = !hasSeenHorseAssistantWelcome();
 
 const renderHorseAssistant = () => {
-  const chatLink = window.location.pathname.includes('/pages/') ? 'gallop-ai.html' : 'pages/gallop-ai.html';
+  const chatLink = pageLink('gallop-ai.html');
 
   return `
     <div class="horse-assistant${shouldShowHorseAssistantWelcome ? ' assistant-open' : ''}">
@@ -656,7 +697,7 @@ const renderHorseAssistant = () => {
         <p class="horse-assistant-greeting">Hi, welcome to Gallop SG! I am here to assist you.</p>
       </div>
       <a class="horse-assistant-toggle" href="${chatLink}" aria-label="Chat with Gallop AI">
-        <img src="${window.location.pathname.includes('/pages/') ? '../images/gallop-ai-horse.png' : 'images/gallop-ai-horse.png'}" alt="" />
+        <img src="${rootAsset('images/gallop-ai-horse.png')}" alt="" />
         <span>AI</span>
       </a>
     </div>

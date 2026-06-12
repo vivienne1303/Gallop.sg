@@ -1006,11 +1006,10 @@ select {
 }
 
 .service-detail {
-  grid-template-columns: minmax(0, 1.2fr) minmax(400px, 1fr);
-  gap: clamp(48px, 6vw, 100px);
-  width: min(100%, 1600px);
-  max-width: 1600px;
-  min-height: 560px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(36px, 6vw, 84px);
+  width: min(100%, 1200px);
+  max-width: 1200px;
 }
 
 .service-detail .content-copy > p:not(.eyebrow) {
@@ -1028,7 +1027,7 @@ select {
 }
 
 .service-detail-image {
-  height: clamp(430px, 34vw, 560px);
+  height: clamp(360px, 42vw, 540px);
 }
 
 .about-story-section {
@@ -2665,39 +2664,44 @@ select {
 }
 
 .opening-gallery {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 620px));
-  justify-content: center;
-  gap: 18px;
-  padding: clamp(24px, 4vw, 56px);
+  overflow: hidden;
+  padding: clamp(40px, 5vw, 72px) 0;
   background: var(--deep-green);
 }
 
 .opening-gallery h2 {
-  grid-column: 1 / -1;
-  margin: 0 0 10px;
+  margin: 0 24px 34px;
   color: #fffaf0;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1.8rem, 3vw, 3rem);
   text-align: center;
 }
 
+.opening-gallery-slider .scroll-gallery-track {
+  --gallery-speed: 75s;
+}
+
 .opening-gallery-card {
-  height: clamp(300px, 32vw, 500px);
+  flex: 0 0 auto;
+  width: clamp(320px, 42vw, 620px);
+  height: clamp(240px, 31vw, 460px);
   margin: 0;
   overflow: hidden;
   border-radius: 24px;
   background: #182a21;
 }
 
-.opening-gallery-card img {
+.opening-gallery-card img,
+.opening-gallery-card video {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease, filter 0.5s ease;
 }
 
-.opening-gallery-card:hover img {
+.opening-gallery-card:hover img,
+.opening-gallery-card:hover video {
   transform: scale(1.025);
   filter: brightness(1.04);
 }
@@ -2710,13 +2714,17 @@ select {
 
 @media (max-width: 620px) {
   .opening-gallery {
-    grid-template-columns: 1fr;
-    gap: 14px;
-    padding: 18px;
+    padding: 36px 0 44px;
+  }
+
+  .opening-gallery h2 {
+    margin-bottom: 24px;
+    padding: 0 18px;
   }
 
   .opening-gallery-card {
-    height: min(110vw, 520px);
+    width: min(82vw, 420px);
+    height: min(62vw, 320px);
     border-radius: 18px;
   }
 
@@ -3140,12 +3148,12 @@ select {
   }
 
   .home-brand-tagline {
-    width: 102px;
+    width: auto;
     font-size: 12px;
     line-height: 1.35;
     text-align: center;
     text-align-last: center;
-    white-space: normal;
+    white-space: nowrap;
   }
 
   .site-header:not(.header-scrolled) .site-brand {
@@ -3448,10 +3456,6 @@ select {
 
   .logo-img {
     width: 74px;
-  }
-
-  .home-brand-tagline {
-    width: 92px;
   }
 
   .site-header:not(.header-scrolled) .site-brand {
