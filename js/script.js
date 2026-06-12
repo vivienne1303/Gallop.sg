@@ -18,14 +18,20 @@ const renderPrimaryNav = () => {
     'riding.html'
   ];
   const onJackudaActivityPage = jackudaActivityPages.some(page => window.location.pathname.endsWith(`/pages/${page}`));
-  const onStablePage = window.location.pathname.endsWith('/pages/stable.html');
+  const stableActivityPages = [
+    'stable.html',
+    'riding-lessons.html',
+    'adopt-a-horse.html',
+    'lease-a-horse.html'
+  ];
+  const onStableActivityPage = stableActivityPages.some(page => window.location.pathname.endsWith(`/pages/${page}`));
   const prefix = onHomePage ? 'pages/' : '';
   const homeLink = onHomePage ? '#about' : '../index.html#about';
   const stableActivityLinks = `
         <a href="${prefix}riding-lessons.html">Riding Lessons</a>
         <a href="${prefix}adopt-a-horse.html">Adopt a Horse</a>
         <a href="${prefix}lease-a-horse.html">Lease a Horse</a>`;
-  const activityLinks = onStablePage ? stableActivityLinks : `
+  const activityLinks = onStableActivityPage ? stableActivityLinks : `
         <a href="${prefix}birthday-party.html">Birthday Parties</a>
         <a href="${prefix}jackuda.html">Camps/Workshops</a>
         <a href="${prefix}events.html">Corporate/Group Events</a>
@@ -35,7 +41,7 @@ const renderPrimaryNav = () => {
         <a href="${prefix}activities.html">Pony Rides/Feeding</a>
         <a href="${prefix}riding.html">Trail/Track Rides</a>
         ${onJackudaActivityPage ? '' : stableActivityLinks}`;
-  const activitiesMenu = onStablePage || onJackudaActivityPage ? `
+  const activitiesMenu = onStableActivityPage || onJackudaActivityPage ? `
     <div class="nav-dropdown">
       <button class="nav-dropdown-toggle" type="button">Activities</button>
       <div class="nav-dropdown-menu activities-menu">
