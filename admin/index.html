@@ -8,7 +8,7 @@
 <body>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
-    const identityTokenPattern = /(?:confirmation_token|invite_token|recovery_token|access_token)=/;
+    const hasInviteToken = /(?:^|[&#])invite_token=/.test(window.location.hash);
 
     if (window.netlifyIdentity) {
       document.addEventListener('click', event => {
@@ -23,8 +23,8 @@
       });
 
       window.netlifyIdentity.on('init', user => {
-        if (identityTokenPattern.test(window.location.hash)) {
-          window.netlifyIdentity.open();
+        if (hasInviteToken && !user) {
+          window.netlifyIdentity.open('signup');
         }
 
         if (!user) return;
