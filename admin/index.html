@@ -20,13 +20,13 @@
 
         window.netlifyIdentity.close();
         if (!window.location.pathname.endsWith('/admin/')) {
-          window.location.assign('/Gallop.sg/admin/');
+          window.location.assign('https://gallopsg.netlify.app/admin/');
         }
       });
 
       window.netlifyIdentity.on('login', () => {
         window.netlifyIdentity.close();
-        window.location.assign('/Gallop.sg/admin/');
+        window.location.assign('https://gallopsg.netlify.app/admin/');
       });
 
       window.netlifyIdentity.init();

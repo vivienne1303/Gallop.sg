@@ -1,7 +1,7 @@
 const identityTokenPattern = /(?:confirmation_token|invite_token|recovery_token|access_token)=/;
 
 if (identityTokenPattern.test(window.location.hash) && !window.location.pathname.includes('/admin/')) {
-  window.location.replace(`/Gallop.sg/admin/${window.location.hash}`);
+  window.location.replace(`https://gallopsg.netlify.app/admin/${window.location.hash}`);
 }
 
 const renderPrimaryNav = () => {
