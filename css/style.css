@@ -405,6 +405,7 @@ select {
   display: grid;
   justify-items: center;
   gap: 6px;
+  width: 170px;
 }
 
 .site-header .site-brand.home-site-brand,
@@ -424,13 +425,16 @@ select {
 }
 
 .home-brand-tagline {
+  width: 100%;
   color: #ffffff;
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-style: italic;
   font-weight: 400;
-  letter-spacing: 0;
+  letter-spacing: 0.025em;
   line-height: 1.4;
+  text-align: justify;
+  text-align-last: justify;
   white-space: nowrap;
 }
 
@@ -3132,12 +3136,15 @@ select {
     align-items: center;
     justify-content: center;
     gap: 12px;
+    width: auto;
   }
 
   .home-brand-tagline {
+    width: 102px;
     font-size: 12px;
     line-height: 1.35;
     text-align: center;
+    text-align-last: center;
     white-space: normal;
   }
 
@@ -3441,6 +3448,10 @@ select {
 
   .logo-img {
     width: 74px;
+  }
+
+  .home-brand-tagline {
+    width: 92px;
   }
 
   .site-header:not(.header-scrolled) .site-brand {
