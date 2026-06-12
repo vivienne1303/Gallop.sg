@@ -7,6 +7,31 @@
 </head>
 <body>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    const identityTokenPattern = /(?:confirmation_token|invite_token|recovery_token|access_token)=/;
+
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', user => {
+        if (identityTokenPattern.test(window.location.hash)) {
+          window.netlifyIdentity.open();
+        }
+
+        if (!user) return;
+
+        window.netlifyIdentity.close();
+        if (!window.location.pathname.endsWith('/admin/')) {
+          window.location.assign('/Gallop.sg/admin/');
+        }
+      });
+
+      window.netlifyIdentity.on('login', () => {
+        window.netlifyIdentity.close();
+        window.location.assign('/Gallop.sg/admin/');
+      });
+
+      window.netlifyIdentity.init();
+    }
+  </script>
   <script src="https://unpkg.com/decap-cms@^3.8.0/dist/decap-cms.js"></script>
 </body>
 </html>
