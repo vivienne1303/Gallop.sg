@@ -11,6 +11,17 @@
     const identityTokenPattern = /(?:confirmation_token|invite_token|recovery_token|access_token)=/;
 
     if (window.netlifyIdentity) {
+      document.addEventListener('click', event => {
+        const loginButton = event.target.closest('button, a');
+        if (!loginButton) return;
+
+        const label = loginButton.textContent.trim().toLowerCase();
+        if (!label.includes('login with netlify identity')) return;
+
+        event.preventDefault();
+        window.netlifyIdentity.open();
+      });
+
       window.netlifyIdentity.on('init', user => {
         if (identityTokenPattern.test(window.location.hash)) {
           window.netlifyIdentity.open();
@@ -32,6 +43,6 @@
       window.netlifyIdentity.init();
     }
   </script>
-  <script src="https://unpkg.com/decap-cms@^3.8.0/dist/decap-cms.js"></script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
