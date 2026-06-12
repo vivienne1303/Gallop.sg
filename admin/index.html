@@ -8,7 +8,18 @@
 <body>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script>
-    const hasInviteToken = /(?:^|[&#])invite_token=/.test(window.location.hash);
+    const identityTokenPattern = /(?:^|[&#])(invite_token|confirmation_token|recovery_token|access_token)=/;
+    const identityTokenMatch = window.location.hash.match(identityTokenPattern);
+    let decapLoaded = false;
+
+    const loadDecap = () => {
+      if (decapLoaded) return;
+      decapLoaded = true;
+
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
+      document.body.appendChild(script);
+    };
 
     if (window.netlifyIdentity) {
       document.addEventListener('click', event => {
@@ -23,26 +34,37 @@
       });
 
       window.netlifyIdentity.on('init', user => {
-        if (hasInviteToken && !user) {
-          window.netlifyIdentity.open('signup');
+        if (identityTokenMatch && !user) {
+          const tokenType = identityTokenMatch[1];
+
+          if (tokenType === 'invite_token') {
+            window.netlifyIdentity.open('signup');
+          } else {
+            window.netlifyIdentity.open();
+          }
+          return;
         }
 
-        if (!user) return;
-
-        window.netlifyIdentity.close();
-        if (!window.location.pathname.endsWith('/admin/')) {
-          window.location.assign('https://gallopsg.netlify.app/admin/');
+        if (user) {
+          window.netlifyIdentity.close();
         }
+
+        loadDecap();
       });
 
       window.netlifyIdentity.on('login', () => {
         window.netlifyIdentity.close();
-        window.location.assign('https://gallopsg.netlify.app/admin/');
+        window.location.replace('https://gallopsg.netlify.app/admin/');
+      });
+
+      window.netlifyIdentity.on('error', error => {
+        console.error('Netlify Identity error:', error);
       });
 
       window.netlifyIdentity.init();
+    } else {
+      loadDecap();
     }
   </script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>

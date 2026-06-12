@@ -9,7 +9,15 @@ const renderPrimaryNav = () => {
   if (!nav) return;
 
   const onHomePage = !window.location.pathname.includes('/pages/');
-  const onJackudaPage = window.location.pathname.endsWith('/pages/jackuda.html');
+  const jackudaActivityPages = [
+    'jackuda.html',
+    'birthday-party.html',
+    'events.html',
+    'activities.html',
+    'photoshoot.html',
+    'riding.html'
+  ];
+  const onJackudaActivityPage = jackudaActivityPages.some(page => window.location.pathname.endsWith(`/pages/${page}`));
   const onStablePage = window.location.pathname.endsWith('/pages/stable.html');
   const prefix = onHomePage ? 'pages/' : '';
   const homeLink = onHomePage ? '#about' : '../index.html#about';
@@ -26,8 +34,8 @@ const renderPrimaryNav = () => {
         <a href="${prefix}photoshoot.html">Photoshoots</a>
         <a href="${prefix}activities.html">Pony Rides/Feeding</a>
         <a href="${prefix}riding.html">Trail/Track Rides</a>
-        ${onJackudaPage ? '' : stableActivityLinks}`;
-  const activitiesMenu = onStablePage || onJackudaPage ? `
+        ${onJackudaActivityPage ? '' : stableActivityLinks}`;
+  const activitiesMenu = onStablePage || onJackudaActivityPage ? `
     <div class="nav-dropdown">
       <button class="nav-dropdown-toggle" type="button">Activities</button>
       <div class="nav-dropdown-menu activities-menu">
