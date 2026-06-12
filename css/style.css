@@ -64,14 +64,14 @@ select {
   z-index: 30;
   background: var(--dark-green);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 28px rgba(6, 18, 12, 0.18);
+  box-shadow: none;
   transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .site-header.header-scrolled {
   background: var(--dark-green);
   border-bottom-color: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 28px rgba(6, 18, 12, 0.18);
+  box-shadow: none;
 }
 
 .site-header.header-scrolled .site-brand {
@@ -381,6 +381,8 @@ select {
 }
 
 .home-banner-video {
+  height: calc(100% + 14px);
+  margin-top: -14px;
   object-fit: contain;
   object-position: center;
 }
@@ -1250,6 +1252,20 @@ select {
   gap: 24px;
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.price-gst-note {
+  margin: 22px auto 0;
+  color: #8a682c;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.section-alt .price-gst-note {
+  color: #f2d28f;
 }
 
 .rate-card {
@@ -3068,7 +3084,7 @@ select {
     position: sticky;
     background: var(--dark-green);
     border-bottom-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 10px 28px rgba(6, 18, 12, 0.18);
+    box-shadow: none;
   }
 
   .site-header.header-scrolled {

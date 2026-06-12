@@ -143,6 +143,146 @@ const renderSiteFooter = () => {
 
 renderSiteFooter();
 
+const escapeCmsText = value => String(value ?? '')
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;')
+  .replaceAll('"', '&quot;')
+  .replaceAll("'", '&#039;');
+
+const renderCmsPriceTable = price => {
+  const header = price.sessions.map(session => `<th>${escapeCmsText(session)}</th>`).join('');
+  const weekday = price.weekday.map(value => `<td>${escapeCmsText(value)}</td>`).join('');
+  const weekend = price.weekend.map(value => `<td>${escapeCmsText(value)}</td>`).join('');
+  const details = price.details?.length
+    ? `<ul class="rate-meta">${price.details.map(detail => `<li>${escapeCmsText(detail)}</li>`).join('')}</ul>`
+    : '';
+
+  return `
+    <article class="rate-card reveal reveal-visible">
+      <h3>${escapeCmsText(price.name)}</h3>
+      <div class="rate-card-body">
+        ${details}
+        <table class="price-table">
+          <tr><th>Session</th>${header}</tr>
+          <tr><th>Weekday</th>${weekday}</tr>
+          <tr><th>Weekend</th>${weekend}</tr>
+        </table>
+      </div>
+    </article>
+  `;
+};
+
+const applyCmsContent = content => {
+  const aboutHeading = document.querySelector('#about .hero-copy h2');
+  const aboutIntroduction = document.querySelector('#about .hero-copy > p:not(.eyebrow)');
+  const storySection = document.querySelector('.about-story-alt .about-story-copy');
+
+  if (content.about && aboutHeading) aboutHeading.textContent = content.about.heading;
+  if (content.about && aboutIntroduction) aboutIntroduction.textContent = content.about.introduction;
+  if (content.about && storySection) {
+    const storyHeading = storySection.querySelector('h2');
+    if (storyHeading) storyHeading.textContent = content.about.story_heading;
+
+    storySection.querySelectorAll(':scope > p:not(.eyebrow):not(.about-story-closing)').forEach(paragraph => paragraph.remove());
+    const closing = storySection.querySelector('.about-story-closing');
+    content.about.story_paragraphs?.forEach(text => {
+      const paragraph = document.createElement('p');
+      paragraph.textContent = text;
+      storySection.insertBefore(paragraph, closing);
+    });
+  }
+
+  const faqList = document.querySelector('.faq-list');
+  if (faqList && content.faqs?.length) {
+    faqList.replaceChildren(...content.faqs.map((faq, index) => {
+      const item = document.createElement('details');
+      item.className = 'faq-item';
+      item.open = index === 0;
+
+      const summary = document.createElement('summary');
+      summary.textContent = faq.question;
+      const answer = document.createElement('div');
+      answer.className = 'faq-answer';
+      const paragraph = document.createElement('p');
+      paragraph.textContent = faq.answer;
+      answer.appendChild(paragraph);
+      item.append(summary, answer);
+      return item;
+    }));
+  }
+
+  const contactEmail = document.querySelector('.contact-copy p:not(.eyebrow)');
+  if (contactEmail && content.contact?.email) {
+    contactEmail.replaceChildren('Enquiry email: ');
+    const link = document.createElement('a');
+    link.href = `mailto:${content.contact.email}`;
+    link.textContent = content.contact.email;
+    contactEmail.appendChild(link);
+  }
+
+  const contactCards = document.querySelector('.contact-cards');
+  if (contactCards && content.locations?.length) {
+    contactCards.replaceChildren(...content.locations.map(location => {
+      const card = document.createElement('a');
+      card.className = 'info-card reveal reveal-visible';
+      card.href = location.map_url;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+      const lines = [
+        location.address,
+        location.parking && `Parking: ${location.parking}`,
+        `Tel: ${location.phone}`,
+        `Walk-in hours: ${location.days}, ${location.morning_hours} | ${location.afternoon_hours}`,
+        location.email && `Email: ${location.email}`,
+        location.instagram && `Instagram: ${location.instagram}`
+      ].filter(Boolean);
+      const heading = document.createElement('h3');
+      heading.textContent = location.name;
+      card.appendChild(heading);
+      lines.forEach(line => {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = line;
+        card.appendChild(paragraph);
+      });
+      return card;
+    }));
+  }
+
+  document.querySelectorAll('[data-cms-price-group]').forEach(grid => {
+    const prices = content.lesson_prices?.filter(price => price.group === grid.dataset.cmsPriceGroup);
+    if (prices?.length) grid.innerHTML = prices.map(renderCmsPriceTable).join('');
+  });
+
+  const footerCards = [...document.querySelectorAll('.footer-location-card:not(.footer-carpark-card)')];
+  footerCards.forEach((card, index) => {
+    const location = content.locations?.[index];
+    if (!location) return;
+    const heading = card.querySelector('h3');
+    const address = card.querySelector('.footer-location-details > p');
+    const hours = card.querySelector('.footer-location-hours');
+    if (heading) heading.textContent = location.name.replace('Gallop Stable @ ', '');
+    if (address) address.textContent = location.address;
+    if (hours) {
+      hours.innerHTML = `<p class="footer-days">${escapeCmsText(location.days)}</p><p>${escapeCmsText(location.morning_hours)}</p><p>${escapeCmsText(location.afternoon_hours)}</p>`;
+    }
+  });
+};
+
+const loadCmsContent = async () => {
+  const contentPath = window.location.pathname.includes('/pages/') ? '../content/site.json' : 'content/site.json';
+
+  try {
+    const response = await fetch(contentPath, { cache: 'no-cache' });
+    if (!response.ok) throw new Error(`CMS content request failed: ${response.status}`);
+    applyCmsContent(await response.json());
+  } catch (error) {
+    console.warn('Using built-in page content because CMS content could not be loaded.', error);
+  }
+};
+
+loadCmsContent();
+
 document.querySelectorAll('[data-horse-gallery]').forEach(gallery => {
   const mainImage = gallery.querySelector('[data-gallery-main]');
   const thumbnails = [...gallery.querySelectorAll('[data-gallery-src]')];
@@ -171,79 +311,207 @@ if (aiChatForm) {
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   };
 
+  const gallopKnowledge = [
+    {
+      patterns: [/parking|carpark|where.*park/],
+      answer: 'For Admiralty, taxi and private-hire drop-offs can use 8 Admiralty Road East, while drivers should use the carpark at St Helena Road. Downtown East parking is available at D\'Resort. Pasir Ris Stable is beside Pasir Ris Park Carpark C.'
+    },
+    {
+      patterns: [/feeding.*(long|duration|time)|how long.*feed|spend.*stable/],
+      answer: 'Pony feeding is self-paced during the allocated feeding hour. Purchase a packet of feed and feed the ponies that are available during that period.'
+    },
+    {
+      patterns: [/how long.*pony ride|pony ride.*(long|duration|minutes)/],
+      answer: 'Pony rides at Admiralty and Pasir Ris Park take about 3 to 5 minutes per round. Downtown East pony rides take about 2 to 3 minutes per round.'
+    },
+    {
+      patterns: [/weight.*limit|too heavy|maximum.*weight|40\s*kg|75\s*kg/],
+      answer: 'The weight limit is 40 kg for pony rides and junior pony lessons, and 75 kg for horse rides and standard riding lessons.'
+    },
+    {
+      patterns: [/what.*wear|attire|clothes|covered shoes|long pants/],
+      answer: 'Long pants and covered shoes are recommended. Proper riding attire is compulsory for enrolled riders. Helmet rental is S$5, boots rental is S$5, and the Gallop T-shirt is S$30.'
+    },
+    {
+      patterns: [/registration fee|rental fee|helmet.*rent|boots.*rent|starter pack|gallop t-?shirt/],
+      answer: 'New lesson enrolments have a one-time S$30 registration fee. The Gallop T-shirt is S$30. Helmet rental and boots rental are S$5 each. A starter pack with uniform, breeches, boots and helmet is also available.'
+    },
+    {
+      patterns: [/pony intro|3 year|three year/],
+      answer: 'The Pony Intro Lesson is a 20-minute session for 3-year-olds weighing 40 kg or below. It costs S$70.85 for one weekday session or S$87.20 for one weekend session. Prices include GST.'
+    },
+    {
+      patterns: [/pony private junior|junior pony lesson|4.?12 year|younger rider/],
+      answer: 'Pony Private Junior is a 30-minute one-to-one lesson for children aged 4 to 12 weighing 40 kg or below. One session costs S$92.65 on weekdays or S$109 on weekends. Prices include GST.'
+    },
+    {
+      patterns: [/(private full|private lesson).*(price|cost|rate)|(?:price|cost|rate).*private lesson/],
+      answer: 'Beginner-Novice Private Full lessons are 45 minutes for riders aged 6 and above, up to 75 kg. One session costs S$109 on weekdays or S$130.80 on weekends. A 10-session package costs S$931.95 on weekdays or S$1,128.15 on weekends. Prices include GST.'
+    },
+    {
+      patterns: [/(semi.?private).*(price|cost|rate)|(?:price|cost|rate).*semi.?private/],
+      answer: 'Beginner-Novice Semi-Private lessons are 45 minutes for 2 riders aged 7 and above, up to 75 kg. One session costs S$98.10 on weekdays or S$119.90 on weekends. A 10-session package costs S$833.85 on weekdays or S$1,030.05 on weekends. Prices include GST.'
+    },
+    {
+      patterns: [/(group lesson).*(price|cost|rate)|(?:price|cost|rate).*group lesson/],
+      answer: 'Beginner-Novice Group lessons are 45 minutes for 3 to 5 riders aged 7 and above, up to 75 kg. One session costs S$87.20 on weekdays or S$109 on weekends. A 10-session package costs S$735.75 on weekdays or S$931.95 on weekends. Prices include GST.'
+    },
+    {
+      patterns: [/progression.*(price|cost|rate)|intermediate.*(price|cost|rate)|advanced.*(price|cost|rate)/],
+      answer: 'Progression lesson prices per session are: Private Full S$136.25 weekday or S$158.05 weekend; Semi-Private S$125.35 weekday or S$147.15 weekend; Group S$114.45 weekday or S$136.25 weekend. Ten-session packages are also available, and prices include GST.'
+    },
+    {
+      patterns: [/lesson.*(price|cost|rate)|(?:price|cost|rate).*lesson|how much.*lesson/],
+      answer: 'Lesson prices vary by level and format. Beginner-Novice single sessions start from S$87.20 for Group, S$98.10 for Semi-Private and S$109 for Private Full on weekdays. Junior Pony Intro starts at S$70.85. Weekend and package rates are available, and all listed prices include GST.'
+    },
+    {
+      patterns: [/admiralty.*(pony|horse|feeding|craft).*(price|cost)|(?:price|cost).*admiralty/],
+      answer: 'Admiralty walk-in prices are S$15 for a pony ride, S$20 for a horse ride, S$2 per pony-feed packet, and arts and crafts from S$6. Ride tickets are purchased over the counter.'
+    },
+    {
+      patterns: [/pasir ris.*(pony|horse|feeding|craft).*(price|cost)|(?:price|cost).*pasir ris/],
+      answer: 'Pasir Ris Park walk-in prices are S$10 for a pony ride, S$15 for a horse ride, S$2 per pony-feed packet, and arts and crafts from S$6. Ride tickets are purchased over the counter.'
+    },
+    {
+      patterns: [/(downtown east|d['’]?resort).*(pony|feeding|craft).*(price|cost)|(?:price|cost).*(downtown east|d['’]?resort)/],
+      answer: 'Downtown East walk-in prices are S$10 for a pony ride, S$2 to S$5 for pony feeding, and arts and crafts from S$12. Tickets are purchased over the counter.'
+    },
+    {
+      patterns: [/pony feeding|feed.*pony|feeding.*price|feed packet/],
+      answer: 'Pony feeding costs S$2 per packet at Admiralty and Pasir Ris Park, and S$2 to S$5 at Downtown East. Feeding is self-paced within the allocated feeding hour and depends on pony availability.'
+    },
+    {
+      patterns: [/pony ride|horse ride|joy ride/],
+      answer: 'Walk-in pony and horse rides are available at selected stables. Admiralty offers S$15 pony rides and S$20 horse rides. Pasir Ris Park offers S$10 pony rides and S$15 horse rides. Downtown East offers S$10 pony rides. Please call before visiting because weather, horse welfare or private events can affect availability.'
+    },
+    {
+      patterns: [/book.*lesson|lesson.*book|advance booking.*lesson/],
+      answer: {
+        text: 'Riding lessons require advance booking of at least 2 to 3 days. Book through WhatsApp at +65 8383 6425 or email enquiry@gallopstable.com with the rider\'s age, height, weight, experience and preferred date.',
+        whatsapp: true
+      }
+    },
+    {
+      patterns: [/book.*pony ride|pony ride.*book|advance booking.*pony/],
+      answer: 'Pony rides usually do not require advance booking and tickets can be bought over the counter. Calling the branch before visiting is recommended because rides may pause for bad weather, horse welfare or private bookings.'
+    },
+    {
+      patterns: [/beginner|first time|learn.*ride|start.*riding/],
+      answer: 'Beginners can start with private or group lessons covering leading, mounting, correct riding position, walking, trotting, stopping and safe dismounting. Shorter sessions are recommended for young or new riders while strength, stamina and confidence develop.'
+    },
+    {
+      patterns: [/novice/],
+      answer: 'Novice lessons are for riders with secure basic skills who want to improve technique, seat and hands, learn to canter and ride over poles. Group lessons also build confidence around other horses and riders.'
+    },
+    {
+      patterns: [/advanced lesson|experienced rider|show jumping|lateral movement/],
+      answer: 'Advanced lessons include lateral movements, advanced schooling exercises, effective riding technique and show jumping. Riders can discuss particular skills or goals with their instructor.'
+    },
+    {
+      patterns: [/riding lesson|lesson type|group lesson|private lesson|semi.?private lesson/],
+      answer: 'Gallop offers Private Full, Semi-Private and Group riding lessons for beginner, novice, intermediate and advanced riders, plus shorter junior pony lessons for young children. Suitability depends on age, weight and riding experience.'
+    },
+    {
+      patterns: [/trail ride|track ride/],
+      answer: 'Gallop offers trail and track riding experiences for suitable riders. Availability and rider requirements vary, so contact the team with the rider\'s age, height, weight and riding experience.'
+    },
+    {
+      patterns: [/location|address|where.*stable|where are/],
+      answer: 'Gallop Stable has three locations: Admiralty at 8 Admiralty Road East, Singapore 759991; Pasir Ris Park at 61 Pasir Ris Green, Carpark C, Singapore 518225; and Downtown East at 1 Pasir Ris Close, Singapore 519599.'
+    },
+    {
+      patterns: [/opening|hours|open|closing|what time/],
+      answer: 'Admiralty opens daily from 8:30 AM to 11:45 AM and 2:30 PM to 6:45 PM. Pasir Ris Park opens Tuesdays to Sundays from 10:00 AM to 11:45 AM and 2:00 PM to 6:45 PM. Downtown East opens Wednesdays to Mondays from 9:00 AM to 11:45 AM and 2:00 PM to 6:45 PM.'
+    },
+    {
+      patterns: [/adopt|rescue|support.*horse/],
+      answer: {
+        text: 'The Adopt a Horse programme supports rescued horses by contributing towards feed, grooming, stable care and daily needs. Available horses are listed on the Adopt a Horse page. Contact the team on WhatsApp to arrange support.',
+        whatsapp: true
+      }
+    },
+    {
+      patterns: [/lease/],
+      answer: 'Horse leasing provides regular time with a suitable horse while developing riding and horsemanship skills. Riders are matched according to experience, goals, availability and horse wellbeing.'
+    },
+    {
+      patterns: [/birthday|party/],
+      answer: {
+        text: 'Gallop Stable hosts birthday experiences with ponies, horses and stable activities. Contact the team with your preferred date, location, group size and the children\'s ages to discuss the available package.',
+        whatsapp: true
+      }
+    },
+    {
+      patterns: [/camp|workshop|stable tour/],
+      answer: 'Gallop offers stable tours, riding workshops, 2-day/1-night pony weekend camps and 3-day/2-night outback campfire weekends. Programmes and dates vary, so confirm the current schedule with the team.'
+    },
+    {
+      patterns: [/photo|wedding|video.*shoot|photoshoot/],
+      answer: {
+        text: 'Photoshoots and videoshoots with horses are available by advance enquiry for couples, families, riders, weddings and special occasions.',
+        whatsapp: true
+      }
+    },
+    {
+      patterns: [/event|corporate|team building|outside event/],
+      answer: {
+        text: 'Gallop supports corporate outings, group activities, team building, celebrations and selected outside pony or horse hire. Share your date, group size, location and preferred activities with the team.',
+        whatsapp: true
+      }
+    },
+    {
+      patterns: [/polo/],
+      answer: 'Gallop offers beginner-friendly polo lessons where children and adults can learn the basics and take their first swing.'
+    },
+    {
+      patterns: [/archery/],
+      answer: 'Gallop offers ground archery and horseback archery experiences that develop focus, balance and trust. Contact the team to confirm suitability and availability.'
+    },
+    {
+      patterns: [/activities|what.*do|things to do|experience/],
+      answer: 'Activities include riding lessons, pony and horse rides, pony feeding, arts and crafts, carriage rides, birthday parties, stable tours, camps, team building, photoshoots, pony grooming, polo and archery. Availability varies by location.'
+    },
+    {
+      patterns: [/about|who.*gallop|history|since 2003/],
+      answer: 'Gallop Stable has offered public horse experiences in Singapore since 2003. It began with 13 ponies at Pasir Ris Park and now operates at Admiralty, Pasir Ris Park and Downtown East, with a strong focus on accessible riding and giving rescued racehorses a second chance.'
+    },
+    {
+      patterns: [/email/],
+      answer: 'General enquiries can be emailed to enquiry@gallopstable.com. Downtown East can also be reached at gallopdowntown@gallopstable.com.'
+    },
+    {
+      patterns: [/phone|contact|whatsapp|manager|staff|human|person/],
+      answer: {
+        text: 'Contact Gallop Stable on WhatsApp at +65 8383 6425 or email enquiry@gallopstable.com. Admiralty: 6463 6012 / 8383 6425. Pasir Ris Park: 6583 9665. Downtown East: 8787 5377.',
+        whatsapp: true
+      }
+    },
+    {
+      patterns: [/book|availability|available|reserve|appointment/],
+      answer: {
+        text: 'For live availability, send the team your preferred activity, location, date, time, number of participants and rider details. Lessons need at least 2 to 3 days\' advance booking, while walk-in rides are usually purchased over the counter.',
+        whatsapp: true
+      }
+    },
+    {
+      patterns: [/price|cost|fee|how much|rate/],
+      answer: 'Prices depend on the activity and location. Walk-in pony rides start from S$10, horse rides from S$15, pony feeding from S$2 and riding lessons from S$70.85. Ask about a specific activity or lesson type for an exact website price.'
+    }
+  ];
+
   const getGallopAnswer = question => {
-    const text = question.toLowerCase();
+    const text = question.toLowerCase().replace(/[?!.,]/g, ' ').replace(/\s+/g, ' ').trim();
 
-    if (/\b(hello|hi|hey|good morning|good afternoon)\b/.test(text)) {
-      return 'Hi! I can help with riding lessons, activities, adoption, leasing, locations, opening hours and contact details.';
+    if (/\b(hello|hi|hey|good morning|good afternoon|good evening)\b/.test(text)) {
+      return 'Hi! I can answer questions about lessons and prices, walk-in activities, locations, opening hours, parking, pony feeding, booking, events, adoption, leasing and contact details.';
     }
 
-    if (/location|address|where.*stable|where are/.test(text)) {
-      return 'Gallop Stable has locations at Admiralty (8 Admiralty Road East), Pasir Ris Park (61 Pasir Ris Green, Carpark C), and Downtown East (1 Pasir Ris Close).';
-    }
+    const match = gallopKnowledge.find(entry => entry.patterns.some(pattern => pattern.test(text)));
 
-    if (/opening|hours|open|closing|what time/.test(text)) {
-      return 'Admiralty is open daily, 8:30 AM-11:45 AM and 2:30 PM-6:45 PM. Pasir Ris Park opens Tuesdays-Sundays, 10:00 AM-11:45 AM and 2:00 PM-6:45 PM. Downtown East opens Wednesdays-Mondays, 9:00 AM-11:45 AM and 2:00 PM-6:45 PM.';
-    }
-
-    if (/lesson|learn.*ride|riding class|beginner.*ride/.test(text)) {
-      return 'Gallop Stable offers riding lessons and introductory horse experiences for different ages and riding levels. Lesson suitability, schedules and availability should be confirmed with the stable team.';
-    }
-
-    if (/adopt|rescue|support.*horse/.test(text)) {
-      return {
-        text: 'The Adopt a Horse programme lets you support a rescued horse and contribute toward feed, grooming, stable care and other daily needs. You can view the available horses on the Adopt a Horse page. To arrange an adoption, contact the team at +65 8383 6425 on WhatsApp.',
-        whatsapp: true
-      };
-    }
-
-    if (/lease/.test(text)) {
-      return 'Horse leasing offers more consistent time with a suitable horse while developing riding and horsemanship skills. The team matches riders according to experience, goals, availability and horse wellbeing.';
-    }
-
-    if (/pony ride|pony feeding|feed.*pony/.test(text)) {
-      return 'Pony rides and feeding experiences are available at selected locations and times. Availability can change because of weather, horse welfare or private events, so please check with the team before visiting.';
-    }
-
-    if (/birthday|party/.test(text)) {
-      return 'Gallop Stable can host horse and pony birthday experiences, with activities arranged according to the group and location. Contact the team to discuss the date, group size and package options.';
-    }
-
-    if (/camp|workshop/.test(text)) {
-      return 'Gallop Stable offers camps, stable tours and riding workshops, including hands-on horse care and riding activities. Programmes vary by date and location.';
-    }
-
-    if (/photo|wedding|shoot/.test(text)) {
-      return 'Photoshoots and videoshoots with horses are available by advance enquiry for couples, families, riders and special occasions.';
-    }
-
-    if (/event|corporate|team building|group/.test(text)) {
-      return 'Gallop Stable supports corporate events, group activities, team building, celebrations and selected outside pony or horse hire arrangements.';
-    }
-
-    if (/price|cost|fee|how much|rate/.test(text)) {
-      return {
-        text: 'Prices depend on the activity, location, rider and booking date. Please message the Gallop Stable team on WhatsApp for the latest confirmed rate.',
-        whatsapp: true
-      };
-    }
-
-    if (/book|availability|available|reserve|appointment/.test(text)) {
-      return {
-        text: 'Bookings and live availability need confirmation from the Gallop Stable team. You can send them your preferred activity, location, date, time and number of participants on WhatsApp.',
-        whatsapp: true
-      };
-    }
-
-    if (/phone|contact|whatsapp|manager|staff|human|person/.test(text)) {
-      return {
-        text: 'You can contact the Gallop Stable team or manager on WhatsApp at +65 8383 6425.',
-        whatsapp: true
-      };
-    }
+    if (match) return match.answer;
 
     return {
-      text: 'I do not have a confident answer for that yet. Please send your question to the Gallop Stable team on WhatsApp at +65 8383 6425, and they can assist you directly.',
+      text: 'I could not find a confident answer in the website information. Please send your question to the Gallop Stable team on WhatsApp at +65 8383 6425.',
       whatsapp: true
     };
   };

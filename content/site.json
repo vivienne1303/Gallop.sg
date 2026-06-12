@@ -1,0 +1,147 @@
+{
+  "about": {
+    "heading": "Horse riding in Singapore for everyone",
+    "introduction": "Since 2003, Gallop Stable has been creating memorable horse experiences for families, friends, and riders of all ages. From our humble beginnings with just 13 friendly ponies at Pasir Ris Park, we have grown into one of Singapore's biggest public riding centres, with current locations at Admiralty, Pasir Ris Park and Downtown East.",
+    "story_heading": "Where one's riding begins",
+    "story_paragraphs": [
+      "Gallop Stable has been Singapore's trusted household name for horse riding for over two decades. What began with just 13 gentle ponies in Pasir Ris has grown into a thriving home for over 160 rescued racehorses, each given a second chance to live freely and bond with people of all ages.",
+      "With no membership fees and a commitment to keeping horse riding accessible for all, Gallop Stable was built to remove barriers, not raise them.",
+      "From beginner riding lessons and nature-based trails to camps and bonding experiences for all ages, we open the world of horses to everyone."
+    ]
+  },
+  "faqs": [
+    {
+      "question": "How long are pony rides?",
+      "answer": "Pony rides at Pasir Ris Park and Admiralty take approximately 3 to 5 minutes per round. Pony rides at the Downtown East stable take approximately 2 to 3 minutes per round."
+    },
+    {
+      "question": "What attire should I wear?",
+      "answer": "The recommended attire is long pants and covered shoes."
+    },
+    {
+      "question": "What is the weight limit for pony and horse rides?",
+      "answer": "The weight limit for pony rides is 40 kg. The weight limit for horse rides is 75 kg."
+    },
+    {
+      "question": "How do we book riding lessons?",
+      "answer": "Book through WhatsApp at +65 8383 6425 or email enquiry@gallopstable.com. Advance booking of at least 2 to 3 days is required."
+    },
+    {
+      "question": "Do we need to book in advance for pony rides?",
+      "answer": "No advance booking is required. We recommend calling before visiting because rides may be unavailable due to bad weather or private bookings."
+    },
+    {
+      "question": "Is parking available on site?",
+      "answer": "For taxi or private-hire drop-offs, use 8 Admiralty Road East. Drivers should use the carpark at St Helena Road."
+    },
+    {
+      "question": "How long can we spend at the stables, and how long are feeding sessions?",
+      "answer": "Pony feeding is self-paced within the allocated feeding hour. Purchase a packet of feed and feed the ponies available during that period."
+    }
+  ],
+  "contact": {
+    "email": "enquiry@gallopstable.com",
+    "whatsapp": "6583836425"
+  },
+  "locations": [
+    {
+      "id": "admiralty",
+      "name": "Gallop Stable @ Admiralty",
+      "address": "8 Admiralty Rd East, Singapore 759991",
+      "parking": "Available at St Helena Road",
+      "phone": "6463 6012 / 8383 6425",
+      "days": "Daily",
+      "morning_hours": "8:30 AM - 11:45 AM",
+      "afternoon_hours": "2:30 PM - 6:45 PM",
+      "map_url": "https://maps.app.goo.gl/V8sWLNMiteq4PYPT7",
+      "instagram": "@gallop.sg"
+    },
+    {
+      "id": "pasir-ris",
+      "name": "Gallop Stable @ Pasir Ris",
+      "address": "61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225",
+      "phone": "6583 9665",
+      "days": "Tuesdays - Sundays",
+      "morning_hours": "10:00 AM - 11:45 AM",
+      "afternoon_hours": "2:00 PM - 6:45 PM",
+      "map_url": "https://maps.app.goo.gl/AuM9Wis6vVBBnEHq8",
+      "instagram": "@gallopstablepasirris"
+    },
+    {
+      "id": "downtown-east",
+      "name": "Gallop Stable @ Downtown East",
+      "address": "1 Pasir Ris Close, Singapore 519599",
+      "parking": "Available at D'Resort",
+      "phone": "8787 5377",
+      "days": "Wednesdays - Mondays",
+      "morning_hours": "9:00 AM - 11:45 AM",
+      "afternoon_hours": "2:00 PM - 6:45 PM",
+      "map_url": "https://maps.app.goo.gl/nSNznPFzbHDDyW5v7",
+      "email": "gallopdowntown@gallopstable.com",
+      "instagram": "@gallopstabledowntowneast"
+    }
+  ],
+  "lesson_prices": [
+    {
+      "group": "beginner",
+      "name": "Private Full",
+      "details": ["45-minute one-on-one session", "6 years old and above", "75kg and below"],
+      "sessions": ["1", "10"],
+      "weekday": ["$109", "$931.95"],
+      "weekend": ["$130.80", "$1128.15"]
+    },
+    {
+      "group": "beginner",
+      "name": "Semi Private",
+      "details": ["45 minutes", "2 riders to one instructor", "7 years old and above", "75kg and below"],
+      "sessions": ["1", "10"],
+      "weekday": ["$98.10", "$833.85"],
+      "weekend": ["$119.90", "$1030.05"]
+    },
+    {
+      "group": "beginner",
+      "name": "Group",
+      "details": ["45 minutes", "3-5 riders to one instructor", "7 years old and above", "75kg and below"],
+      "sessions": ["1", "10"],
+      "weekday": ["$87.20", "$735.75"],
+      "weekend": ["$109", "$931.95"]
+    },
+    {
+      "group": "progression",
+      "name": "Private Full",
+      "sessions": ["1", "10"],
+      "weekday": ["$136.25", "$1177.20"],
+      "weekend": ["$158.05", "$1373.40"]
+    },
+    {
+      "group": "progression",
+      "name": "Semi-Private",
+      "sessions": ["1", "10"],
+      "weekday": ["$125.35", "$1079.10"],
+      "weekend": ["$147.15", "$1275.30"]
+    },
+    {
+      "group": "progression",
+      "name": "Group",
+      "sessions": ["1", "10"],
+      "weekday": ["$114.45", "$981"],
+      "weekend": ["$136.25", "$1177.20"]
+    },
+    {
+      "group": "junior",
+      "name": "Pony Private Junior",
+      "details": ["30-minute one-on-one session", "4-12 years old, kids only", "40kg and below"],
+      "sessions": ["1", "5", "10"],
+      "weekday": ["$92.65", "$408.75", "$784.80"],
+      "weekend": ["$109", "$490.50", "$931.95"]
+    },
+    {
+      "group": "junior",
+      "name": "Pony Intro Lesson",
+      "details": ["20-minute session", "3 years old only", "40kg and below"],
+      "sessions": ["1", "5", "10"],
+      "weekday": ["$70.85", "$299.75", "$588.60"],
+      "weekend": ["$87.20", "$381.50", "$735.75"]
+    }
+  ]
+}

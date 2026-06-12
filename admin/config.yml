@@ -1,0 +1,74 @@
+backend:
+  name: github
+  repo: vivienne1303/Gallop.sg
+  branch: main
+  # Add base_url and auth_endpoint after deploying a GitHub OAuth provider.
+  # base_url: https://your-oauth-provider.example.com
+  # auth_endpoint: auth
+
+local_backend: true
+
+media_folder: images/uploads
+public_folder: /Gallop.sg/images/uploads
+
+collections:
+  - name: website
+    label: Website Content
+    files:
+      - name: site
+        label: Gallop SG Website
+        file: content/site.json
+        format: json
+        fields:
+          - label: About Us
+            name: about
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Introduction, name: introduction, widget: text }
+              - { label: Story Heading, name: story_heading, widget: string }
+              - { label: Story Paragraphs, name: story_paragraphs, widget: list, field: { label: Paragraph, name: paragraph, widget: text } }
+
+          - label: FAQs
+            name: faqs
+            widget: list
+            summary: "{{fields.question}}"
+            fields:
+              - { label: Question, name: question, widget: string }
+              - { label: Answer, name: answer, widget: text }
+
+          - label: Contact Information
+            name: contact
+            widget: object
+            fields:
+              - { label: General Email, name: email, widget: string }
+              - { label: WhatsApp Number, name: whatsapp, widget: string }
+
+          - label: Locations
+            name: locations
+            widget: list
+            summary: "{{fields.name}}"
+            fields:
+              - { label: ID, name: id, widget: string }
+              - { label: Name, name: name, widget: string }
+              - { label: Address, name: address, widget: string }
+              - { label: Parking, name: parking, widget: string, required: false }
+              - { label: Phone, name: phone, widget: string }
+              - { label: Days, name: days, widget: string }
+              - { label: Morning Hours, name: morning_hours, widget: string }
+              - { label: Afternoon Hours, name: afternoon_hours, widget: string }
+              - { label: Map URL, name: map_url, widget: string }
+              - { label: Email, name: email, widget: string, required: false }
+              - { label: Instagram, name: instagram, widget: string, required: false }
+
+          - label: Riding Lesson Prices
+            name: lesson_prices
+            widget: list
+            summary: "{{fields.group}} - {{fields.name}}"
+            fields:
+              - { label: Group, name: group, widget: select, options: [beginner, progression, junior] }
+              - { label: Lesson Name, name: name, widget: string }
+              - { label: Details, name: details, widget: list, field: { label: Detail, name: detail, widget: string }, required: false }
+              - { label: Session Columns, name: sessions, widget: list, field: { label: Session, name: session, widget: string } }
+              - { label: Weekday Prices, name: weekday, widget: list, field: { label: Price, name: price, widget: string } }
+              - { label: Weekend Prices, name: weekend, widget: list, field: { label: Price, name: price, widget: string } }
