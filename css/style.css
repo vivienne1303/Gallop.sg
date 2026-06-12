@@ -349,9 +349,11 @@ select {
   --banner-dim: 0;
   --banner-scale: 1;
   --banner-shift: 0px;
+  --video-aspect-ratio: 16 / 9;
   position: relative;
   width: 100%;
-  height: clamp(500px, 70vh, 820px);
+  height: auto;
+  aspect-ratio: var(--video-aspect-ratio);
   overflow: hidden;
   background: #0d594f;
 }
@@ -389,9 +391,9 @@ select {
   gap: 6px;
 }
 
-.site-header .home-site-brand,
-.site-header.header-scrolled .home-site-brand,
-.site-header:not(.header-scrolled) .home-site-brand {
+.site-header .site-brand.home-site-brand,
+.site-header.header-scrolled .site-brand.home-site-brand,
+.site-header:not(.header-scrolled) .site-brand.home-site-brand {
   padding: 0;
   background: transparent;
   box-shadow: none;
@@ -962,6 +964,10 @@ select {
   color: var(--gold);
 }
 
+.feature-list + .btn {
+  margin-top: 24px;
+}
+
 .content-image {
   border-radius: 32px;
   overflow: hidden;
@@ -1320,6 +1326,49 @@ select {
   margin: 0;
   color: rgba(31, 54, 42, 0.82);
   line-height: 1.7;
+}
+
+.riding-pathways-section {
+  background: #f3eee3;
+}
+
+.riding-pathways-section .section-head {
+  max-width: 850px;
+}
+
+.riding-pathway-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  width: min(100%, 1200px);
+  margin: 0 auto;
+}
+
+.riding-pathway-card {
+  padding: clamp(26px, 3vw, 38px);
+  border: 1px solid rgba(31, 60, 47, 0.1);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.riding-pathway-card h3 {
+  margin: 0 0 6px;
+  color: var(--dark-green);
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.7rem, 2.4vw, 2.2rem);
+}
+
+.riding-pathway-card p {
+  margin: 16px 0 0;
+  color: rgba(31, 54, 42, 0.84);
+  line-height: 1.8;
+}
+
+.riding-pathway-card .riding-pathway-age {
+  margin-top: 0;
+  color: #8a682c;
+  font-weight: 700;
 }
 
 .gallery-section {
@@ -1883,6 +1932,10 @@ select {
   object-fit: cover;
 }
 
+.stable-page-hero img {
+  object-position: center 42%;
+}
+
 .page-hero-copy {
   position: relative;
   z-index: 2;
@@ -1904,6 +1957,7 @@ select {
   font-size: clamp(2.7rem, 6vw, 4.8rem);
   line-height: 1.05;
   color: #ffffff;
+  text-transform: capitalize;
 }
 
 .page-hero-copy p {
@@ -3208,7 +3262,7 @@ select {
   .home-banner {
     width: 100%;
     height: auto;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: var(--video-aspect-ratio);
     min-height: 0;
     max-height: none;
   }
@@ -3359,7 +3413,7 @@ select {
 
   .home-banner {
     height: auto;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: var(--video-aspect-ratio);
   }
 
   .hero-copy {
@@ -3384,6 +3438,10 @@ select {
   }
 
   .service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .riding-pathway-grid {
     grid-template-columns: 1fr;
   }
 

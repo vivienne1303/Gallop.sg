@@ -33,7 +33,6 @@ const renderPrimaryNav = () => {
     <a href="${homeLink}">Home</a>
     ${activitiesMenu}
     <a href="${prefix}promotions.html">Promotions</a>
-    <a href="${prefix}gallop-care.html">Gallop Cares</a>
     <a href="${prefix}join.html">Join the Team</a>
     <a href="${prefix}faq.html">FAQs</a>
     <a href="${prefix}contact.html">Contact Us</a>
@@ -67,7 +66,8 @@ const renderSiteFooter = () => {
             </div>
             <div class="footer-location-hours">
               <p class="footer-days">Daily</p>
-              <p>7:00 AM - 7:00 PM</p>
+              <p>8:30 AM - 11:45 AM</p>
+              <p>2:30 PM - 6:45 PM</p>
             </div>
           </article>
 
@@ -316,13 +316,48 @@ const navDropdowns = document.querySelectorAll('.nav-dropdown');
 const revealElements = document.querySelectorAll('.reveal');
 const siteHeader = document.querySelector('.site-header');
 const homeBanner = document.querySelector('.home-banner');
+const homeBannerVideo = document.querySelector('.home-banner-video');
 const pageHero = document.querySelector('.page-hero');
+
+const updateHomeBannerRatio = () => {
+  if (!homeBanner || !homeBannerVideo || !homeBannerVideo.videoWidth || !homeBannerVideo.videoHeight) return;
+
+  homeBanner.style.setProperty(
+    '--video-aspect-ratio',
+    `${homeBannerVideo.videoWidth} / ${homeBannerVideo.videoHeight}`
+  );
+};
+
+if (homeBannerVideo) {
+  homeBannerVideo.addEventListener('loadedmetadata', updateHomeBannerRatio);
+  updateHomeBannerRatio();
+}
+
+const horseAssistantWelcomeKey = 'gallop-ai-welcome-shown';
+
+const hasSeenHorseAssistantWelcome = () => {
+  try {
+    return window.localStorage.getItem(horseAssistantWelcomeKey) === 'true';
+  } catch {
+    return false;
+  }
+};
+
+const rememberHorseAssistantWelcome = () => {
+  try {
+    window.localStorage.setItem(horseAssistantWelcomeKey, 'true');
+  } catch {
+    // The welcome may repeat when browser storage is unavailable.
+  }
+};
+
+const shouldShowHorseAssistantWelcome = !hasSeenHorseAssistantWelcome();
 
 const renderHorseAssistant = () => {
   const chatLink = window.location.pathname.includes('/pages/') ? 'gallop-ai.html' : 'pages/gallop-ai.html';
 
   return `
-    <div class="horse-assistant assistant-open">
+    <div class="horse-assistant${shouldShowHorseAssistantWelcome ? ' assistant-open' : ''}">
       <div class="horse-assistant-message" id="horse-assistant-message">
         <button class="horse-assistant-close" type="button" aria-label="Close welcome message">&times;</button>
         <div class="horse-assistant-heading">
@@ -375,6 +410,10 @@ const addSocialFloat = () => {
 };
 
 addSocialFloat();
+
+if (shouldShowHorseAssistantWelcome) {
+  rememberHorseAssistantWelcome();
+}
 
 const socialFloat = document.querySelector('.social-float');
 const socialToggle = document.querySelector('.social-float-toggle');
