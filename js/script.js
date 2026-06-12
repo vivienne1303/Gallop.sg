@@ -78,7 +78,7 @@ const renderSiteFooter = () => {
         <div class="footer-location-list">
           <article class="footer-location-card">
             <div class="footer-location-details">
-              <h3>Admiralty</h3>
+              <h3>Admiralty East</h3>
               <p>8 Admiralty Rd East, Singapore 759991</p>
               <a href="tel:+6564636012">6463 6012</a>
               <span aria-hidden="true"> / </span>
@@ -118,7 +118,7 @@ const renderSiteFooter = () => {
       <div class="footer-location-list">
         <article class="footer-location-card">
           <div class="footer-location-details">
-            <h3>Admiralty</h3>
+            <h3>Admiralty East</h3>
             <p>8 Admiralty Rd East, Singapore 759991</p>
             <a href="tel:+6564636012">6463 6012</a>
             <span aria-hidden="true"> / </span>
