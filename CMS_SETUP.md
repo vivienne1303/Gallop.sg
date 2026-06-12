@@ -19,24 +19,66 @@ The CMS is available at:
 
 ## GitHub login
 
-GitHub Pages serves static files and cannot safely store the GitHub OAuth client secret. A small external OAuth provider is therefore required for staff login.
+GitHub Pages cannot securely store a GitHub OAuth client secret or exchange an authorization code for an access token. Decap therefore requires an external OAuth provider. Without `backend.base_url`, Decap falls back to Netlify authentication and may send login requests to `api.netlify.com`.
 
-1. Deploy a Decap-compatible GitHub OAuth provider, such as the official example provider on Cloudflare Workers, Vercel, Netlify Functions, or another serverless host.
-2. Create a GitHub OAuth App under **GitHub Settings > Developer settings > OAuth Apps**.
-3. Set its homepage URL to:
+Decap's official documentation lists community-maintained external OAuth providers. A practical option is the Vercel-compatible Node provider:
 
-   `https://vivienne1303.github.io/Gallop.sg/`
+`https://github.com/bericp1/netlify-cms-oauth-provider-node`
 
-4. Set the callback URL to the callback URL required by the chosen OAuth provider.
-5. Store the GitHub OAuth Client ID and Client Secret in the provider's environment variables. Never commit the secret to this repository.
-6. Uncomment and update these lines in `admin/config.yml`:
+### 1. Deploy the OAuth provider
 
-   ```yml
-   base_url: https://your-oauth-provider.example.com
-   auth_endpoint: auth
-   ```
+1. Fork or create a small Vercel project using the provider's `examples/vercel` implementation.
+2. Deploy it to Vercel and note its HTTPS URL, for example:
 
-7. Add staff as collaborators on `vivienne1303/Gallop.sg`. Their GitHub account needs permission to commit to the repository.
+   `https://gallop-sg-cms-oauth.vercel.app`
+
+3. Configure the provider for:
+
+   - Admin origin: `https://vivienne1303.github.io`
+   - Admin panel URL: `https://vivienne1303.github.io/Gallop.sg/admin/`
+   - Completion/callback URL: the provider's deployed callback endpoint
+   - OAuth provider: GitHub
+
+The exact environment-variable names depend on the selected provider implementation. For the Vercel provider, configure the equivalent of:
+
+- OAuth client ID
+- OAuth client secret
+- Allowed admin origin
+- Complete/callback URL
+- Admin panel URL
+
+Never put the client secret in this repository or in `admin/config.yml`.
+
+### 2. Create the GitHub OAuth App
+
+In GitHub, open **Settings > Developer settings > OAuth Apps > New OAuth App**.
+
+Use:
+
+- Application name: `Gallop SG Decap CMS`
+- Homepage URL: `https://vivienne1303.github.io/Gallop.sg/`
+- Authorization callback URL: the exact callback URL exposed by your deployed OAuth provider
+
+GitHub permits only one callback URL per OAuth App. Copy the generated Client ID and Client Secret into the OAuth provider's server-side environment variables.
+
+### 3. Update Decap
+
+Replace the placeholder in `admin/config.yml`:
+
+```yml
+backend:
+  name: github
+  repo: vivienne1303/Gallop.sg
+  branch: main
+  base_url: https://gallop-sg-cms-oauth.vercel.app
+  auth_endpoint: auth
+```
+
+`base_url` must be the OAuth provider's origin, not the GitHub Pages URL. `auth_endpoint` must match the provider's login endpoint. If the chosen provider exposes `/api/auth`, use `auth_endpoint: api/auth` instead.
+
+### 4. Give staff repository access
+
+Add each staff member as a collaborator on `vivienne1303/Gallop.sg`. Decap's GitHub backend requires every CMS user to have push access to the repository.
 
 Decap will commit edits to `content/site.json` on the `main` branch. GitHub Pages then publishes the updated JSON with the rest of the site.
 

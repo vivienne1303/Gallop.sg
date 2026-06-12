@@ -1,10 +1,6 @@
 backend:
-  name: github
-  repo: vivienne1303/Gallop.sg
+  name: git-gateway
   branch: main
-  # Add base_url and auth_endpoint after deploying a GitHub OAuth provider.
-  # base_url: https://your-oauth-provider.example.com
-  # auth_endpoint: auth
 
 local_backend: true
 

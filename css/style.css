@@ -51,6 +51,20 @@ a {
   display: none !important;
 }
 
+.coming-soon-label {
+  display: inline-block;
+  margin: 0 0 14px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(201, 165, 107, 0.18);
+  color: #8a682c;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 button,
 select {
   font: inherit;
