@@ -12,11 +12,12 @@
 /pages/volunteer.html /pages/care/volunteer.html 301
 
 /pages/jackuda.html /pages/jackuda/jackuda.html 301
-/pages/activities.html /pages/jackuda/jackuda_activity.html 301
+/pages/activities.html /pages/jackuda/jackuda.html 301
 /pages/birthday-party.html /pages/jackuda/birthday-party.html 301
-/pages/events.html /pages/jackuda/events.html 301
+/pages/events.html /pages/jackuda/coperate-event.html 301
 /pages/photoshoot.html /pages/jackuda/photoshoot.html 301
-/pages/riding.html /pages/jackuda/riding.html 301
+/pages/riding.html /pages/jackuda/trail-rides.html 301
+/pages/stable/riding.html /pages/jackuda/trail-rides.html 301
 
 /pages/polo.html /pages/polo/polo.html 301
 /pages/archery.html /pages/archery/archery.html 301

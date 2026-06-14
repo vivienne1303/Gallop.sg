@@ -363,7 +363,7 @@ select {
   --banner-dim: 0;
   --banner-scale: 1;
   --banner-shift: 0px;
-  --video-aspect-ratio: 16 / 9;
+  --video-aspect-ratio: 2 / 1;
   position: relative;
   width: 100%;
   height: auto;
@@ -397,7 +397,7 @@ select {
 .home-banner-video {
   height: calc(100% + 14px);
   margin-top: -14px;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 
@@ -1005,6 +1005,10 @@ select {
   background: #dfe9e4;
 }
 
+.polo-intro-section {
+  background: #d5e2dc;
+}
+
 .service-detail {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(36px, 6vw, 84px);
@@ -1028,6 +1032,33 @@ select {
 
 .service-detail-image {
   height: clamp(360px, 42vw, 540px);
+}
+
+.polo-video-section {
+  padding: clamp(56px, 7vw, 96px) 24px;
+  background: #dfe9e4;
+}
+
+.polo-video-heading {
+  width: min(100%, 1200px);
+  margin: 0 auto 30px;
+  text-align: center;
+}
+
+.polo-video-heading h2 {
+  margin: 8px 0 0;
+  color: var(--deep-green);
+  font-size: clamp(2rem, 4vw, 3.6rem);
+}
+
+.polo-video {
+  display: block;
+  width: min(100%, 1200px);
+  max-height: 78vh;
+  margin: 0 auto;
+  border-radius: 28px;
+  background: #081a15;
+  box-shadow: var(--shadow);
 }
 
 .about-story-section {
@@ -1236,6 +1267,194 @@ select {
   height: auto;
   border-radius: 20px;
   box-shadow: 0 24px 60px rgba(4, 39, 33, 0.3);
+}
+
+.promotions-coming-soon {
+  display: grid;
+  min-height: 180px;
+  place-items: center;
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  color: var(--ivory);
+  text-align: center;
+}
+
+.promotions-coming-soon p {
+  margin: 0;
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.35rem, 2vw, 1.75rem);
+  font-weight: 600;
+}
+
+.corporate-event-section {
+  padding: clamp(56px, 7vw, 96px) 24px;
+  background: var(--ivory);
+}
+
+.corporate-event-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(40px, 5vw, 72px);
+  width: min(100%, 1400px);
+  margin: 0 auto;
+}
+
+.corporate-event-column {
+  display: grid;
+  align-content: start;
+  gap: clamp(28px, 3vw, 42px);
+}
+
+.corporate-event-image {
+  overflow: hidden;
+  margin: 0;
+  border-radius: 22px;
+  box-shadow: 0 22px 54px rgba(31, 60, 47, 0.16);
+}
+
+.corporate-event-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.corporate-event-copy h2,
+.corporate-event-copy h3 {
+  color: var(--deep-green);
+  font-family: "Playfair Display", serif;
+}
+
+.corporate-event-copy h2 {
+  margin: 0 0 22px;
+  font-size: clamp(2rem, 3vw, 3.2rem);
+  line-height: 1.18;
+}
+
+.corporate-event-copy h3 {
+  margin: 34px 0 14px;
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+}
+
+.corporate-event-copy p {
+  margin: 0 0 22px;
+  color: rgba(31, 54, 42, 0.86);
+  font-size: clamp(1rem, 1.25vw, 1.12rem);
+  line-height: 1.9;
+}
+
+.corporate-event-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.corporate-event-cta {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  width: min(100%, 900px);
+  margin: clamp(48px, 6vw, 78px) auto 0;
+  text-align: center;
+}
+
+.corporate-event-cta p {
+  margin: 0;
+  color: var(--text-dark);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.6;
+}
+
+.stable-careers-section {
+  padding: clamp(64px, 8vw, 108px) 24px;
+  background: var(--ivory);
+}
+
+.stable-careers-intro {
+  width: min(100%, 1100px);
+  margin: 0 auto clamp(48px, 6vw, 76px);
+  text-align: center;
+}
+
+.stable-careers-intro p {
+  margin: 0 auto 22px;
+  color: rgba(31, 54, 42, 0.84);
+  font-size: clamp(1rem, 1.5vw, 1.2rem);
+  line-height: 1.8;
+}
+
+.stable-careers-intro a {
+  color: var(--dark-green);
+  font-weight: 700;
+}
+
+.stable-careers-intro h2 {
+  margin: 46px 0 0;
+  color: var(--deep-green);
+  font-size: clamp(2.3rem, 4vw, 3.8rem);
+}
+
+.stable-careers-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+  gap: clamp(36px, 6vw, 80px);
+  align-items: start;
+  width: min(100%, 1200px);
+  margin: 0 auto;
+}
+
+.stable-careers-list {
+  display: grid;
+  gap: 24px;
+}
+
+.stable-career-role {
+  padding: 28px 30px;
+  border: 1px solid rgba(31, 60, 47, 0.12);
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 16px 42px rgba(31, 60, 47, 0.08);
+}
+
+.stable-career-role h3 {
+  margin: 0 0 14px;
+  color: var(--deep-green);
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+}
+
+.stable-career-role p {
+  margin: 0 0 12px;
+  color: rgba(31, 54, 42, 0.84);
+  line-height: 1.75;
+}
+
+.stable-career-role p:last-child {
+  margin-bottom: 0;
+}
+
+.stable-careers-callout {
+  position: sticky;
+  top: 120px;
+  padding: clamp(34px, 5vw, 54px);
+  border-radius: 28px;
+  background: #d5e2dc;
+  box-shadow: var(--shadow);
+}
+
+.stable-careers-callout h2 {
+  margin: 10px 0 20px;
+  color: var(--deep-green);
+  font-size: clamp(2.5rem, 5vw, 4.6rem);
+  line-height: 1;
+}
+
+.stable-careers-callout p:not(.eyebrow) {
+  margin: 0 0 18px;
+  color: rgba(31, 54, 42, 0.88);
+  line-height: 1.75;
+}
+
+.stable-careers-callout .btn {
+  margin-top: 14px;
 }
 
 .info-strip {
@@ -3320,6 +3539,7 @@ select {
   }
 
   .home-banner {
+    --video-aspect-ratio: 16 / 9;
     width: 100%;
     height: auto;
     aspect-ratio: var(--video-aspect-ratio);
@@ -3392,8 +3612,11 @@ select {
   }
 
   .page-hero {
-    min-height: 62vh;
-    padding: 120px 18px 56px;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+    padding: 84px 18px 32px;
   }
 
   .social-float {

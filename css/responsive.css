@@ -1,1 +1,18 @@
 /* Extra responsive overrides can live here as the site grows. */
+@media (max-width: 860px) {
+  .corporate-event-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .corporate-event-intro {
+    order: -1;
+  }
+
+  .stable-careers-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stable-careers-callout {
+    position: static;
+  }
+}

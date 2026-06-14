@@ -23,6 +23,18 @@ const sectionPagePrefixes = {
   resort: 'resort'
 };
 
+const sectionHomePages = {
+  stable: 'stable.html',
+  care: 'gallop-care.html',
+  jackuda: 'jackuda.html',
+  polo: 'polo.html',
+  archery: 'archery.html',
+  green: 'green.html',
+  'd-equestrian-paradise': 'saddlery.html',
+  catering: 'catering.html',
+  resort: 'resort.html'
+};
+
 const getPageContext = () => {
   const pathParts = window.location.pathname.split('/').filter(Boolean);
   const pagesIndex = pathParts.lastIndexOf('pages');
@@ -60,27 +72,33 @@ const renderPrimaryNav = () => {
   const { onHomePage, section } = getPageContext();
   const onJackudaActivityPage = section === 'jackuda';
   const onStableActivityPage = section === 'stable';
-  const homeLink = onHomePage ? '#about' : `${section ? '../../' : '../'}index.html#about`;
+  const homeLink = onHomePage ? '#about' : section ? sectionHomePages[section] : '../index.html#about';
+  const gallopSgLink = onHomePage ? 'index.html' : `${section ? '../../' : '../'}index.html`;
   const activeSection = section || 'stable';
   const activePrefix = sectionPagePrefixes[activeSection];
   const sectionActivityLink = pageLink(`${activeSection}/${activePrefix}_activity.html`);
   const sectionPromotionLink = pageLink(`${activeSection}/${activePrefix}_promotion.html`);
   const sectionFaqLink = pageLink(`${activeSection}/${activePrefix}_faq.html`);
+  const sectionJoinLink = onHomePage
+    ? pageLink('join.html')
+    : pageLink(`${activeSection}/${activePrefix}_join.html`);
+  const sectionContactLink = onHomePage
+    ? pageLink('contact.html')
+    : pageLink(`${activeSection}/${activePrefix}_contact.html`);
   const stableActivityLinks = `
-        <a href="${pageLink('stable/stable_activity.html')}">All Stable Activities</a>
         <a href="${pageLink('stable/riding-lessons.html')}">Riding Lessons</a>
         <a href="${pageLink('stable/adopt-a-horse.html')}">Adopt a Horse</a>
         <a href="${pageLink('stable/lease-a-horse.html')}">Lease a Horse</a>
         <a href="${pageLink('stable/outdoor-pony-hire.html')}">Outdoor Pony Hire</a>`;
   const activityLinks = onStableActivityPage ? stableActivityLinks : `
-        <a href="${pageLink('jackuda/jackuda_activity.html')}">All Jackuda Activities</a>
         <a href="${pageLink('jackuda/birthday-party.html')}">Birthday Parties</a>
-        <a href="${pageLink('jackuda/jackuda.html')}">Camps/Workshops</a>
-        <a href="${pageLink('jackuda/events.html')}">Corporate/Group Events</a>
-        <a href="${pageLink('jackuda/jackuda_activity.html')}">Learning Journey</a>
+        <a href="${pageLink('jackuda/camps-workshops.html')}">Camps/Workshops</a>
+        <a href="${pageLink('jackuda/coperate-event.html')}">Corporate/Group Events</a>
+        <a href="${pageLink('jackuda/horseshoe-painting.html')}">Horseshoe Painting</a>
+        <a href="${pageLink('jackuda/learning-journey.html')}">Learning Journey</a>
         <a href="${pageLink('jackuda/photoshoot.html')}">Photoshoots</a>
-        <a href="${pageLink('jackuda/jackuda_activity.html')}">Pony Rides/Feeding</a>
-        <a href="${pageLink('jackuda/riding.html')}">Trail/Track Rides</a>
+        <a href="${pageLink('jackuda/pony-rides-feeding.html')}">Pony Rides/Feeding</a>
+        <a href="${pageLink('jackuda/trail-rides.html')}">Trail/Track Rides</a>
         ${onJackudaActivityPage ? '' : stableActivityLinks}`;
   const activitiesMenu = onStableActivityPage || onJackudaActivityPage ? `
     <div class="nav-dropdown">
@@ -92,15 +110,151 @@ const renderPrimaryNav = () => {
 
   nav.innerHTML = `
     <a href="${homeLink}">Home</a>
-    ${activitiesMenu}
+    ${onHomePage ? '' : activitiesMenu}
     <a href="${sectionPromotionLink}">Promotions</a>
-    <a href="${pageLink('join.html')}">Join the Team</a>
+    <a href="${sectionJoinLink}">Join the Team</a>
     <a href="${sectionFaqLink}">FAQs</a>
-    <a href="${pageLink('contact.html')}">Contact Us</a>
+    <a href="${sectionContactLink}">Contact Us</a>
+    ${onHomePage ? '' : `<a href="${gallopSgLink}">Gallop.sg</a>`}
   `;
 };
 
 renderPrimaryNav();
+
+const renderSectionJoinPage = () => {
+  const joinPage = document.querySelector('[data-section-join]');
+  if (!joinPage) return;
+
+  const joinName = joinPage.dataset.joinName;
+  const joinImage = joinPage.dataset.joinImage;
+  const { section } = getPageContext();
+  const contactFile = `${sectionPagePrefixes[section]}_contact.html`;
+
+  joinPage.innerHTML = `
+    <section class="page-hero">
+      <img src="${joinImage}" alt="${joinName} team" />
+      <div class="page-hero-copy reveal">
+        <p class="eyebrow">Join The Team</p>
+        <h2>Build a career around horses, service and care</h2>
+        <p>Join a team that supports riders, families and well-loved horses across Singapore.</p>
+      </div>
+    </section>
+    <section class="section about-section reveal">
+      <div class="about-card reveal">
+        <p class="eyebrow">Careers</p>
+        <h2>Work with ${joinName}</h2>
+        <p>We welcome people who care about animals, hospitality and creating memorable guest experiences.</p>
+        <ul>
+          <li>Stable operations and horse care roles</li>
+          <li>Guest service and activity support</li>
+          <li>Riding instruction and event support opportunities</li>
+        </ul>
+        <p><a class="btn btn-primary" href="${contactFile}">Contact Us</a></p>
+      </div>
+    </section>
+  `;
+};
+
+const renderSectionContactPage = () => {
+  const contactPage = document.querySelector('[data-section-contact]');
+  if (!contactPage) return;
+
+  const contactName = contactPage.dataset.contactName;
+  const contactImage = contactPage.dataset.contactImage;
+
+  contactPage.innerHTML = `
+    <section class="page-hero">
+      <img src="${contactImage}" alt="${contactName} contact" />
+      <div class="page-hero-copy reveal">
+        <p class="eyebrow">Contact Us</p>
+        <h2>Visit our stables or send us a message</h2>
+      </div>
+    </section>
+    <section class="contact-form-section reveal" aria-labelledby="contact-form-title">
+      <h2 id="contact-form-title">Contact Us Now</h2>
+      <form class="contact-form" data-whatsapp-contact>
+        <div class="contact-form-field">
+          <label for="contact-name">Your Name <span>(required)</span></label>
+          <input id="contact-name" name="Name" type="text" autocomplete="name" required />
+        </div>
+        <div class="contact-form-field">
+          <label for="contact-email">Your Email <span>(required)</span></label>
+          <input id="contact-email" name="Email" type="email" autocomplete="email" required />
+        </div>
+        <div class="contact-form-field">
+          <label for="contact-phone">Your Phone Number</label>
+          <input id="contact-phone" name="Phone number" type="tel" autocomplete="tel" />
+        </div>
+        <div class="contact-form-field">
+          <label for="contact-subject">Subject</label>
+          <input id="contact-subject" name="Subject" type="text" value="${contactName}" />
+        </div>
+        <div class="contact-form-field">
+          <label for="contact-message">Your Message</label>
+          <textarea id="contact-message" name="Message" rows="10"></textarea>
+        </div>
+        <button class="contact-form-submit" type="submit">Send</button>
+      </form>
+    </section>
+    <section class="section contact-section reveal">
+      <div class="contact-grid">
+        <div class="contact-copy">
+          <p class="eyebrow">Enquiries</p>
+          <h2>We would love to hear from you</h2>
+          <p>Enquiry email: <a href="mailto:enquiry@gallopstable.com">enquiry@gallopstable.com</a></p>
+        </div>
+        <div class="contact-cards">
+          <a class="info-card reveal" href="https://maps.app.goo.gl/V8sWLNMiteq4PYPT7" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Admiralty</h3><p>8 Admiralty Rd East, Singapore 759991</p><p><strong>Parking:</strong> Available at St Helena Road</p><p><strong>Tel:</strong> 6463 6012 / 8383 6425</p><p><strong>Walk-in hours:</strong> Daily, 8:30 AM - 12:00 PM | 2:30 PM - 7:00 PM</p><p><strong>Instagram:</strong> @gallop.sg</p></a>
+          <a class="info-card reveal" href="https://maps.app.goo.gl/AuM9Wis6vVBBnEHq8" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Pasir Ris</h3><p>61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225</p><p><strong>Tel:</strong> 6583 9665</p><p><strong>Walk-in hours:</strong> Tuesdays - Sundays, 10:00 AM - 11:30 AM | 2:00 PM - 6:30 PM</p><p><strong>Instagram:</strong> @gallopstablepasirris</p></a>
+          <a class="info-card reveal" href="https://maps.app.goo.gl/nSNznPFzbHDDyW5v7" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Downtown East</h3><p>1 Pasir Ris Close, Singapore 519599</p><p><strong>Parking:</strong> Available at D'Resort</p><p><strong>Tel:</strong> 8787 5377</p><p><strong>Walk-in hours:</strong> Daily, 9:00 AM - 12:00 PM | 2:00 PM - 7:00 PM</p><p><strong>Email:</strong> gallopdowntown@gallopstable.com</p><p><strong>Instagram:</strong> @gallopstabledowntowneast</p></a>
+        </div>
+      </div>
+    </section>
+  `;
+};
+
+const routeSectionContactLinks = () => {
+  const { section } = getPageContext();
+  if (!section) return;
+
+  const contactFile = `${sectionPagePrefixes[section]}_contact.html`;
+  document.querySelectorAll('a[href="../contact.html"]').forEach(link => {
+    link.href = contactFile;
+  });
+};
+
+const initializeWhatsAppContactForms = () => {
+  const whatsappNumber = '6583836425';
+
+  document.querySelectorAll('.contact-form').forEach(form => {
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+
+      const formData = new FormData(form);
+      const message = [
+        'Hello Gallop SG, I would like to make an enquiry.',
+        '',
+        `Name: ${formData.get('Name') || '-'}`,
+        `Email: ${formData.get('Email') || '-'}`,
+        `Phone: ${formData.get('Phone number') || '-'}`,
+        `Subject: ${formData.get('Subject') || '-'}`,
+        '',
+        `Message: ${formData.get('Message') || '-'}`
+      ].join('\n');
+
+      window.open(
+        `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
+        '_blank',
+        'noopener,noreferrer'
+      );
+    });
+  });
+};
+
+renderSectionJoinPage();
+renderSectionContactPage();
+routeSectionContactLinks();
+initializeWhatsAppContactForms();
 
 const renderSiteFooter = () => {
   const footer = document.querySelector('.site-footer');

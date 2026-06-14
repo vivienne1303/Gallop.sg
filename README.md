@@ -9,7 +9,7 @@ Gallop.sg/
 ├── index.html
 ├── README.md
 ├── pages/
-│   ├── riding.html
+│   ├── jackuda/trail-rides.html
 │   ├── activities.html
 │   ├── promotions.html
 │   ├── gallop-care.html
@@ -19,7 +19,7 @@ Gallop.sg/
 │   ├── jackuda.html
 │   ├── birthday-party.html
 │   ├── photoshoot.html
-│   ├── events.html
+│   ├── coperate-event.html
 │   ├── join.html
 │   └── contact.html
 ├── css/
