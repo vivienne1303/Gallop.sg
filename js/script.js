@@ -121,6 +121,26 @@ const renderPrimaryNav = () => {
 
 renderPrimaryNav();
 
+const syncScrollingGalleries = () => {
+  document.querySelectorAll('.scroll-gallery-track').forEach(track => {
+    const groups = [...track.querySelectorAll(':scope > .scroll-gallery-group')];
+    const sourceGroup = groups[0];
+    if (!sourceGroup) return;
+
+    groups.slice(1).forEach(group => group.remove());
+
+    const loopGroup = sourceGroup.cloneNode(true);
+    loopGroup.setAttribute('aria-hidden', 'true');
+    loopGroup.querySelectorAll('img').forEach(image => {
+      image.alt = '';
+      image.loading = 'lazy';
+    });
+    track.appendChild(loopGroup);
+  });
+};
+
+syncScrollingGalleries();
+
 const renderSectionJoinPage = () => {
   const joinPage = document.querySelector('[data-section-join]');
   if (!joinPage) return;
