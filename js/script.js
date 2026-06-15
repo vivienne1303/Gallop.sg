@@ -40,14 +40,22 @@ const getPageContext = () => {
   const pagesIndex = pathParts.lastIndexOf('pages');
   const onHomePage = pagesIndex === -1;
   const possibleSection = onHomePage ? '' : pathParts[pagesIndex + 1];
+  const isGallopSgPage = possibleSection === 'gallopsg';
+  const isMainUtilityPage = false;
   const section = sectionFolders.includes(possibleSection) ? possibleSection : '';
 
-  return { onHomePage, section };
+  return { onHomePage, isGallopSgPage, isMainUtilityPage, section };
 };
 
 const pageLink = pathFromPages => {
-  const { onHomePage, section } = getPageContext();
+  const { onHomePage, isGallopSgPage, section } = getPageContext();
   if (onHomePage) return `pages/${pathFromPages}`;
+  if (isGallopSgPage) {
+    if (pathFromPages.startsWith('gallopsg/')) {
+      return pathFromPages.slice('gallopsg/'.length);
+    }
+    return `../${pathFromPages}`;
+  }
   if (!section) return pathFromPages;
   if (pathFromPages.startsWith(`${section}/`)) {
     return pathFromPages.slice(section.length + 1);
@@ -56,8 +64,9 @@ const pageLink = pathFromPages => {
 };
 
 const rootAsset = assetPath => {
-  const { onHomePage, section } = getPageContext();
+  const { onHomePage, isGallopSgPage, section } = getPageContext();
   if (onHomePage) return assetPath;
+  if (isGallopSgPage) return `../../${assetPath}`;
   return `${section ? '../../' : '../'}${assetPath}`;
 };
 
@@ -69,21 +78,36 @@ const renderPrimaryNav = () => {
   const nav = document.querySelector('.main-nav');
   if (!nav) return;
 
-  const { onHomePage, section } = getPageContext();
+  const { onHomePage, isGallopSgPage, isMainUtilityPage, section } = getPageContext();
+  const onMainSite = onHomePage || isGallopSgPage || isMainUtilityPage;
   const onJackudaActivityPage = section === 'jackuda';
   const onStableActivityPage = section === 'stable';
-  const homeLink = onHomePage ? '#about' : section ? sectionHomePages[section] : '../index.html#about';
-  const gallopSgLink = onHomePage ? 'index.html' : `${section ? '../../' : '../'}index.html`;
+  const homeLink = onHomePage
+    ? '#about'
+    : isGallopSgPage
+      ? 'index.html#about'
+      : section
+        ? sectionHomePages[section]
+        : 'gallopsg/index.html#about';
+  const gallopSgLink = onMainSite
+    ? 'index.html'
+    : section
+      ? '../gallopsg/index.html'
+      : 'gallopsg/index.html';
   const activeSection = section || 'stable';
   const activePrefix = sectionPagePrefixes[activeSection];
   const sectionActivityLink = pageLink(`${activeSection}/${activePrefix}_activity.html`);
-  const sectionPromotionLink = pageLink(`${activeSection}/${activePrefix}_promotion.html`);
-  const sectionFaqLink = pageLink(`${activeSection}/${activePrefix}_faq.html`);
-  const sectionJoinLink = onHomePage
-    ? pageLink('join.html')
+  const sectionPromotionLink = onMainSite
+    ? pageLink('gallopsg/promotion.html')
+    : pageLink(`${activeSection}/${activePrefix}_promotion.html`);
+  const sectionFaqLink = onMainSite
+    ? pageLink('gallopsg/faq.html')
+    : pageLink(`${activeSection}/${activePrefix}_faq.html`);
+  const sectionJoinLink = onMainSite
+    ? pageLink('gallopsg/join.html')
     : pageLink(`${activeSection}/${activePrefix}_join.html`);
-  const sectionContactLink = onHomePage
-    ? pageLink('contact.html')
+  const sectionContactLink = onMainSite
+    ? pageLink('gallopsg/contact.html')
     : pageLink(`${activeSection}/${activePrefix}_contact.html`);
   const stableActivityLinks = `
         <a href="${pageLink('stable/riding-lessons.html')}">Riding Lessons</a>
@@ -108,14 +132,27 @@ const renderPrimaryNav = () => {
       </div>
     </div>` : `<a href="${sectionActivityLink}">Activities</a>`;
 
+  if (document.body.classList.contains('gallopsg-promotion-page')) {
+    nav.innerHTML = `
+      <a href="index.html">Home</a>
+      <a href="index.html">Activities</a>
+      <a href="promotion.html">Promotions</a>
+      <a href="join.html">Join the Team</a>
+      <a href="faq.html">FAQs</a>
+      <a href="contact.html">Contact Us</a>
+      <a href="index.html">Gallop.sg</a>
+    `;
+    return;
+  }
+
   nav.innerHTML = `
     <a href="${homeLink}">Home</a>
-    ${onHomePage ? '' : activitiesMenu}
+    ${onMainSite ? '' : activitiesMenu}
     <a href="${sectionPromotionLink}">Promotions</a>
     <a href="${sectionJoinLink}">Join the Team</a>
     <a href="${sectionFaqLink}">FAQs</a>
     <a href="${sectionContactLink}">Contact Us</a>
-    ${onHomePage ? '' : `<a href="${gallopSgLink}">Gallop.sg</a>`}
+    ${onMainSite ? '' : `<a href="${gallopSgLink}">Gallop.sg</a>`}
   `;
 };
 
@@ -238,7 +275,7 @@ const routeSectionContactLinks = () => {
   if (!section) return;
 
   const contactFile = `${sectionPagePrefixes[section]}_contact.html`;
-  document.querySelectorAll('a[href="../contact.html"]').forEach(link => {
+  document.querySelectorAll('a[href="../gallopsg/contact.html"]').forEach(link => {
     link.href = contactFile;
   });
 };
@@ -857,7 +894,7 @@ const rememberHorseAssistantWelcome = () => {
 const shouldShowHorseAssistantWelcome = !hasSeenHorseAssistantWelcome();
 
 const renderHorseAssistant = () => {
-  const chatLink = pageLink('gallop-ai.html');
+  const chatLink = pageLink('gallopsg/gallop-ai.html');
 
   return `
     <div class="horse-assistant${shouldShowHorseAssistantWelcome ? ' assistant-open' : ''}">

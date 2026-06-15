@@ -6,28 +6,22 @@ A static website for Gallop Stable Singapore.
 
 ```text
 Gallop.sg/
-├── index.html
-├── README.md
-├── pages/
-│   ├── jackuda/trail-rides.html
-│   ├── activities.html
-│   ├── promotions.html
-│   ├── gallop-care.html
-│   ├── polo.html
-│   ├── archery.html
-│   ├── riding-lessons.html
-│   ├── jackuda.html
-│   ├── birthday-party.html
-│   ├── photoshoot.html
-│   ├── coperate-event.html
-│   ├── join.html
-│   └── contact.html
-├── css/
-│   ├── style.css
-│   └── responsive.css
-├── js/
-│   └── script.js
-└── images/
+|-- pages/
+|   |-- gallopsg/
+|   |   |-- index.html
+|   |   |-- contact.html
+|   |   |-- join.html
+|   |   |-- promotion.html
+|   |   |-- faq.html
+|   |   `-- gallop-ai.html
+|   |-- stable/
+|   |-- jackuda/
+|   |-- care/
+|   `-- other venture folders/
+|-- css/
+|-- js/
+|-- images/
+`-- _redirects
 ```
 
-Open `index.html` in a browser to view the site locally.
+Open `pages/gallopsg/index.html` in a browser to view the site locally.
