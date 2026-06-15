@@ -1034,6 +1034,15 @@ select {
   height: clamp(360px, 42vw, 540px);
 }
 
+.jackuda-original-image {
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+.jackuda-original-image img {
+  object-fit: contain;
+}
+
 .polo-video-section {
   padding: clamp(56px, 7vw, 96px) 24px;
   background: #dfe9e4;
@@ -3868,6 +3877,11 @@ select {
 
   .service-detail-image {
     height: clamp(300px, 76vw, 440px);
+  }
+
+  .jackuda-original-image {
+    height: auto;
+    aspect-ratio: 16 / 9;
   }
 
   .venture-section {
