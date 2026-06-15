@@ -2490,6 +2490,482 @@ select {
   content: ' \2192';
 }
 
+/* Adopt and lease programme pages */
+.programme-editorial-page {
+  background: #dfe9e4;
+}
+
+.programme-banner-hero {
+  min-height: 58vh;
+}
+
+.programme-banner-hero img {
+  object-position: center 42%;
+}
+
+.programme-editorial-hero {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(36px, 6vw, 84px);
+  align-items: center;
+  min-height: auto;
+  width: min(100%, 1248px);
+  margin: 0 auto;
+  padding: clamp(56px, 7vw, 88px) 24px;
+  background: #dfe9e4;
+}
+
+.programme-editorial-hero::before {
+  display: none;
+}
+
+.programme-editorial-hero > img {
+  position: static;
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  height: clamp(360px, 42vw, 540px);
+  border-radius: 32px;
+  object-fit: cover;
+  box-shadow: 0 28px 70px rgba(31, 60, 47, 0.15);
+}
+
+.programme-editorial-hero .page-hero-copy {
+  position: static;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  max-width: 600px;
+  padding: 0;
+  background: transparent;
+  color: var(--deep-green);
+  text-align: left;
+  transform: none;
+}
+
+.programme-editorial-hero .page-hero-copy::before {
+  display: none;
+}
+
+.programme-editorial-hero .page-hero-copy .eyebrow {
+  margin: 0 0 20px;
+  color: #8a682c;
+  text-shadow: none;
+}
+
+.programme-editorial-hero .page-hero-copy h2 {
+  margin: 0 0 26px;
+  max-width: 600px;
+  color: var(--deep-green);
+  font-size: clamp(2.5rem, 3vw, 3.5rem);
+  line-height: 1.08;
+  text-shadow: none;
+}
+
+.programme-editorial-hero .page-hero-copy p:not(.eyebrow) {
+  display: block;
+  max-width: 580px;
+  margin: 0 0 28px;
+  color: rgba(31, 54, 42, 0.88);
+  font-size: 1.05rem;
+  line-height: 1.9;
+  text-shadow: none;
+}
+
+.programme-editorial-hero .btn {
+  min-height: 48px;
+  padding: 14px 22px;
+  font-size: 1rem;
+}
+
+.programme-editorial-panel {
+  padding-top: 88px;
+  padding-bottom: 88px;
+}
+
+.programme-editorial-page .programme-intro {
+  background: #f8f5ed;
+}
+
+.programme-editorial-page .horse-directory-section,
+.programme-editorial-page .programme-details,
+.programme-editorial-page .adoption-impact {
+  background: #dfe9e4;
+}
+
+.programme-editorial-page .programme-benefits,
+.programme-editorial-page .programme-rules,
+.programme-editorial-page .injury-care-section {
+  background: #f8f5ed;
+}
+
+.adopt-programme-page .programme-intro {
+  background: #f8f5ed;
+}
+
+.adopt-programme-page .programme-benefits {
+  background: #f8f5ed;
+}
+
+.adopt-programme-page .programme-details {
+  background: #dfe9e4;
+}
+
+.adopt-programme-page .programme-rules {
+  background: #f8f5ed;
+}
+
+.programme-editorial-page .section-head {
+  max-width: 760px;
+  margin-bottom: 56px;
+}
+
+.programme-editorial-page .section-head h2 {
+  font-size: clamp(2.4rem, 3vw, 3.6rem);
+  line-height: 1.1;
+}
+
+.programme-editorial-page .section-head p {
+  max-width: 760px;
+  font-size: 1.06rem;
+}
+
+.programme-editorial-page .programme-intro-grid,
+.programme-editorial-page .adoption-impact-grid {
+  width: min(100%, 1200px);
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  gap: clamp(40px, 6vw, 84px);
+}
+
+.programme-editorial-page .programme-intro-grid-image {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.programme-intro-image {
+  overflow: hidden;
+  width: 100%;
+  height: clamp(360px, 42vw, 540px);
+  border-radius: 32px;
+  box-shadow: 0 28px 70px rgba(31, 60, 47, 0.15);
+}
+
+.programme-intro-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.programme-editorial-page .programme-intro-grid h2,
+.programme-editorial-page .adoption-impact-grid h2 {
+  font-size: clamp(2.5rem, 3.5vw, 3.8rem);
+}
+
+.programme-editorial-page .programme-intro-grid p,
+.programme-editorial-page .adoption-impact-grid p {
+  font-size: 1.06rem;
+  line-height: 1.95;
+}
+
+.programme-editorial-page .programme-goal-card {
+  padding: clamp(32px, 5vw, 54px);
+  border-radius: 28px;
+}
+
+.programme-editorial-page .horse-card,
+.programme-editorial-page .programme-card,
+.programme-editorial-page .programme-rule,
+.programme-editorial-page .injury-care-card {
+  border-radius: 22px;
+}
+
+.programme-editorial-page .horse-card-grid,
+.programme-editorial-page .programme-card-grid,
+.programme-editorial-page .programme-rules-grid {
+  width: min(100%, 1200px);
+  gap: 24px;
+}
+
+.programme-editorial-page .programme-detail-stack {
+  width: min(100%, 1180px);
+}
+
+.programme-editorial-page .programme-detail-row {
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 28px;
+  padding: 34px 0;
+}
+
+.programme-editorial-page .programme-closing {
+  padding: 88px 24px;
+  background: #dfe9e4;
+}
+
+.programme-editorial-page .programme-closing-card {
+  width: min(100%, 1040px);
+  padding: clamp(40px, 7vw, 72px);
+  border-radius: 30px;
+}
+
+.programme-intro {
+  background: #fffdf8;
+}
+
+.programme-intro-grid,
+.adoption-impact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.75fr);
+  gap: clamp(40px, 7vw, 92px);
+  width: min(100%, 1160px);
+  margin: 0 auto;
+  align-items: center;
+}
+
+.programme-intro-grid h2,
+.adoption-impact-grid h2 {
+  margin: 8px 0 24px;
+  color: var(--text-dark);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4.6rem);
+  line-height: 1.05;
+}
+
+.programme-intro-grid p,
+.adoption-impact-grid p {
+  color: rgba(64, 57, 47, 0.82);
+  line-height: 1.85;
+}
+
+.programme-goal-card {
+  padding: clamp(32px, 5vw, 54px);
+  border-radius: 28px;
+  background: var(--deep-green);
+  color: var(--ivory);
+  box-shadow: var(--shadow);
+}
+
+.programme-goal-card strong,
+.programme-goal-card span {
+  display: block;
+}
+
+.programme-goal-card strong {
+  color: var(--gold);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(5rem, 10vw, 8rem);
+  line-height: 0.85;
+}
+
+.programme-goal-card span {
+  margin: 18px 0;
+  font-size: 1.12rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.programme-goal-card p {
+  margin: 0;
+  color: rgba(255, 253, 248, 0.78);
+}
+
+.horse-card-grid-five .horse-card {
+  display: block;
+}
+
+.programme-benefits {
+  background: #d5e2dc;
+}
+
+.programme-card-grid,
+.programme-rules-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  width: min(100%, 1160px);
+  margin: 0 auto;
+}
+
+.programme-card,
+.programme-rule {
+  padding: 30px;
+  border: 1px solid rgba(64, 57, 47, 0.12);
+  border-radius: 22px;
+  background: #fffdf8;
+  box-shadow: 0 16px 38px rgba(48, 42, 34, 0.09);
+}
+
+.programme-price {
+  display: inline-block;
+  margin-bottom: 18px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(201, 165, 107, 0.18);
+  color: #7c5a27;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.programme-card h3 {
+  margin: 0 0 12px;
+  color: var(--text-dark);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.55rem;
+}
+
+.programme-card p,
+.programme-rule p {
+  margin: 0;
+  color: rgba(64, 57, 47, 0.76);
+  line-height: 1.7;
+}
+
+.programme-rules {
+  background: var(--ivory);
+}
+
+.programme-details {
+  background: #fffdf8;
+}
+
+.programme-detail-stack {
+  display: grid;
+  width: min(100%, 1060px);
+  margin: 0 auto;
+  border-top: 1px solid rgba(64, 57, 47, 0.16);
+}
+
+.programme-detail-row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 28px;
+  padding: 34px 0;
+  border-bottom: 1px solid rgba(64, 57, 47, 0.16);
+}
+
+.programme-detail-number {
+  color: #9a7440;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.programme-detail-row h3 {
+  margin: 0 0 12px;
+  color: var(--text-dark);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+}
+
+.programme-detail-row p {
+  margin: 0;
+  color: rgba(64, 57, 47, 0.78);
+  line-height: 1.8;
+}
+
+.programme-rule {
+  border-left: 4px solid var(--gold);
+}
+
+.programme-rule strong {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--dark-green);
+  font-size: 1.02rem;
+}
+
+.injury-care-section {
+  background: #d5e2dc;
+}
+
+.injury-care-card {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.35fr);
+  gap: clamp(36px, 7vw, 90px);
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: clamp(36px, 6vw, 66px);
+  border-radius: 30px;
+  background: #fffdf8;
+  box-shadow: var(--shadow);
+}
+
+.injury-care-card h2 {
+  margin: 8px 0 0;
+  color: var(--text-dark);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4.3rem);
+  line-height: 1.05;
+}
+
+.injury-care-copy p {
+  margin: 0 0 18px;
+  color: rgba(64, 57, 47, 0.8);
+  line-height: 1.8;
+}
+
+.injury-care-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.adoption-impact {
+  background: #fffdf8;
+}
+
+.adoption-impact-image {
+  overflow: hidden;
+  width: 100%;
+  height: clamp(360px, 42vw, 540px);
+  min-height: 0;
+  border-radius: 32px;
+  box-shadow: var(--shadow);
+}
+
+.adoption-impact-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+}
+
+.programme-closing {
+  background: #fffdf8;
+}
+
+.programme-closing-card {
+  width: min(100%, 1040px);
+  margin: 0 auto;
+  padding: clamp(40px, 7vw, 72px);
+  border-radius: 30px;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(201, 165, 107, 0.25), transparent 30%),
+    var(--deep-green);
+  color: var(--ivory);
+  text-align: center;
+}
+
+.programme-closing-card .eyebrow {
+  color: var(--gold);
+}
+
+.programme-closing-card h2 {
+  margin: 10px auto 20px;
+  max-width: 800px;
+  color: inherit;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.05;
+}
+
+.programme-closing-card p {
+  max-width: 760px;
+  margin: 0 auto 30px;
+  color: rgba(255, 253, 248, 0.8);
+  line-height: 1.8;
+}
+
 .horse-profile-page {
   background: var(--ivory);
 }
@@ -2702,6 +3178,57 @@ select {
 }
 
 @media (max-width: 900px) {
+  .programme-editorial-hero {
+    grid-template-columns: 1fr;
+    gap: 46px;
+    padding: 68px 24px 80px;
+  }
+
+  .programme-editorial-hero > img,
+  .programme-editorial-hero .page-hero-copy {
+    grid-column: 1;
+  }
+
+  .programme-editorial-hero .page-hero-copy {
+    grid-row: 1;
+  }
+
+  .programme-editorial-hero > img {
+    grid-row: 2;
+    height: clamp(320px, 72vw, 480px);
+    border-radius: 28px;
+  }
+
+  .programme-editorial-page .programme-intro-grid,
+  .programme-editorial-page .adoption-impact-grid {
+    grid-template-columns: 1fr;
+    gap: 46px;
+  }
+
+  .programme-editorial-page .programme-intro-image {
+    height: clamp(320px, 72vw, 480px);
+    border-radius: 28px;
+  }
+
+  .programme-editorial-page .adoption-impact-image {
+    height: clamp(320px, 72vw, 480px);
+    border-radius: 28px;
+  }
+
+  .programme-intro-grid,
+  .adoption-impact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .programme-card-grid,
+  .programme-rules-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .injury-care-card {
+    grid-template-columns: 1fr;
+  }
+
   .horse-card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2735,6 +3262,62 @@ select {
 }
 
 @media (max-width: 600px) {
+  .programme-editorial-hero {
+    padding: 54px 18px 68px;
+  }
+
+  .programme-editorial-hero .page-hero-copy h2 {
+    font-size: clamp(2.5rem, 11vw, 3.5rem);
+  }
+
+  .programme-editorial-hero > img {
+    height: 86vw;
+    max-height: 420px;
+    border-radius: 24px;
+  }
+
+  .programme-editorial-panel {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+
+  .programme-editorial-page .programme-detail-row {
+    grid-template-columns: 1fr;
+  }
+
+  .programme-card-grid,
+  .programme-rules-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .programme-card,
+  .programme-rule {
+    padding: 24px;
+  }
+
+  .programme-detail-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 28px 0;
+  }
+
+  .adoption-impact-image,
+  .adoption-impact-image img {
+    min-height: 0;
+  }
+
+  .programme-editorial-page .adoption-impact-image {
+    height: 86vw;
+    max-height: 420px;
+    border-radius: 24px;
+  }
+
+  .programme-editorial-page .programme-intro-image {
+    height: 86vw;
+    max-height: 420px;
+    border-radius: 24px;
+  }
+
   .horse-card-grid {
     grid-template-columns: 1fr;
   }
@@ -3794,5 +4377,44 @@ select {
 
   .scroll-gallery-group[aria-hidden="true"] {
     display: none;
+  }
+}
+
+/* Keep programme editorial heroes from inheriting the compact banner layout. */
+@media (max-width: 900px) {
+  .programme-editorial-page .programme-editorial-hero {
+    grid-template-columns: 1fr;
+    gap: 46px;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    aspect-ratio: auto;
+    padding: 68px 24px 80px;
+    align-items: center;
+  }
+
+  .programme-editorial-page .programme-editorial-hero .page-hero-copy {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .programme-editorial-page .programme-editorial-hero > img {
+    position: static;
+    grid-column: 1;
+    grid-row: 2;
+    height: clamp(320px, 72vw, 480px);
+    border-radius: 28px;
+  }
+}
+
+@media (max-width: 600px) {
+  .programme-editorial-page .programme-editorial-hero {
+    padding: 54px 18px 68px;
+  }
+
+  .programme-editorial-page .programme-editorial-hero > img {
+    height: 86vw;
+    max-height: 420px;
+    border-radius: 24px;
   }
 }
