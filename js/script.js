@@ -132,19 +132,6 @@ const renderPrimaryNav = () => {
       </div>
     </div>` : `<a href="${sectionActivityLink}">Activities</a>`;
 
-  if (document.body.classList.contains('gallopsg-promotion-page')) {
-    nav.innerHTML = `
-      <a href="index.html">Home</a>
-      <a href="index.html">Activities</a>
-      <a href="promotion.html">Promotions</a>
-      <a href="join.html">Join the Team</a>
-      <a href="faq.html">FAQs</a>
-      <a href="contact.html">Contact Us</a>
-      <a href="index.html">Gallop.sg</a>
-    `;
-    return;
-  }
-
   nav.innerHTML = `
     <a href="${homeLink}">Home</a>
     ${onMainSite ? '' : activitiesMenu}
@@ -185,28 +172,54 @@ const renderSectionJoinPage = () => {
   const joinName = joinPage.dataset.joinName;
   const joinImage = joinPage.dataset.joinImage;
   const { section } = getPageContext();
-  const contactFile = `${sectionPagePrefixes[section]}_contact.html`;
+  const contactFile = joinPage.dataset.contactHref
+    || (section ? `${sectionPagePrefixes[section]}_contact.html` : 'contact.html');
 
   joinPage.innerHTML = `
     <section class="page-hero">
       <img src="${joinImage}" alt="${joinName} team" />
       <div class="page-hero-copy reveal">
         <p class="eyebrow">Join The Team</p>
-        <h2>Build a career around horses, service and care</h2>
-        <p>Join a team that supports riders, families and well-loved horses across Singapore.</p>
+        <h2>Build your career with ${joinName}</h2>
+        <p>Work with horses and help create welcoming equestrian experiences for our guests.</p>
       </div>
     </section>
-    <section class="section about-section reveal">
-      <div class="about-card reveal">
-        <p class="eyebrow">Careers</p>
-        <h2>Work with ${joinName}</h2>
-        <p>We welcome people who care about animals, hospitality and creating memorable guest experiences.</p>
-        <ul>
-          <li>Stable operations and horse care roles</li>
-          <li>Guest service and activity support</li>
-          <li>Riding instruction and event support opportunities</li>
-        </ul>
-        <p><a class="btn btn-primary" href="${contactFile}">Contact Us</a></p>
+
+    <section class="stable-careers-section reveal" aria-labelledby="join-careers-title">
+      <div class="stable-careers-intro">
+        <p>If you share our passion and love for horses and equestrian sports and are searching for a career with horses, look no further.</p>
+        <p>We welcome people who are passionate, energetic, animal-loving and eager to learn.</p>
+        <h2 id="join-careers-title">We Are Hiring</h2>
+      </div>
+
+      <div class="stable-careers-grid">
+        <div class="stable-careers-list">
+          <article class="stable-career-role">
+            <h3>Riding Instructors</h3>
+            <p>Singaporeans, Permanent Residents and Malaysians are welcome.</p>
+            <p><strong>Working hours:</strong><br>Full-time positions available.</p>
+          </article>
+
+          <article class="stable-career-role">
+            <h3>Horse Groom (SYCE)</h3>
+            <p>Singaporeans, Permanent Residents and Malaysians are welcome.</p>
+            <p><strong>Responsibilities:</strong><br>Daily horse care, including grooming, showering, tacking and exercising.</p>
+          </article>
+
+          <article class="stable-career-role">
+            <h3>Customer Service Officer</h3>
+            <p>Singaporeans, Permanent Residents and Malaysians are welcome.</p>
+            <p><strong>Working hours:</strong><br>Applicants must be able to work on public holidays and weekends.</p>
+          </article>
+        </div>
+
+        <aside class="stable-careers-callout">
+          <p class="eyebrow">${joinName} Is Hiring</p>
+          <h2>We Want You!</h2>
+          <p>Are you passionate, energetic, animal-loving and eager to learn?</p>
+          <p>We are looking for friendly people who are ready to grow with our team.</p>
+          <a class="btn btn-primary" href="${contactFile}">Contact Us</a>
+        </aside>
       </div>
     </section>
   `;
