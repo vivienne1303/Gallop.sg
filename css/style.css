@@ -1280,6 +1280,8 @@ select {
 }
 
 .activity-poster-section {
+  display: grid;
+  row-gap: clamp(56px, 7vw, 96px);
   background: #dfe9e4;
 }
 
