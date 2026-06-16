@@ -126,17 +126,25 @@ const renderPrimaryNav = () => {
         ${onJackudaActivityPage ? '' : stableActivityLinks}`;
   const activitiesMenu = onStableActivityPage || onJackudaActivityPage ? `
     <div class="nav-dropdown">
-      <button class="nav-dropdown-toggle" type="button">Activities</button>
+      <button class="nav-dropdown-toggle" type="button" aria-expanded="false">Activities</button>
       <div class="nav-dropdown-menu activities-menu">
         ${activityLinks}
       </div>
     </div>` : `<a href="${sectionActivityLink}">Activities</a>`;
+  const joinMenu = section === 'jackuda' ? `
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-toggle" type="button" aria-expanded="false">Join the Team</button>
+      <div class="nav-dropdown-menu">
+        <a href="${sectionJoinLink}">Careers</a>
+        <a href="${pageLink('jackuda/volunteer.html')}">Volunteer</a>
+      </div>
+    </div>` : `<a href="${sectionJoinLink}">Join the Team</a>`;
 
   nav.innerHTML = `
     <a href="${homeLink}">Home</a>
     ${onMainSite ? '' : activitiesMenu}
     <a href="${sectionPromotionLink}">Promotions</a>
-    <a href="${sectionJoinLink}">Join the Team</a>
+    ${joinMenu}
     <a href="${sectionFaqLink}">FAQs</a>
     <a href="${sectionContactLink}">Contact Us</a>
     ${onMainSite ? '' : `<a href="${gallopSgLink}">Gallop.sg</a>`}
