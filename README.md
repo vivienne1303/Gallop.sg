@@ -6,9 +6,9 @@ A static website for Gallop Stable Singapore.
 
 ```text
 Gallop.sg/
+|-- index.html
 |-- pages/
 |   |-- gallopsg/
-|   |   |-- index.html
 |   |   |-- contact.html
 |   |   |-- join.html
 |   |   |-- promotion.html
@@ -24,4 +24,4 @@ Gallop.sg/
 `-- _redirects
 ```
 
-Open `pages/gallopsg/index.html` in a browser to view the site locally.
+Open `index.html` in a browser to view the site locally.

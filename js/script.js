@@ -461,6 +461,7 @@ const renderCmsPriceTable = price => {
           <tr><th>Weekday</th>${weekday}</tr>
           <tr><th>Weekend</th>${weekend}</tr>
         </table>
+        <p class="price-gst-note">Prices include GST</p>
       </div>
     </article>
   `;

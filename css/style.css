@@ -1626,8 +1626,13 @@ select {
   text-transform: uppercase;
 }
 
-.section-alt .price-gst-note {
+.section-alt > .price-gst-note {
   color: #f2d28f;
+}
+
+.rate-card .price-gst-note {
+  margin-top: 12px;
+  color: #8a682c;
 }
 
 .rate-card {
@@ -1653,6 +1658,12 @@ select {
   padding-left: 20px;
   color: rgba(31, 54, 42, 0.86);
   line-height: 1.7;
+}
+
+@media (min-width: 760px) {
+  .rate-grid[data-cms-price-group="beginner"] .rate-meta {
+    min-height: 6.8em;
+  }
 }
 
 .price-table {
