@@ -35,6 +35,17 @@ const sectionHomePages = {
   resort: 'resort.html'
 };
 
+const admiraltyOnlySections = new Set(['polo', 'archery']);
+
+const shouldShowAdmiraltyOnly = () => {
+  const { section } = getPageContext();
+  return admiraltyOnlySections.has(section);
+};
+
+const filterSectionLocations = locations => shouldShowAdmiraltyOnly()
+  ? locations.filter(location => location.id === 'admiralty' || location.name?.includes('Admiralty'))
+  : locations;
+
 const getPageContext = () => {
   const pathParts = window.location.pathname.split('/').filter(Boolean);
   const pagesIndex = pathParts.lastIndexOf('pages');
@@ -283,8 +294,10 @@ const renderSectionContactPage = () => {
         </div>
         <div class="contact-cards">
           <a class="info-card reveal" href="https://maps.app.goo.gl/V8sWLNMiteq4PYPT7" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Admiralty</h3><p>8 Admiralty Rd East, Singapore 759991</p><p><strong>Parking:</strong> Available at St Helena Road</p><p><strong>Tel:</strong> 6463 6012 / 8383 6425</p><p><strong>Walk-in hours:</strong> Daily, 8:30 AM - 12:00 PM | 2:30 PM - 7:00 PM</p><p><strong>Instagram:</strong> @gallop.sg</p></a>
-          <a class="info-card reveal" href="https://maps.app.goo.gl/AuM9Wis6vVBBnEHq8" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Pasir Ris</h3><p>61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225</p><p><strong>Tel:</strong> 6583 9665</p><p><strong>Walk-in hours:</strong> Tuesdays - Sundays, 10:00 AM - 11:30 AM | 2:00 PM - 6:30 PM</p><p><strong>Instagram:</strong> @gallopstablepasirris</p></a>
-          <a class="info-card reveal" href="https://maps.app.goo.gl/nSNznPFzbHDDyW5v7" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Downtown East</h3><p>1 Pasir Ris Close, Singapore 519599</p><p><strong>Parking:</strong> Available at D'Resort</p><p><strong>Tel:</strong> 8787 5377</p><p><strong>Walk-in hours:</strong> Daily, 9:00 AM - 12:00 PM | 2:00 PM - 7:00 PM</p><p><strong>Email:</strong> gallopdowntown@gallopstable.com</p><p><strong>Instagram:</strong> @gallopstabledowntowneast</p></a>
+          ${shouldShowAdmiraltyOnly() ? '' : `
+            <a class="info-card reveal" href="https://maps.app.goo.gl/AuM9Wis6vVBBnEHq8" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Pasir Ris</h3><p>61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225</p><p><strong>Tel:</strong> 6583 9665</p><p><strong>Walk-in hours:</strong> Tuesdays - Sundays, 10:00 AM - 11:30 AM | 2:00 PM - 6:30 PM</p><p><strong>Instagram:</strong> @gallopstablepasirris</p></a>
+            <a class="info-card reveal" href="https://maps.app.goo.gl/nSNznPFzbHDDyW5v7" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Downtown East</h3><p>1 Pasir Ris Close, Singapore 519599</p><p><strong>Parking:</strong> Available at D'Resort</p><p><strong>Tel:</strong> 8787 5377</p><p><strong>Walk-in hours:</strong> Daily, 9:00 AM - 12:00 PM | 2:00 PM - 7:00 PM</p><p><strong>Email:</strong> gallopdowntown@gallopstable.com</p><p><strong>Instagram:</strong> @gallopstabledowntowneast</p></a>
+          `}
         </div>
       </div>
     </section>
@@ -338,7 +351,7 @@ const renderSiteFooter = () => {
   const footer = document.querySelector('.site-footer');
   if (!footer) return;
 
-  if (footer.hasAttribute('data-home-footer')) {
+  if (footer.hasAttribute('data-home-footer') || shouldShowAdmiraltyOnly()) {
     footer.innerHTML = `
       <div class="footer-main">
         <div class="footer-heading footer-heading-visit">
@@ -517,7 +530,7 @@ const applyCmsContent = content => {
 
   const contactCards = document.querySelector('.contact-cards');
   if (contactCards && content.locations?.length) {
-    contactCards.replaceChildren(...content.locations.map(location => {
+    contactCards.replaceChildren(...filterSectionLocations(content.locations).map(location => {
       const card = document.createElement('a');
       card.className = 'info-card reveal reveal-visible';
       card.href = location.map_url;
