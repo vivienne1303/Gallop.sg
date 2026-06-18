@@ -1043,6 +1043,72 @@ select {
   object-fit: contain;
 }
 
+.jackuda-activities-section {
+  padding-block: clamp(64px, 8vw, 112px);
+}
+
+.jackuda-activity-list {
+  width: min(100%, 1200px);
+  margin: 0 auto;
+  display: grid;
+  gap: clamp(48px, 7vw, 88px);
+}
+
+.jackuda-activity-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.92fr);
+  gap: clamp(28px, 5vw, 68px);
+  align-items: center;
+}
+
+.jackuda-activity-copy .eyebrow {
+  margin: 0 0 14px;
+  color: #8a682c;
+}
+
+.jackuda-activity-copy h2 {
+  margin: 0 0 22px;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.9rem, 3vw, 3rem);
+  line-height: 1.14;
+  color: var(--text-dark);
+}
+
+.jackuda-activity-copy p {
+  margin: 0;
+  color: rgba(31, 54, 42, 0.88);
+  font-size: 1.05rem;
+  line-height: 1.9;
+}
+
+.jackuda-activity-copy .btn {
+  margin-top: 28px;
+}
+
+.jackuda-activity-image {
+  position: relative;
+  height: clamp(260px, 30vw, 430px);
+  border: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.08)),
+    #c9d8d0;
+  color: rgba(31, 54, 42, 0.58);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 22px 50px rgba(24, 32, 24, 0.1);
+}
+
+.jackuda-activity-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
 .polo-video-section {
   padding: clamp(56px, 7vw, 96px) 24px;
   background: #dfe9e4;
@@ -1277,7 +1343,16 @@ select {
   width: 100%;
   height: auto;
   border-radius: 20px;
+  cursor: zoom-in;
   box-shadow: 0 24px 60px rgba(4, 39, 33, 0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.promotions-poster-grid img:hover,
+.promotions-poster-grid img:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 30px 70px rgba(4, 39, 33, 0.38);
+  outline: none;
 }
 
 @media (max-width: 900px) {
@@ -1320,7 +1395,16 @@ select {
   width: 100%;
   height: auto;
   border-radius: 16px;
+  cursor: zoom-in;
   box-shadow: 0 24px 60px rgba(4, 39, 33, 0.3);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stable-promotions-row img:hover,
+.stable-promotions-row img:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 30px 70px rgba(4, 39, 33, 0.38);
+  outline: none;
 }
 
 @media (max-width: 900px) {
@@ -1377,6 +1461,56 @@ select {
   font-family: "Playfair Display", serif;
   font-size: clamp(1.35rem, 2vw, 1.75rem);
   font-weight: 600;
+}
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: clamp(18px, 4vw, 44px);
+  background: rgba(4, 22, 18, 0.88);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.image-lightbox.lightbox-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.image-lightbox img {
+  width: auto;
+  max-width: min(96vw, 1280px);
+  max-height: 90vh;
+  border-radius: 18px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.42);
+}
+
+.image-lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.image-lightbox-close:hover,
+.image-lightbox-close:focus-visible {
+  background: var(--gold);
+  color: var(--deep-green);
+  outline: none;
 }
 
 .main-coming-soon {
@@ -4079,6 +4213,14 @@ select {
   .jackuda-original-image {
     height: auto;
     aspect-ratio: 16 / 9;
+  }
+
+  .jackuda-activity-row {
+    grid-template-columns: 1fr;
+  }
+
+  .jackuda-activity-image {
+    height: clamp(240px, 68vw, 360px);
   }
 
   .venture-section {

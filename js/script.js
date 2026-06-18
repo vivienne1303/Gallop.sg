@@ -347,6 +347,68 @@ renderSectionContactPage();
 routeSectionContactLinks();
 initializeWhatsAppContactForms();
 
+const initializeImageLightbox = () => {
+  const lightboxImages = document.querySelectorAll(
+    '.promotions-poster-section img, .activity-poster-section > img'
+  );
+
+  if (!lightboxImages.length) return;
+
+  document.body.insertAdjacentHTML('beforeend', `
+    <div class="image-lightbox" role="dialog" aria-modal="true" aria-label="Expanded image" hidden>
+      <button class="image-lightbox-close" type="button" aria-label="Close expanded image">&times;</button>
+      <img src="" alt="" />
+    </div>
+  `);
+
+  const lightbox = document.querySelector('.image-lightbox');
+  const lightboxImage = lightbox.querySelector('img');
+  const lightboxClose = lightbox.querySelector('.image-lightbox-close');
+  let activeImage = null;
+
+  const closeLightbox = () => {
+    lightbox.classList.remove('lightbox-open');
+    lightbox.hidden = true;
+    document.body.style.overflow = '';
+    activeImage?.focus();
+    activeImage = null;
+  };
+
+  const openLightbox = image => {
+    activeImage = image;
+    lightboxImage.src = image.currentSrc || image.src;
+    lightboxImage.alt = image.alt;
+    lightbox.hidden = false;
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => lightbox.classList.add('lightbox-open'));
+    lightboxClose.focus();
+  };
+
+  lightboxImages.forEach(image => {
+    image.tabIndex = 0;
+    image.setAttribute('role', 'button');
+    image.setAttribute('aria-label', `${image.alt || 'Promotion image'} - enlarge image`);
+
+    image.addEventListener('click', () => openLightbox(image));
+    image.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      openLightbox(image);
+    });
+  });
+
+  lightboxClose.addEventListener('click', closeLightbox);
+  lightbox.addEventListener('click', event => {
+    if (event.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !lightbox.hidden) closeLightbox();
+  });
+};
+
+initializeImageLightbox();
+
 const renderSiteFooter = () => {
   const footer = document.querySelector('.site-footer');
   if (!footer) return;
