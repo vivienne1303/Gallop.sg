@@ -1626,6 +1626,12 @@ select {
   text-transform: uppercase;
 }
 
+.enrolment-gst-note {
+  margin-top: 28px;
+  font-size: 0.92rem;
+  letter-spacing: 0.32em;
+}
+
 .section-alt > .price-gst-note {
   color: #f2d28f;
 }

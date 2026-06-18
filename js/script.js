@@ -637,11 +637,11 @@ if (aiChatForm) {
     },
     {
       patterns: [/what.*wear|attire|clothes|covered shoes|long pants/],
-      answer: 'Long pants and covered shoes are recommended. Proper riding attire is compulsory for enrolled riders. Helmet rental is S$5, boots rental is S$5, and the Gallop T-shirt is S$30.'
+      answer: 'Long pants and covered shoes are recommended. Proper riding attire is compulsory for enrolled riders. Helmet rental is S$5, boots rental is S$5, and the Gallop T-shirt is S$30. Prices include GST.'
     },
     {
       patterns: [/registration fee|rental fee|helmet.*rent|boots.*rent|starter pack|gallop t-?shirt/],
-      answer: 'New lesson enrolments have a one-time S$30 registration fee. The Gallop T-shirt is S$30. Helmet rental and boots rental are S$5 each. A starter pack with uniform, breeches, boots and helmet is also available.'
+      answer: 'New lesson enrolments have a one-time S$30 registration fee. The Gallop T-shirt is S$30. Helmet rental and boots rental are S$5 each. A starter pack with uniform, breeches, boots and helmet is also available. Prices include GST.'
     },
     {
       patterns: [/pony intro|3 year|three year/],
