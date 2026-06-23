@@ -444,11 +444,22 @@ select {
 }
 
 .venture-section-title {
-  margin: 0 0 58px;
+  margin: 0 0 14px;
   color: var(--dark-green);
   font-family: 'Playfair Display', serif;
   font-size: clamp(2.2rem, 4vw, 3.8rem);
   text-align: center;
+}
+
+.venture-section-eyebrow {
+  margin: 0 0 56px;
+  color: #8a682c;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .venture-grid {
@@ -4228,7 +4239,11 @@ select {
   }
 
   .venture-section-title {
-    margin-bottom: 46px;
+    margin-bottom: 12px;
+  }
+
+  .venture-section-eyebrow {
+    margin-bottom: 44px;
   }
 
   .venture-grid {
