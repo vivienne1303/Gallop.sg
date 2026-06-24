@@ -1054,6 +1054,15 @@ select {
   line-height: 1.9;
 }
 
+.service-detail .content-copy > .service-disclaimer {
+  margin: -10px 0 28px;
+  color: rgba(31, 54, 42, 0.72);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1.7;
+}
+
 .service-detail .content-copy ul {
   margin: 0 0 28px;
   padding-left: 22px;
@@ -1254,6 +1263,10 @@ select {
 
 .scroll-gallery-placeholder-row .scroll-gallery-track {
   --gallery-speed: 42s;
+}
+
+.photoshoot-gallery-section .scroll-gallery-track {
+  --gallery-speed: 40s;
 }
 
 .scroll-gallery-group {
@@ -1712,21 +1725,28 @@ select {
 
 .corporate-event-section {
   padding: clamp(56px, 7vw, 96px) 24px;
+}
+
+.corporate-event-section-light {
   background: var(--ivory);
+}
+
+.corporate-event-section-sage {
+  background: var(--cream);
 }
 
 .corporate-event-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(40px, 5vw, 72px);
+  gap: clamp(42px, 5vw, 72px);
   width: min(100%, 1400px);
   margin: 0 auto;
 }
 
-.corporate-event-column {
+.corporate-event-row {
   display: grid;
-  align-content: start;
-  gap: clamp(28px, 3vw, 42px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(40px, 5vw, 72px);
 }
 
 .corporate-event-image {
@@ -1739,7 +1759,9 @@ select {
 .corporate-event-image img {
   display: block;
   width: 100%;
-  height: auto;
+  aspect-ratio: 4 / 3;
+  height: 100%;
+  object-fit: cover;
 }
 
 .corporate-event-copy h2,
@@ -1775,7 +1797,7 @@ select {
   justify-items: center;
   gap: 22px;
   width: min(100%, 900px);
-  margin: clamp(48px, 6vw, 78px) auto 0;
+  margin: clamp(40px, 5vw, 64px) auto 0;
   text-align: center;
 }
 

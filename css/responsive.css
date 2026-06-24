@@ -1,11 +1,11 @@
 /* Extra responsive overrides can live here as the site grows. */
 @media (max-width: 860px) {
-  .corporate-event-grid {
+  .corporate-event-row {
     grid-template-columns: 1fr;
   }
 
-  .corporate-event-intro {
-    order: -1;
+  .corporate-event-image img {
+    aspect-ratio: 16 / 11;
   }
 
   .stable-careers-grid {
