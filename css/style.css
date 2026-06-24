@@ -967,6 +967,22 @@ select {
   color: #8a682c;
 }
 
+.walk-in-note {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0 0 18px;
+  padding: 10px 16px;
+  border: 1px solid rgba(146, 102, 56, 0.22);
+  border-radius: 999px;
+  background: #f4dfb4;
+  color: #244f43;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.25;
+  box-shadow: 0 10px 24px rgba(85, 66, 37, 0.1);
+}
+
 .content-copy h2 {
   margin: 0 0 26px;
   font-family: 'Playfair Display', serif;
@@ -1027,6 +1043,10 @@ select {
   max-width: 1200px;
 }
 
+.service-detail-stacked {
+  grid-template-columns: 1fr;
+}
+
 .service-detail .content-copy > p:not(.eyebrow) {
   margin: 0 0 28px;
   color: rgba(31, 54, 42, 0.88);
@@ -1043,6 +1063,10 @@ select {
 
 .service-detail-image {
   height: clamp(360px, 42vw, 540px);
+}
+
+.content-copy .service-detail-image {
+  margin: 28px 0;
 }
 
 .jackuda-original-image {
@@ -1343,8 +1367,9 @@ select {
 
 .promotions-poster-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(22px, 2.5vw, 34px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 240px));
+  justify-content: center;
+  gap: clamp(14px, 2.2vw, 24px);
   width: min(100%, 1180px);
   margin: 0 auto;
 }
@@ -1352,8 +1377,11 @@ select {
 .promotions-poster-grid img {
   display: block;
   width: 100%;
-  height: auto;
-  border-radius: 20px;
+  aspect-ratio: 4 / 5;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 16px;
   cursor: zoom-in;
   box-shadow: 0 24px 60px rgba(4, 39, 33, 0.3);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -1369,13 +1397,13 @@ select {
 @media (max-width: 900px) {
   .promotions-poster-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(100%, 520px);
   }
 }
 
 @media (max-width: 620px) {
   .promotions-poster-grid {
-    grid-template-columns: 1fr;
-    width: min(100%, 420px);
+    gap: 14px;
   }
 }
 
@@ -1392,23 +1420,31 @@ select {
   align-items: start;
 }
 
-.stable-promotions-row-landscape,
-.stable-promotions-row-black {
+.stable-promotions-row-landscape {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.stable-promotions-row-posters {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+.stable-promotions-row-posters,
+.stable-promotions-row-black {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  justify-content: center;
 }
 
 .stable-promotions-row img {
   display: block;
   width: 100%;
-  height: auto;
   border-radius: 16px;
   cursor: zoom-in;
   box-shadow: 0 24px 60px rgba(4, 39, 33, 0.3);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stable-promotions-row-posters img,
+.stable-promotions-row-black img {
+  aspect-ratio: 4 / 5;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .stable-promotions-row img:hover,
@@ -1419,28 +1455,38 @@ select {
 }
 
 @media (max-width: 900px) {
-  .stable-promotions-row-landscape,
+  .stable-promotions-row-landscape {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stable-promotions-row-posters,
+  .stable-promotions-row-black {
+    grid-template-columns: repeat(2, minmax(0, 240px));
+    justify-content: center;
+  }
+}
+
+@media (max-width: 620px) {
+  .stable-promotions-layout {
+    width: min(100%, 520px);
+  }
+
+  .stable-promotions-row-landscape {
+    grid-template-columns: 1fr;
+  }
+
   .stable-promotions-row-posters,
   .stable-promotions-row-black {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 620px) {
-  .stable-promotions-layout {
-    width: min(100%, 420px);
-  }
-
-  .stable-promotions-row-landscape,
-  .stable-promotions-row-posters,
-  .stable-promotions-row-black {
-    grid-template-columns: 1fr;
-  }
-}
-
 .activity-poster-section {
   display: grid;
-  row-gap: clamp(56px, 7vw, 96px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 260px));
+  justify-content: center;
+  gap: clamp(16px, 2.5vw, 28px);
+  padding-block: clamp(28px, 5vw, 56px);
   background: #dfe9e4;
 }
 
@@ -1450,11 +1496,55 @@ select {
 
 .activity-poster-section > img {
   display: block;
-  width: min(100%, 1100px);
-  height: auto;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  height: 100%;
   margin: 0 auto;
-  border-radius: 24px;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 16px;
   box-shadow: var(--shadow);
+}
+
+.activity-poster-section-compact {
+  row-gap: clamp(24px, 4vw, 42px);
+}
+
+.activity-poster-thumbnails {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(14px, 2.2vw, 24px);
+  width: min(100%, 1100px);
+  margin: 0 auto;
+}
+
+.activity-poster-thumbnails img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.activity-poster-section img {
+  cursor: zoom-in;
+}
+
+.activity-poster-section img:hover,
+.activity-poster-section img:focus-visible {
+  outline: 3px solid rgba(146, 102, 56, 0.38);
+  outline-offset: 5px;
+}
+
+@media (max-width: 900px) {
+  .activity-poster-thumbnails {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(100%, 760px);
+  }
 }
 
 .promotions-coming-soon {

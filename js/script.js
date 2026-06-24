@@ -349,7 +349,7 @@ initializeWhatsAppContactForms();
 
 const initializeImageLightbox = () => {
   const lightboxImages = document.querySelectorAll(
-    '.promotions-poster-section img, .activity-poster-section > img'
+    '.promotions-poster-section img, .activity-poster-section img'
   );
 
   if (!lightboxImages.length) return;
@@ -639,6 +639,8 @@ const applyCmsContent = content => {
 };
 
 const loadCmsContent = async () => {
+  if (window.location.protocol === 'file:') return;
+
   const contentPath = rootAsset('content/site.json');
 
   try {
