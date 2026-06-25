@@ -953,6 +953,7 @@ const navLinks = document.querySelectorAll('.main-nav a');
 const navToggle = document.querySelector('.nav-toggle');
 const navDropdowns = document.querySelectorAll('.nav-dropdown');
 const revealElements = document.querySelectorAll('.reveal');
+const ventureLinks = document.querySelectorAll('.venture-link');
 const siteHeader = document.querySelector('.site-header');
 const homeBanner = document.querySelector('.home-banner');
 const homeBannerVideo = document.querySelector('.home-banner-video');
@@ -1187,6 +1188,36 @@ const observer = new IntersectionObserver((entries, observer) => {
 });
 
 revealElements.forEach(element => observer.observe(element));
+
+const horseshoeMobileQuery = window.matchMedia('(max-width: 768px)');
+
+const clearScrollActiveHorseshoes = () => {
+  ventureLinks.forEach(link => link.classList.remove('is-scroll-active'));
+};
+
+if (ventureLinks.length) {
+  const horseshoeObserver = new IntersectionObserver(entries => {
+    if (!horseshoeMobileQuery.matches) {
+      clearScrollActiveHorseshoes();
+      return;
+    }
+
+    entries.forEach(entry => {
+      entry.target.classList.toggle('is-scroll-active', entry.isIntersecting);
+    });
+  }, {
+    threshold: 0.35,
+    rootMargin: '-32% 0px -32% 0px'
+  });
+
+  ventureLinks.forEach(link => horseshoeObserver.observe(link));
+
+  horseshoeMobileQuery.addEventListener('change', event => {
+    if (!event.matches) {
+      clearScrollActiveHorseshoes();
+    }
+  });
+}
 
 let scrollFrame;
 
