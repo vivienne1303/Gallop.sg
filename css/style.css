@@ -1419,13 +1419,28 @@ select {
 
 @media (max-width: 620px) {
   .promotions-poster-section {
-    padding-inline: 16px;
+    overflow: hidden;
+    padding-inline: 0;
   }
 
   .promotions-poster-grid {
-    grid-template-columns: 1fr;
+    grid-auto-columns: minmax(0, min(82vw, 320px));
+    grid-auto-flow: column;
+    grid-template-columns: none;
     gap: 14px;
-    width: min(100%, 320px);
+    justify-content: start;
+    width: 100vw;
+    max-width: none;
+    margin-inline: calc(50% - 50vw);
+    overflow-x: auto;
+    padding: 0 max(16px, calc((100vw - min(82vw, 320px)) / 2)) 12px;
+    scroll-padding-inline: max(16px, calc((100vw - min(82vw, 320px)) / 2));
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .promotions-poster-grid img {
+    scroll-snap-align: center;
   }
 }
 
@@ -1492,7 +1507,7 @@ select {
 
 @media (max-width: 620px) {
   .stable-promotions-layout {
-    width: min(100%, 340px);
+    width: 100%;
   }
 
   .stable-promotions-row-landscape {
@@ -1501,8 +1516,24 @@ select {
 
   .stable-promotions-row-posters,
   .stable-promotions-row-black {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    grid-auto-columns: minmax(0, min(82vw, 320px));
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    gap: 14px;
+    justify-content: start;
+    width: 100vw;
+    max-width: none;
+    margin-inline: calc(50% - 50vw);
+    overflow-x: auto;
+    padding: 0 max(16px, calc((100vw - min(82vw, 320px)) / 2)) 12px;
+    scroll-padding-inline: max(16px, calc((100vw - min(82vw, 320px)) / 2));
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .stable-promotions-row-posters img,
+  .stable-promotions-row-black img {
+    scroll-snap-align: center;
   }
 }
 
