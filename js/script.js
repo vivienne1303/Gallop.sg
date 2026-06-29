@@ -416,14 +416,49 @@ const initializePromotionCarousels = () => {
   carousels.forEach(carousel => {
     const track = carousel.querySelector('.promotion-carousel-track');
     const slides = [...carousel.querySelectorAll('.promotion-carousel-track img')];
-    const previousButton = carousel.querySelector('.promotion-carousel-button-prev');
-    const nextButton = carousel.querySelector('.promotion-carousel-button-next');
 
-    if (!track || slides.length < 2 || !previousButton || !nextButton) return;
+    if (!track || slides.length < 2) return;
+
+    carousel.querySelector('.promotion-carousel-dots')?.remove();
+    carousel.querySelectorAll('.promotion-carousel-button').forEach(button => button.remove());
+
+    const previousButton = document.createElement('button');
+    previousButton.className = 'promotion-carousel-button promotion-carousel-button-prev';
+    previousButton.type = 'button';
+    previousButton.setAttribute('aria-label', 'Previous promotion');
+
+    const nextButton = document.createElement('button');
+    nextButton.className = 'promotion-carousel-button promotion-carousel-button-next';
+    nextButton.type = 'button';
+    nextButton.setAttribute('aria-label', 'Next promotion');
+
+    carousel.insertBefore(previousButton, track);
+    carousel.appendChild(nextButton);
+
+    const dots = document.createElement('div');
+    dots.className = 'promotion-carousel-dots';
+    dots.setAttribute('role', 'tablist');
+    dots.setAttribute('aria-label', 'Choose promotion image');
+
+    slides.forEach((slide, index) => {
+      const dot = document.createElement('button');
+      dot.className = 'promotion-carousel-dot';
+      dot.type = 'button';
+      dot.setAttribute('role', 'tab');
+      dot.setAttribute('aria-label', `Show ${slide.alt || `promotion ${index + 1}`}`);
+      dots.appendChild(dot);
+    });
+
+    carousel.appendChild(dots);
+
+    const dotButtons = [...dots.querySelectorAll('.promotion-carousel-dot')];
 
     let activeIndex = 0;
     let autoTimer = null;
     let scrollTimer = null;
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let suppressNextClick = false;
 
     const getSlideLeft = index => slides[index].offsetLeft - track.offsetLeft;
 
@@ -433,7 +468,17 @@ const initializePromotionCarousels = () => {
         left: getSlideLeft(activeIndex),
         behavior: prefersReducedMotion.matches ? 'auto' : 'smooth'
       });
+      updateDots();
     };
+
+    function updateDots() {
+      dotButtons.forEach((dot, index) => {
+        const isActive = index === activeIndex;
+        dot.classList.toggle('is-active', isActive);
+        dot.setAttribute('aria-selected', String(isActive));
+        dot.tabIndex = isActive ? 0 : -1;
+      });
+    }
 
     const stopAutoScroll = () => {
       if (!autoTimer) return;
@@ -458,7 +503,16 @@ const initializePromotionCarousels = () => {
           ? index
           : closestIndex;
       }, activeIndex);
+      updateDots();
     };
+
+    dotButtons.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        stopAutoScroll();
+        goToSlide(index);
+        startAutoScroll();
+      });
+    });
 
     previousButton.addEventListener('click', event => {
       event.stopPropagation();
@@ -474,10 +528,62 @@ const initializePromotionCarousels = () => {
       startAutoScroll();
     });
 
+    carousel.addEventListener('keydown', event => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+
+      event.stopPropagation();
+      event.preventDefault();
+      stopAutoScroll();
+      goToSlide(activeIndex + (event.key === 'ArrowRight' ? 1 : -1));
+      startAutoScroll();
+    });
+
     track.addEventListener('scroll', () => {
       window.clearTimeout(scrollTimer);
       scrollTimer = window.setTimeout(syncActiveSlide, 120);
     }, { passive: true });
+
+    track.addEventListener('touchstart', event => {
+      if (event.touches.length !== 1) return;
+
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+      suppressNextClick = false;
+      stopAutoScroll();
+    }, { passive: true });
+
+    track.addEventListener('touchend', event => {
+      if (!touchStartX || !event.changedTouches.length) {
+        startAutoScroll();
+        return;
+      }
+
+      const touchEndX = event.changedTouches[0].clientX;
+      const touchEndY = event.changedTouches[0].clientY;
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+      const isHorizontalSwipe = Math.abs(deltaX) > 44 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2;
+
+      if (isHorizontalSwipe) {
+        suppressNextClick = true;
+        goToSlide(activeIndex + (deltaX < 0 ? 1 : -1));
+        window.setTimeout(() => {
+          suppressNextClick = false;
+        }, 350);
+      }
+
+      touchStartX = 0;
+      touchStartY = 0;
+      startAutoScroll();
+    }, { passive: true });
+
+    track.addEventListener('click', event => {
+      if (!suppressNextClick) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      suppressNextClick = false;
+    }, true);
 
     carousel.addEventListener('mouseenter', stopAutoScroll);
     carousel.addEventListener('mouseleave', startAutoScroll);
@@ -486,6 +592,7 @@ const initializePromotionCarousels = () => {
     prefersReducedMotion.addEventListener('change', startAutoScroll);
     window.addEventListener('resize', () => goToSlide(activeIndex));
 
+    updateDots();
     startAutoScroll();
   });
 };
