@@ -409,6 +409,85 @@ const initializeImageLightbox = () => {
 
 initializeImageLightbox();
 
+const initializePromotionCarousels = () => {
+  const carousels = document.querySelectorAll('.promotion-carousel');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  carousels.forEach(carousel => {
+    const track = carousel.querySelector('.promotion-carousel-track');
+    const slides = [...carousel.querySelectorAll('.promotion-carousel-track img')];
+    const previousButton = carousel.querySelector('.promotion-carousel-button-prev');
+    const nextButton = carousel.querySelector('.promotion-carousel-button-next');
+
+    if (!track || slides.length < 2 || !previousButton || !nextButton) return;
+
+    let activeIndex = 0;
+    let autoTimer = null;
+    let scrollTimer = null;
+
+    const goToSlide = index => {
+      activeIndex = (index + slides.length) % slides.length;
+      track.scrollTo({
+        left: slides[activeIndex].offsetLeft,
+        behavior: prefersReducedMotion.matches ? 'auto' : 'smooth'
+      });
+    };
+
+    const stopAutoScroll = () => {
+      if (!autoTimer) return;
+      window.clearInterval(autoTimer);
+      autoTimer = null;
+    };
+
+    const startAutoScroll = () => {
+      stopAutoScroll();
+      if (prefersReducedMotion.matches) return;
+      autoTimer = window.setInterval(() => goToSlide(activeIndex + 1), 4500);
+    };
+
+    const syncActiveSlide = () => {
+      const trackCenter = track.scrollLeft + track.clientWidth / 2;
+      activeIndex = slides.reduce((closestIndex, slide, index) => {
+        const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+        const closestSlide = slides[closestIndex];
+        const closestCenter = closestSlide.offsetLeft + closestSlide.offsetWidth / 2;
+
+        return Math.abs(slideCenter - trackCenter) < Math.abs(closestCenter - trackCenter)
+          ? index
+          : closestIndex;
+      }, activeIndex);
+    };
+
+    previousButton.addEventListener('click', () => {
+      stopAutoScroll();
+      goToSlide(activeIndex - 1);
+      startAutoScroll();
+    });
+
+    nextButton.addEventListener('click', () => {
+      stopAutoScroll();
+      goToSlide(activeIndex + 1);
+      startAutoScroll();
+    });
+
+    track.addEventListener('scroll', () => {
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(syncActiveSlide, 120);
+    }, { passive: true });
+
+    carousel.addEventListener('mouseenter', stopAutoScroll);
+    carousel.addEventListener('mouseleave', startAutoScroll);
+    carousel.addEventListener('focusin', stopAutoScroll);
+    carousel.addEventListener('focusout', startAutoScroll);
+    prefersReducedMotion.addEventListener('change', startAutoScroll);
+    window.addEventListener('resize', () => goToSlide(activeIndex));
+
+    startAutoScroll();
+  });
+};
+
+initializePromotionCarousels();
+
 const renderSiteFooter = () => {
   const footer = document.querySelector('.site-footer');
   if (!footer) return;
