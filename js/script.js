@@ -425,10 +425,12 @@ const initializePromotionCarousels = () => {
     let autoTimer = null;
     let scrollTimer = null;
 
+    const getSlideLeft = index => slides[index].offsetLeft - track.offsetLeft;
+
     const goToSlide = index => {
       activeIndex = (index + slides.length) % slides.length;
       track.scrollTo({
-        left: slides[activeIndex].offsetLeft,
+        left: getSlideLeft(activeIndex),
         behavior: prefersReducedMotion.matches ? 'auto' : 'smooth'
       });
     };
@@ -458,13 +460,15 @@ const initializePromotionCarousels = () => {
       }, activeIndex);
     };
 
-    previousButton.addEventListener('click', () => {
+    previousButton.addEventListener('click', event => {
+      event.stopPropagation();
       stopAutoScroll();
       goToSlide(activeIndex - 1);
       startAutoScroll();
     });
 
-    nextButton.addEventListener('click', () => {
+    nextButton.addEventListener('click', event => {
+      event.stopPropagation();
       stopAutoScroll();
       goToSlide(activeIndex + 1);
       startAutoScroll();
