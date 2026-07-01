@@ -165,6 +165,14 @@ const renderPrimaryNav = () => {
 renderPrimaryNav();
 
 const syncScrollingGalleries = () => {
+  const pixelsPerSecond = 48;
+  const setGallerySpeed = (track, sourceGroup) => {
+    const groupWidth = sourceGroup.scrollWidth;
+    if (!groupWidth) return;
+
+    track.style.setProperty('--gallery-speed', `${(groupWidth / pixelsPerSecond).toFixed(2)}s`);
+  };
+
   document.querySelectorAll('.scroll-gallery-track').forEach(track => {
     const groups = [...track.querySelectorAll(':scope > .scroll-gallery-group')];
     const sourceGroup = groups[0];
@@ -179,6 +187,12 @@ const syncScrollingGalleries = () => {
       image.loading = 'lazy';
     });
     track.appendChild(loopGroup);
+    setGallerySpeed(track, sourceGroup);
+
+    if ('ResizeObserver' in window) {
+      const resizeObserver = new ResizeObserver(() => setGallerySpeed(track, sourceGroup));
+      resizeObserver.observe(sourceGroup);
+    }
   });
 };
 
