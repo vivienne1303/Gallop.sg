@@ -1256,20 +1256,12 @@ select {
 .scroll-gallery-track {
   display: flex;
   width: max-content;
-  animation: gallery-scroll var(--gallery-speed, 130s) linear infinite;
+  --gallery-speed: 130s;
+  animation: gallery-scroll var(--gallery-speed) linear infinite;
 }
 
 .scroll-gallery-row-right .scroll-gallery-track {
-  --gallery-speed: 42s;
   animation-direction: reverse;
-}
-
-.scroll-gallery-placeholder-row .scroll-gallery-track {
-  --gallery-speed: 42s;
-}
-
-.photoshoot-gallery-section .scroll-gallery-track {
-  --gallery-speed: 40s;
 }
 
 .scroll-gallery-group {
@@ -4158,15 +4150,33 @@ select {
 }
 
 .opening-gallery h2 {
-  margin: 0 24px 34px;
+  margin: 0 24px 14px;
   color: #fffaf0;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1.8rem, 3vw, 3rem);
   text-align: center;
 }
 
-.opening-gallery-slider .scroll-gallery-track {
-  --gallery-speed: 75s;
+.opening-gallery-link {
+  max-width: 760px;
+  margin: 0 auto 34px;
+  padding: 0 24px;
+  color: rgba(255, 250, 240, 0.86);
+  font-size: clamp(0.98rem, 1.3vw, 1.12rem);
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.opening-gallery-link a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.opening-gallery-link a:hover,
+.opening-gallery-link a:focus-visible {
+  color: #fffaf0;
 }
 
 .opening-gallery-card {
