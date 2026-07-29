@@ -249,16 +249,7 @@
     {
       "gallery_number": 1,
       "path": "pages/jackuda/birthday-party.html",
-      "images": [
-        {
-          "image": "images/uploads/workshop-flyer.png",
-          "alt": "testing 2"
-        },
-        {
-          "image": "images/uploads/xcorp-logo.jpeg",
-          "alt": "Testing"
-        }
-      ]
+      "images": []
     }
   ]
 }
