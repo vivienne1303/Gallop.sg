@@ -5,7 +5,7 @@ backend:
 local_backend: true
 
 media_folder: images/uploads
-public_folder: /Gallop.sg/images/uploads
+public_folder: images/uploads
 
 collections:
   - name: website
@@ -68,3 +68,73 @@ collections:
               - { label: Session Columns, name: sessions, widget: list, field: { label: Session, name: session, widget: string } }
               - { label: Weekday Prices, name: weekday, widget: list, field: { label: Price, name: price, widget: string } }
               - { label: Weekend Prices, name: weekend, widget: list, field: { label: Price, name: price, widget: string } }
+
+          - label: Page Text and Hero Pictures
+            label_singular: Page
+            name: pages
+            widget: list
+            summary: "{{fields.path}}"
+            hint: "Add a page once, then edit its heading, introduction or hero picture here."
+            fields:
+              - label: Website Page
+                name: path
+                widget: select
+                options:
+                  - { label: Home, value: index.html }
+                  - { label: Gallop AI, value: pages/gallopsg/gallop-ai.html }
+                  - { label: Promotions, value: pages/gallopsg/promotion.html }
+                  - { label: Join the Team, value: pages/gallopsg/join.html }
+                  - { label: FAQs, value: pages/gallopsg/faq.html }
+                  - { label: Contact, value: pages/gallopsg/contact.html }
+                  - { label: Gallop Stable, value: pages/stable/stable.html }
+                  - { label: Riding Lessons, value: pages/stable/riding-lessons.html }
+                  - { label: Adopt a Horse, value: pages/stable/adopt-a-horse.html }
+                  - { label: Lease a Horse, value: pages/stable/lease-a-horse.html }
+                  - { label: Outdoor Pony Hire, value: pages/stable/outdoor-pony-hire.html }
+                  - { label: Gallop CARES, value: pages/care/gallop-care.html }
+                  - { label: Gallop Jackuda, value: pages/jackuda/jackuda.html }
+                  - { label: Camps and Workshops, value: pages/jackuda/camps-workshops.html }
+                  - { label: Birthday Party, value: pages/jackuda/birthday-party.html }
+                  - { label: Horseshoe Painting, value: pages/jackuda/horseshoe-painting.html }
+                  - { label: Learning Journey, value: pages/jackuda/learning-journey.html }
+                  - { label: Photoshoot, value: pages/jackuda/photoshoot.html }
+                  - { label: Pony Rides and Feeding, value: pages/jackuda/pony-rides-feeding.html }
+                  - { label: Trail Rides, value: pages/jackuda/trail-rides.html }
+              - { label: Small Heading, name: eyebrow, widget: string, required: false }
+              - { label: Main Heading, name: heading, widget: string, required: false }
+              - { label: Introduction, name: introduction, widget: text, required: false }
+              - { label: Hero Picture, name: hero_image, widget: image, required: false, hint: "The website automatically crops this picture to the existing hero size." }
+              - { label: Hero Picture Description, name: hero_alt, widget: string, required: false, hint: "Describe the picture for visitors using screen readers." }
+
+          - label: Picture Galleries
+            label_singular: Gallery
+            name: galleries
+            widget: list
+            summary: "{{fields.path}} — gallery {{fields.gallery_number}}"
+            hint: "Pictures can be added, reordered or deleted. The website automatically keeps every picture the same size."
+            fields:
+              - label: Website Page
+                name: path
+                widget: select
+                options:
+                  - { label: Website Home, value: index.html }
+                  - { label: Gallop SG Home, value: pages/gallopsg/index.html }
+                  - { label: Gallop Stable, value: pages/stable/stable.html }
+                  - { label: Riding Lessons, value: pages/stable/riding-lessons.html }
+                  - { label: Outdoor Pony Hire, value: pages/stable/outdoor-pony-hire.html }
+                  - { label: Gallop CARES, value: pages/care/gallop-care.html }
+                  - { label: Gallop Jackuda, value: pages/jackuda/jackuda.html }
+                  - { label: Birthday Party, value: pages/jackuda/birthday-party.html }
+                  - { label: Horseshoe Painting, value: pages/jackuda/horseshoe-painting.html }
+                  - { label: Learning Journey, value: pages/jackuda/learning-journey.html }
+                  - { label: Photoshoot, value: pages/jackuda/photoshoot.html }
+                  - { label: Pony Rides and Feeding, value: pages/jackuda/pony-rides-feeding.html }
+              - { label: Gallery Number, name: gallery_number, widget: number, value_type: int, min: 1, default: 1, hint: "Use 1 for the first gallery on a page, 2 for the second, and so on." }
+              - label: Pictures
+                label_singular: Picture
+                name: images
+                widget: list
+                summary: "{{fields.alt}}"
+                fields:
+                  - { label: Picture, name: image, widget: image }
+                  - { label: Picture Description, name: alt, widget: string }

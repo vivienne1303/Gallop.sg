@@ -4,6 +4,43 @@ The CMS is available at:
 
 `https://vivienne1303.github.io/Gallop.sg/admin/`
 
+## What staff can edit
+
+After signing in, open **Website Content → Gallop SG Website**. Staff can:
+
+- edit About Us text, FAQs, contact information and locations;
+- add, edit or delete riding lesson price rows;
+- edit page hero headings, introductions and hero pictures;
+- add, reorder or delete pictures in the website's managed galleries.
+
+Uploaded pictures are stored in `images/uploads`. Gallery pictures are
+automatically cropped inside the website's existing fixed-size gallery cards,
+so portrait and landscape uploads cannot change the gallery layout.
+
+To manage a gallery for the first time:
+
+1. Open **Picture Galleries** and choose **Add Gallery**.
+2. Select the website page.
+3. Leave **Gallery Number** as `1` unless the page has more than one gallery.
+4. Add pictures and write a short description for each picture.
+5. Press **Publish**. GitHub Pages updates after the CMS commit is deployed.
+
+Deleting every picture from a managed gallery hides that gallery. Deleting the
+gallery record itself restores the pictures originally written in the page.
+
+## Give a staff member access
+
+The production admin uses Netlify Identity with Git Gateway:
+
+1. Open the Netlify site for `gallopsg.netlify.app`.
+2. Go to **Integrations → Identity → Users**.
+3. Choose **Invite users** and enter the staff member's email address.
+4. The staff member accepts the invitation, creates a password and signs in at
+   the admin URL above.
+
+Keep Identity registration set to **Invite only** so the public cannot create
+admin accounts.
+
 ## Local editing
 
 1. Install and run the Decap proxy:

@@ -1,0 +1,21 @@
+{
+  "name": "gallop-ai-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Railway-ready API for the Gallop Stable website assistant",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "openai": "^5.11.0"
+  }
+}

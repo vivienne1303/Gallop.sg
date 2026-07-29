@@ -746,6 +746,73 @@ const renderCmsPriceTable = price => {
   `;
 };
 
+const getCmsPagePath = () => {
+  const parts = window.location.pathname.split('/').filter(Boolean);
+  const projectIndex = parts.indexOf('Gallop.sg');
+  const relativeParts = projectIndex >= 0 ? parts.slice(projectIndex + 1) : parts;
+  const path = relativeParts.join('/');
+  return path || 'index.html';
+};
+
+const resolveCmsImage = imagePath => {
+  if (!imagePath) return '';
+  if (/^(?:https?:)?\/\//i.test(imagePath) || imagePath.startsWith('data:')) return imagePath;
+  return rootAsset(imagePath.replace(/^\/+/, ''));
+};
+
+const applyCmsPageContent = content => {
+  const page = content.pages?.find(item => item.path === getCmsPagePath());
+  if (!page) return;
+
+  const hero = document.querySelector('.page-hero, .ai-chat-intro, .home-banner');
+  const copy = hero?.querySelector('.page-hero-copy, .ai-chat-intro > div, .home-banner-content');
+  const eyebrow = copy?.querySelector('.eyebrow');
+  const heading = copy?.querySelector('h1, h2');
+  const introduction = copy?.querySelector('p:not(.eyebrow)');
+  const image = hero?.querySelector(':scope > img, .home-banner-video-poster');
+
+  if (eyebrow && page.eyebrow) eyebrow.textContent = page.eyebrow;
+  if (heading && page.heading) heading.textContent = page.heading;
+  if (introduction && page.introduction) introduction.textContent = page.introduction;
+  if (image && page.hero_image) {
+    image.src = resolveCmsImage(page.hero_image);
+    if (page.hero_alt) image.alt = page.hero_alt;
+  }
+};
+
+const applyCmsGalleries = content => {
+  const pagePath = getCmsPagePath();
+  const pageGalleries = content.galleries?.filter(gallery => gallery.path === pagePath) || [];
+  const galleries = [...document.querySelectorAll('.scroll-gallery')];
+
+  pageGalleries.forEach(gallery => {
+    const galleryIndex = Math.max(Number(gallery.gallery_number || 1) - 1, 0);
+    const galleryElement = galleries[galleryIndex];
+    const track = galleryElement?.querySelector('.scroll-gallery-track');
+    const sourceGroup = track?.querySelector(':scope > .scroll-gallery-group');
+    if (!sourceGroup) return;
+
+    if (!gallery.images?.length) {
+      galleryElement.hidden = true;
+      return;
+    }
+
+    galleryElement.hidden = false;
+    sourceGroup.replaceChildren(...gallery.images.map(item => {
+      const card = document.createElement('figure');
+      card.className = 'scroll-gallery-card';
+      const image = document.createElement('img');
+      image.src = resolveCmsImage(item.image);
+      image.alt = item.alt || '';
+      image.loading = 'lazy';
+      card.appendChild(image);
+      return card;
+    }));
+  });
+
+  if (pageGalleries.length) syncScrollingGalleries();
+};
+
 const applyCmsContent = content => {
   const aboutHeading = document.querySelector('#about .hero-copy h2');
   const aboutIntroduction = document.querySelector('#about .hero-copy > p:not(.eyebrow)');
@@ -832,7 +899,8 @@ const applyCmsContent = content => {
     const location = content.locations?.[index];
     if (!location) return;
     const heading = card.querySelector('h3');
-    const address = card.querySelector('.footer-location-details > p');
+    c
+    onst address = card.querySelector('.footer-location-details > p');
     const hours = card.querySelector('.footer-location-hours');
     if (heading) heading.textContent = location.name.replace('Gallop Stable @ ', '');
     if (address) address.textContent = location.address;
@@ -840,6 +908,9 @@ const applyCmsContent = content => {
       hours.innerHTML = `<p class="footer-days">${escapeCmsText(location.days)}</p><p>${escapeCmsText(location.morning_hours)}</p><p>${escapeCmsText(location.afternoon_hours)}</p>`;
     }
   });
+
+  applyCmsPageContent(content);
+  applyCmsGalleries(content);
 };
 
 const loadCmsContent = async () => {
@@ -876,6 +947,14 @@ document.querySelectorAll('[data-horse-gallery]').forEach(gallery => {
 const aiChatForm = document.querySelector('#ai-chat-form');
 
 if (aiChatForm) {
+  const chatbotBackendScript = document.createElement('script');
+  chatbotBackendScript.src = rootAsset('frontend/modified%20chatbot.js');
+  document.head.appendChild(chatbotBackendScript);
+}
+
+// The former local keyword-response engine is retained temporarily for an
+// easy rollback, but is disabled now that Gallop AI uses the backend API.
+if (false && aiChatForm) {
   const chatMessages = document.querySelector('#ai-chat-messages');
   const chatInput = document.querySelector('#ai-chat-input');
   const suggestionButtons = document.querySelectorAll('.ai-chat-suggestions button');
