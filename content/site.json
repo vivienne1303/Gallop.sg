@@ -245,11 +245,5 @@
     }
   ],
   "pages": [],
-  "galleries": [
-    {
-      "gallery_number": 1,
-      "path": "pages/jackuda/birthday-party.html",
-      "images": []
-    }
-  ]
+  "galleries": []
 }
