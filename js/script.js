@@ -899,8 +899,7 @@ const applyCmsContent = content => {
     const location = content.locations?.[index];
     if (!location) return;
     const heading = card.querySelector('h3');
-    c
-    onst address = card.querySelector('.footer-location-details > p');
+    const address = card.querySelector('.footer-location-details > p');
     const hours = card.querySelector('.footer-location-hours');
     if (heading) heading.textContent = location.name.replace('Gallop Stable @ ', '');
     if (address) address.textContent = location.address;

@@ -1,11 +1,12 @@
 /*
  * Gallop AI frontend integration.
  *
- * Set window.GALLOP_AI_API_BASE_URL to the Railway public domain (without a
- * trailing slash) before this file runs on GitHub Pages. When unset, requests
- * use the current origin, which is convenient for local/same-origin hosting.
+ * Production uses the Railway backend below. Developers can override it before
+ * this file loads by setting window.GALLOP_AI_API_BASE_URL.
  */
-const GALLOP_AI_API_BASE_URL = String(window.GALLOP_AI_API_BASE_URL || '').replace(/\/+$/, '');
+const GALLOP_AI_API_BASE_URL = String(
+  window.GALLOP_AI_API_BASE_URL || 'https://gallopsg-production.up.railway.app'
+).replace(/\/+$/, '');
 const GALLOP_AI_TIMEOUT_MS = 20000;
 const GALLOP_AI_MAX_LENGTH = 500;
 
