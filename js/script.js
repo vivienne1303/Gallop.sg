@@ -275,7 +275,7 @@ const renderSectionContactPage = () => {
     </section>
     <section class="contact-form-section reveal" aria-labelledby="contact-form-title">
       <h2 id="contact-form-title">Contact Us Now</h2>
-      <form class="contact-form" data-whatsapp-contact>
+      <form class="contact-form" data-email-contact>
         <div class="contact-form-field">
           <label for="contact-name">Your Name <span>(required)</span></label>
           <input id="contact-name" name="Name" type="text" autocomplete="name" required />
@@ -296,7 +296,7 @@ const renderSectionContactPage = () => {
           <label for="contact-message">Your Message</label>
           <textarea id="contact-message" name="Message" rows="10"></textarea>
         </div>
-        <button class="contact-form-submit" type="submit">Send</button>
+        <button class="contact-form-submit" type="submit">Send Email</button>
       </form>
     </section>
     <section class="section contact-section reveal">
@@ -328,30 +328,26 @@ const routeSectionContactLinks = () => {
   });
 };
 
-const initializeWhatsAppContactForms = () => {
-  const whatsappNumber = '6583836425';
+const initializeEmailContactForms = () => {
+  const enquiryEmail = 'enquiry@gallopstable.com';
 
   document.querySelectorAll('.contact-form').forEach(form => {
     form.addEventListener('submit', event => {
       event.preventDefault();
 
       const formData = new FormData(form);
-      const message = [
+      const subject = formData.get('Subject') || 'Website enquiry';
+      const body = [
         'Hello Gallop SG, I would like to make an enquiry.',
         '',
         `Name: ${formData.get('Name') || '-'}`,
         `Email: ${formData.get('Email') || '-'}`,
         `Phone: ${formData.get('Phone number') || '-'}`,
-        `Subject: ${formData.get('Subject') || '-'}`,
         '',
         `Message: ${formData.get('Message') || '-'}`
       ].join('\n');
 
-      window.open(
-        `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`,
-        '_blank',
-        'noopener,noreferrer'
-      );
+      window.location.href = `mailto:${enquiryEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
   });
 };
@@ -359,7 +355,7 @@ const initializeWhatsAppContactForms = () => {
 renderSectionJoinPage();
 renderSectionContactPage();
 routeSectionContactLinks();
-initializeWhatsAppContactForms();
+initializeEmailContactForms();
 
 const initializeImageLightbox = () => {
   const lightboxImages = document.querySelectorAll(
