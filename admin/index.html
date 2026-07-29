@@ -15,64 +15,6 @@
 </head>
 <body>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    const identityTokenPattern = /(?:^|[&#])(invite_token|confirmation_token|recovery_token|access_token)=/;
-    const identityTokenMatch = window.location.hash.match(identityTokenPattern);
-    let decapLoaded = false;
-
-    const loadDecap = () => {
-      if (decapLoaded) return;
-      decapLoaded = true;
-
-      const script = document.createElement('script');
-      script.src = 'https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js';
-      document.body.appendChild(script);
-    };
-
-    if (window.netlifyIdentity) {
-      document.addEventListener('click', event => {
-        const loginButton = event.target.closest('button, a');
-        if (!loginButton) return;
-
-        const label = loginButton.textContent.trim().toLowerCase();
-        if (!label.includes('login with netlify identity')) return;
-
-        event.preventDefault();
-        window.netlifyIdentity.open();
-      });
-
-      window.netlifyIdentity.on('init', user => {
-        if (identityTokenMatch && !user) {
-          const tokenType = identityTokenMatch[1];
-
-          if (tokenType === 'invite_token') {
-            window.netlifyIdentity.open('signup');
-          } else {
-            window.netlifyIdentity.open();
-          }
-          return;
-        }
-
-        if (user) {
-          window.netlifyIdentity.close();
-        }
-
-        loadDecap();
-      });
-
-      window.netlifyIdentity.on('login', () => {
-        window.netlifyIdentity.close();
-        window.location.replace('https://gallopsg.netlify.app/admin/');
-      });
-
-      window.netlifyIdentity.on('error', error => {
-        console.error('Netlify Identity error:', error);
-      });
-
-      window.netlifyIdentity.init();
-    } else {
-      loadDecap();
-    }
-  </script>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 </body>
 </html>
