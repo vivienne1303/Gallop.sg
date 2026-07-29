@@ -1,8 +1,13 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import OpenAI from 'openai';
 import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+
+// Loads backend/.env locally. Railway supplies the same values through its
+// environment, and existing environment variables are not overwritten.
+dotenv.config({ path: fileURLToPath(new URL('./.env', import.meta.url)) });
 
 const PORT = process.env.PORT || 3000;
 const MODEL = process.env.OPENAI_MODEL || 'gpt-5-mini';
@@ -12,23 +17,23 @@ const ALLOWED_ORIGINS = new Set([
   'https://gallop.sg',
   'https://vivienne1303.github.io'
 ]);
+const LOCALHOST_ORIGIN = /^https?:\/\/localhost(?::\d+)?$/;
 
 const knowledgeUrl = new URL('./knowledge.json', import.meta.url);
 const knowledge = JSON.parse(await readFile(knowledgeUrl, 'utf8'));
 
-if (!process.env.OPENAI_API_KEY) {
-  console.error('OPENAI_API_KEY is required.');
-  process.exit(1);
-}
-
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null;
 const app = express();
 
 app.disable('x-powered-by');
 app.use(cors({
   origin(origin, callback) {
     // Requests without an Origin header include health checks and server-to-server calls.
-    if (!origin || ALLOWED_ORIGINS.has(origin)) return callback(null, true);
+    if (!origin || ALLOWED_ORIGINS.has(origin) || LOCALHOST_ORIGIN.test(origin)) {
+      return callback(null, true);
+    }
     return callback(new Error('Origin not allowed by CORS'));
   },
   methods: ['POST', 'OPTIONS'],
@@ -49,8 +54,15 @@ Rules:
 - Be friendly and concise. Keep every answer under 150 words.
 - Use simple Markdown when useful.`;
 
+app.get('/', (_req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'Gallop AI'
+  });
+});
+
 app.get('/health', (_req, res) => {
-  res.status(200).json({ status: 'ok' });
+  res.status(200).json({ status: 'healthy' });
 });
 
 app.post('/api/chat', async (req, res) => {
@@ -63,6 +75,13 @@ app.post('/api/chat', async (req, res) => {
   if (message.length > MAX_MESSAGE_LENGTH) {
     return res.status(413).json({
       error: `Message must be ${MAX_MESSAGE_LENGTH} characters or fewer.`
+    });
+  }
+
+  if (!openai) {
+    console.error('Chat request rejected: OPENAI_API_KEY is not configured.');
+    return res.status(503).json({
+      error: 'Gallop AI is temporarily unavailable. Please try again shortly.'
     });
   }
 
@@ -109,6 +128,6 @@ app.use((error, _req, res, _next) => {
   return res.status(500).json({ error: 'Internal server error.' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Gallop AI API listening on port ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Gallop AI listening on port ${PORT}`);
 });
