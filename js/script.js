@@ -309,7 +309,7 @@ const renderSectionContactPage = () => {
         <div class="contact-cards">
           <a class="info-card reveal" href="https://maps.app.goo.gl/V8sWLNMiteq4PYPT7" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Admiralty</h3><p>8 Admiralty Rd East, Singapore 759991</p><p><strong>Parking:</strong> Available at St Helena Road</p><p><strong>Tel:</strong> 6463 6012 / 8383 6425</p><p><strong>Walk-in hours:</strong> Daily, 8:30 AM - 12:00 PM | 2:30 PM - 7:00 PM</p><p><strong>Instagram:</strong> @gallop.sg</p></a>
           ${shouldShowAdmiraltyOnly() ? '' : `
-            <a class="info-card reveal" href="https://maps.app.goo.gl/AuM9Wis6vVBBnEHq8" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Pasir Ris</h3><p>61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225</p><p><strong>Tel:</strong> 6583 9665</p><p><strong>Walk-in hours:</strong> Tuesdays - Sundays, 10:00 AM - 11:30 AM | 2:00 PM - 6:30 PM</p><p><strong>Instagram:</strong> @gallopstablepasirris</p></a>
+            <a class="info-card reveal" href="https://maps.app.goo.gl/AuM9Wis6vVBBnEHq8" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Pasir Ris</h3><p>61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225</p><p><strong>Tel:</strong> 6583 9665</p><p><strong>Walk-in hours:</strong> Tuesday - Friday, 10:00 AM - 11:30 AM | 2:00 PM - 6:30 PM</p><p><strong>Weekends / public holidays:</strong> 8:00 AM - 11:30 AM | 2:00 PM - 6:30 PM</p><p><strong>Instagram:</strong> @gallopstablepasirris</p></a>
             <a class="info-card reveal" href="https://maps.app.goo.gl/nSNznPFzbHDDyW5v7" target="_blank" rel="noopener noreferrer"><h3>Gallop Stable @ Downtown East</h3><p>1 Pasir Ris Close, Singapore 519599</p><p><strong>Parking:</strong> Available at D'Resort</p><p><strong>Tel:</strong> 8787 5377</p><p><strong>Walk-in hours:</strong> Daily, 9:00 AM - 12:00 PM | 2:00 PM - 7:00 PM</p><p><strong>Email:</strong> gallopdowntown@gallopstable.com</p><p><strong>Instagram:</strong> @gallopstabledowntowneast</p></a>
           `}
         </div>
@@ -686,9 +686,12 @@ const renderSiteFooter = () => {
             <a href="tel:+6565839665">6583 9665</a>
           </div>
           <div class="footer-location-hours">
-            <p class="footer-days">Tuesdays - Sundays</p>
-            <p>10:00 AM - 11:45 AM</p>
-            <p>2:00 PM - 6:45 PM</p>
+            <p class="footer-days">Tuesday - Friday</p>
+            <p>10:00 AM - 11:30 AM</p>
+            <p>2:00 PM - 6:30 PM</p>
+            <p>Weekends / public holidays</p>
+            <p>8:00 AM - 11:30 AM</p>
+            <p>2:00 PM - 6:30 PM</p>
           </div>
         </article>
 
@@ -870,6 +873,7 @@ const applyCmsContent = content => {
         location.parking && `Parking: ${location.parking}`,
         `Tel: ${location.phone}`,
         `Walk-in hours: ${location.days}, ${location.morning_hours} | ${location.afternoon_hours}`,
+        location.additional_hours,
         location.email && `Email: ${location.email}`,
         location.instagram && `Instagram: ${location.instagram}`
       ].filter(Boolean);
@@ -900,7 +904,10 @@ const applyCmsContent = content => {
     if (heading) heading.textContent = location.name.replace('Gallop Stable @ ', '');
     if (address) address.textContent = location.address;
     if (hours) {
-      hours.innerHTML = `<p class="footer-days">${escapeCmsText(location.days)}</p><p>${escapeCmsText(location.morning_hours)}</p><p>${escapeCmsText(location.afternoon_hours)}</p>`;
+      const additionalHours = location.additional_hours
+        ? `<p>${escapeCmsText(location.additional_hours)}</p>`
+        : '';
+      hours.innerHTML = `<p class="footer-days">${escapeCmsText(location.days)}</p><p>${escapeCmsText(location.morning_hours)}</p><p>${escapeCmsText(location.afternoon_hours)}</p>${additionalHours}`;
     }
   });
 
@@ -911,7 +918,7 @@ const applyCmsContent = content => {
 const loadCmsContent = async () => {
   if (window.location.protocol === 'file:') return;
 
-  const contentPath = rootAsset('content/site.json');
+  const contentPath = `${rootAsset('content/site.json')}?v=${Date.now()}`;
 
   try {
     const response = await fetch(contentPath, { cache: 'no-cache' });

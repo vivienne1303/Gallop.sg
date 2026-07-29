@@ -53,6 +53,7 @@ collections:
               - { label: Days, name: days, widget: string }
               - { label: Morning Hours, name: morning_hours, widget: string }
               - { label: Afternoon Hours, name: afternoon_hours, widget: string }
+              - { label: Additional Hours, name: additional_hours, widget: string, required: false, hint: "Use this when weekends or public holidays have different hours." }
               - { label: Map URL, name: map_url, widget: string }
               - { label: Email, name: email, widget: string, required: false }
               - { label: Instagram, name: instagram, widget: string, required: false }

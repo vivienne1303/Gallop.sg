@@ -59,12 +59,13 @@
     {
       "name": "Gallop Stable @ Pasir Ris",
       "map_url": "https://maps.app.goo.gl/AuM9Wis6vVBBnEHq8",
-      "afternoon_hours": "2:00 PM - 6:45 PM",
+      "afternoon_hours": "2:00 PM - 6:30 PM",
       "phone": "6583 9665",
       "instagram": "@gallopstablepasirris",
-      "morning_hours": "10:00 AM - 11:45 AM",
+      "morning_hours": "10:00 AM - 11:30 AM",
       "address": "61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225",
-      "days": "Tuesdays - Sundays",
+      "days": "Tuesday - Friday",
+      "additional_hours": "Weekends / public holidays: 8:00 AM - 11:30 AM | 2:00 PM - 6:30 PM",
       "id": "pasir-ris"
     },
     {
