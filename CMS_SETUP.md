@@ -1,8 +1,13 @@
 # Gallop SG Decap CMS Setup
 
-The CMS is available at:
+The CMS is hosted at:
 
-`https://vivienne1303.github.io/Gallop.sg/admin/`
+`https://gallopsg.netlify.app/admin/`
+
+The public addresses below redirect to the hosted CMS:
+
+- `https://www.gallop.sg/admin/`
+- `https://vivienne1303.github.io/Gallop.sg/admin/`
 
 ## What staff can edit
 

@@ -4,6 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gallop SG Content Manager</title>
+  <script>
+    if (window.location.hostname !== 'gallopsg.netlify.app') {
+      const netlifyAdminUrl = new URL('https://gallopsg.netlify.app/admin/');
+      netlifyAdminUrl.search = window.location.search;
+      netlifyAdminUrl.hash = window.location.hash;
+      window.location.replace(netlifyAdminUrl);
+    }
+  </script>
 </head>
 <body>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
