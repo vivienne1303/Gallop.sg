@@ -2399,11 +2399,14 @@ select {
 }
 
 .ai-message > div {
+  min-width: 0;
   max-width: min(76%, 660px);
   padding: 13px 16px;
   border-radius: 18px 18px 18px 5px;
   background: #d5e2dc;
   color: var(--text-dark);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .ai-message p {
@@ -2411,6 +2414,22 @@ select {
   font-size: 0.92rem;
   line-height: 1.65;
   white-space: pre-line;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.ai-message a,
+.ai-message code {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.ai-message pre {
+  max-width: 100%;
+  margin: 10px 0 0;
+  overflow-x: auto;
+  white-space: pre-wrap;
 }
 
 .ai-message-user {
