@@ -90,11 +90,18 @@ app.post('/api/chat', async (req, res) => {
       model: MODEL,
       instructions: SYSTEM_PROMPT,
       input: `KNOWLEDGE:\n${JSON.stringify(knowledge)}\n\nUSER QUESTION:\n${message}`,
-      max_output_tokens: 350
+      // GPT-5 reasoning tokens count toward this budget. A larger allowance
+      // prevents short questions from ending before visible text is produced.
+      reasoning: { effort: 'low' },
+      max_output_tokens: 1000
     });
 
     const reply = response.output_text?.trim();
     if (!reply) {
+      console.error('OpenAI returned no visible text:', {
+        status: response.status,
+        incompleteDetails: response.incomplete_details
+      });
       return res.status(502).json({ error: 'The assistant returned an empty response.' });
     }
 
