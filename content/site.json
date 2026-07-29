@@ -45,105 +45,220 @@
   },
   "locations": [
     {
-      "id": "admiralty",
       "name": "Gallop Stable @ Admiralty East",
-      "address": "8 Admiralty Rd East, Singapore 759991",
-      "parking": "Available at St Helena Road",
-      "phone": "6463 6012 / 8383 6425",
-      "days": "Daily",
-      "morning_hours": "8:30 AM - 11:45 AM",
-      "afternoon_hours": "2:30 PM - 6:45 PM",
       "map_url": "https://maps.app.goo.gl/V8sWLNMiteq4PYPT7",
-      "instagram": "@gallop.sg"
+      "afternoon_hours": "2:30 PM - 6:45 PM",
+      "phone": "6463 6012 / 8383 6425",
+      "instagram": "@gallop.sg",
+      "morning_hours": "8:30 AM - 11:45 AM",
+      "address": "8 Admiralty Rd East, Singapore 759991",
+      "days": "Daily",
+      "parking": "Available at St Helena Road",
+      "id": "admiralty"
     },
     {
-      "id": "pasir-ris",
       "name": "Gallop Stable @ Pasir Ris",
-      "address": "61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225",
-      "phone": "6583 9665",
-      "days": "Tuesdays - Sundays",
-      "morning_hours": "10:00 AM - 11:45 AM",
-      "afternoon_hours": "2:00 PM - 6:45 PM",
       "map_url": "https://maps.app.goo.gl/AuM9Wis6vVBBnEHq8",
-      "instagram": "@gallopstablepasirris"
+      "afternoon_hours": "2:00 PM - 6:45 PM",
+      "phone": "6583 9665",
+      "instagram": "@gallopstablepasirris",
+      "morning_hours": "10:00 AM - 11:45 AM",
+      "address": "61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225",
+      "days": "Tuesdays - Sundays",
+      "id": "pasir-ris"
     },
     {
-      "id": "downtown-east",
       "name": "Gallop Stable @ Downtown East",
-      "address": "1 Pasir Ris Close, Singapore 519599",
-      "parking": "Available at D'Resort",
-      "phone": "8787 5377",
-      "days": "Wednesdays - Mondays",
-      "morning_hours": "9:00 AM - 11:45 AM",
-      "afternoon_hours": "2:00 PM - 6:45 PM",
       "map_url": "https://maps.app.goo.gl/nSNznPFzbHDDyW5v7",
-      "email": "gallopdowntown@gallopstable.com",
-      "instagram": "@gallopstabledowntowneast"
+      "afternoon_hours": "2:00 PM - 6:45 PM",
+      "phone": "8787 5377",
+      "instagram": "@gallopstabledowntowneast",
+      "morning_hours": "9:00 AM - 11:45 AM",
+      "address": "1 Pasir Ris Close, Singapore 519599",
+      "days": "Wednesdays - Mondays",
+      "parking": "Available at D'Resort",
+      "id": "downtown-east",
+      "email": "gallopdowntown@gallopstable.com"
     }
   ],
   "lesson_prices": [
     {
       "group": "beginner",
       "name": "Private Full",
-      "details": ["45-minute one-on-one session", "6 years old and above", "75kg and below"],
-      "sessions": ["1", "10"],
-      "weekday": ["$109", "$931.95"],
-      "weekend": ["$130.80", "$1128.15"]
+      "details": [
+        "45-minute one-on-one session",
+        "6 years old and above",
+        "75kg and below"
+      ],
+      "sessions": [
+        "1",
+        "10"
+      ],
+      "weekday": [
+        "$109",
+        "$931.95"
+      ],
+      "weekend": [
+        "$130.80",
+        "$1128.15"
+      ]
     },
     {
       "group": "beginner",
       "name": "Semi Private",
-      "details": ["45 minutes", "2 riders to one instructor", "7 years old and above", "75kg and below"],
-      "sessions": ["1", "10"],
-      "weekday": ["$98.10", "$833.85"],
-      "weekend": ["$119.90", "$1030.05"]
+      "details": [
+        "45 minutes",
+        "2 riders to one instructor",
+        "7 years old and above",
+        "75kg and below"
+      ],
+      "sessions": [
+        "1",
+        "10"
+      ],
+      "weekday": [
+        "$98.10",
+        "$833.85"
+      ],
+      "weekend": [
+        "$119.90",
+        "$1030.05"
+      ]
     },
     {
       "group": "beginner",
       "name": "Group",
-      "details": ["45 minutes", "3-5 riders to one instructor", "7 years old and above", "75kg and below"],
-      "sessions": ["1", "10"],
-      "weekday": ["$87.20", "$735.75"],
-      "weekend": ["$109", "$931.95"]
+      "details": [
+        "45 minutes",
+        "3-5 riders to one instructor",
+        "7 years old and above",
+        "75kg and below"
+      ],
+      "sessions": [
+        "1",
+        "10"
+      ],
+      "weekday": [
+        "$87.20",
+        "$735.75"
+      ],
+      "weekend": [
+        "$109",
+        "$931.95"
+      ]
     },
     {
       "group": "progression",
       "name": "Private Full",
-      "sessions": ["1", "10"],
-      "weekday": ["$136.25", "$1177.20"],
-      "weekend": ["$158.05", "$1373.40"]
+      "sessions": [
+        "1",
+        "10"
+      ],
+      "weekday": [
+        "$136.25",
+        "$1177.20"
+      ],
+      "weekend": [
+        "$158.05",
+        "$1373.40"
+      ]
     },
     {
       "group": "progression",
       "name": "Semi-Private",
-      "sessions": ["1", "10"],
-      "weekday": ["$125.35", "$1079.10"],
-      "weekend": ["$147.15", "$1275.30"]
+      "sessions": [
+        "1",
+        "10"
+      ],
+      "weekday": [
+        "$125.35",
+        "$1079.10"
+      ],
+      "weekend": [
+        "$147.15",
+        "$1275.30"
+      ]
     },
     {
       "group": "progression",
       "name": "Group",
-      "sessions": ["1", "10"],
-      "weekday": ["$114.45", "$981"],
-      "weekend": ["$136.25", "$1177.20"]
+      "sessions": [
+        "1",
+        "10"
+      ],
+      "weekday": [
+        "$114.45",
+        "$981"
+      ],
+      "weekend": [
+        "$136.25",
+        "$1177.20"
+      ]
     },
     {
       "group": "junior",
       "name": "Pony Private Junior",
-      "details": ["30-minute one-on-one session", "4-12 years old, kids only", "40kg and below"],
-      "sessions": ["1", "5", "10"],
-      "weekday": ["$92.65", "$408.75", "$784.80"],
-      "weekend": ["$109", "$490.50", "$931.95"]
+      "details": [
+        "30-minute one-on-one session",
+        "4-12 years old, kids only",
+        "40kg and below"
+      ],
+      "sessions": [
+        "1",
+        "5",
+        "10"
+      ],
+      "weekday": [
+        "$92.65",
+        "$408.75",
+        "$784.80"
+      ],
+      "weekend": [
+        "$109",
+        "$490.50",
+        "$931.95"
+      ]
     },
     {
       "group": "junior",
       "name": "Pony Intro Lesson",
-      "details": ["20-minute session", "3 years old only", "40kg and below"],
-      "sessions": ["1", "5", "10"],
-      "weekday": ["$70.85", "$299.75", "$588.60"],
-      "weekend": ["$87.20", "$381.50", "$735.75"]
+      "details": [
+        "20-minute session",
+        "3 years old only",
+        "40kg and below"
+      ],
+      "sessions": [
+        "1",
+        "5",
+        "10"
+      ],
+      "weekday": [
+        "$70.85",
+        "$299.75",
+        "$588.60"
+      ],
+      "weekend": [
+        "$87.20",
+        "$381.50",
+        "$735.75"
+      ]
     }
   ],
   "pages": [],
-  "galleries": []
+  "galleries": [
+    {
+      "gallery_number": 1,
+      "path": "pages/jackuda/birthday-party.html",
+      "images": [
+        {
+          "image": "images/uploads/workshop-flyer.png",
+          "alt": "testing 2"
+        },
+        {
+          "image": "images/uploads/xcorp-logo.jpeg",
+          "alt": "Testing"
+        }
+      ]
+    }
+  ]
 }
