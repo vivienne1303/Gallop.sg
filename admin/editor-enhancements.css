@@ -44,6 +44,28 @@
   background: #fff;
 }
 
+.page-content-heading {
+  margin: 34px 0 14px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+}
+
+.page-content-heading h3,
+.page-content-heading p { margin: 0; }
+.page-content-heading p { margin-top: 5px; color: var(--muted); font-size: 13px; }
+
+.content-block-list { display: grid; gap: 14px; }
+.content-block { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #f8fbf9; }
+.content-block textarea { min-height: 92px; }
+.content-block small { display: block; margin-top: 6px; color: var(--muted); }
+.content-block-meta { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
+.content-block-meta span { color: var(--muted); font-size: 11px; }
+.image-picker.compact { align-items: start; }
+.image-picker.compact img { width: 110px; height: 84px; object-fit: cover; border-radius: 8px; }
+.image-picker.compact > div { flex: 1; }
+.image-picker.compact input[type="text"],
+.image-picker.compact input:not([type]) { margin-top: 8px; }
+
 @media (max-width: 900px) {
   .full-page-preview {
     position: static;

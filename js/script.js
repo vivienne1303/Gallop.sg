@@ -765,13 +765,28 @@ const applyCmsPageContent = content => {
   const introduction = copy?.querySelector('p:not(.eyebrow)');
   const image = hero?.querySelector(':scope > img, .home-banner-video-poster');
 
-  if (eyebrow && page.eyebrow) eyebrow.textContent = page.eyebrow;
-  if (heading && page.heading) heading.textContent = page.heading;
-  if (introduction && page.introduction) introduction.textContent = page.introduction;
+  if (eyebrow && Object.hasOwn(page, 'eyebrow')) eyebrow.textContent = page.eyebrow || '';
+  if (heading && Object.hasOwn(page, 'heading')) heading.textContent = page.heading || '';
+  if (introduction && Object.hasOwn(page, 'introduction')) introduction.textContent = page.introduction || '';
   if (image && page.hero_image) {
     image.src = resolveCmsImage(page.hero_image);
     if (page.hero_alt) image.alt = page.hero_alt;
   }
+};
+
+const applyCmsPageBlocks = content => {
+  const page = content.page_blocks?.find(item => item.path === getCmsPagePath());
+  page?.blocks?.forEach(block => {
+    let element;
+    try { element = document.querySelector(block.selector); } catch { return; }
+    if (!element) return;
+    if (block.type === 'image') {
+      if (block.value) element.src = resolveCmsImage(block.value);
+      element.alt = block.alt || '';
+    } else {
+      element.textContent = block.value ?? '';
+    }
+  });
 };
 
 const applyCmsGalleries = content => {
@@ -907,6 +922,7 @@ const applyCmsContent = content => {
   });
 
   applyCmsPageContent(content);
+  applyCmsPageBlocks(content);
   applyCmsGalleries(content);
 };
 

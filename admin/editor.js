@@ -43,6 +43,7 @@ let selectedPage = 'index.html';
 let selectedGalleryPath = 'index.html';
 let pendingUploads = new Map();
 let pageDrafts = new Map();
+let pageBlockDrafts = new Map();
 let pagesLoading = new Set();
 let galleryDrafts = new Map();
 let galleriesLoading = new Set();
@@ -71,8 +72,8 @@ async function loadContent(){
   const response=await fetch(`${CONTENT_URL}?v=${Date.now()}`,{cache:'no-store'});
   if(!response.ok) throw new Error('Could not load the website content.');
   content=await response.json();
-  content.pages ||= []; content.galleries ||= []; content.faqs ||= []; content.locations ||= []; content.lesson_prices ||= [];
-  originalContent=clone(content); pendingUploads.clear(); pageDrafts.clear(); pagesLoading.clear(); galleryDrafts.clear(); galleriesLoading.clear(); dirty=false; setState('saved','All changes saved locally'); render();
+  content.pages ||= []; content.page_blocks ||= []; content.galleries ||= []; content.faqs ||= []; content.locations ||= []; content.lesson_prices ||= [];
+  originalContent=clone(content); pendingUploads.clear(); pageDrafts.clear(); pageBlockDrafts.clear(); pagesLoading.clear(); galleryDrafts.clear(); galleriesLoading.clear(); dirty=false; setState('saved','All changes saved locally'); render();
 }
 
 function showEditor(){ $('#login-screen').hidden=true; $('#editor-shell').hidden=false; loadContent().catch(error=>toast(error.message,true)); }
@@ -91,7 +92,7 @@ $('#login-form').addEventListener('submit',async event=>{
 $('#show-password').addEventListener('click',()=>{ const input=$('#password'); input.type=input.type==='password'?'text':'password'; $('#show-password').textContent=input.type==='password'?'Show':'Hide'; });
 $('#logout-button').addEventListener('click',()=>{ if(dirty&&!confirm('Sign out and discard your unpublished changes?'))return; sessionStorage.removeItem(TOKEN_KEY); location.reload(); });
 $('#editor-nav').addEventListener('click',event=>{ const button=event.target.closest('[data-panel]'); if(!button)return; currentPanel=button.dataset.panel; $$('.nav-item').forEach(item=>item.classList.toggle('active',item===button)); render(); });
-$('#discard-button').addEventListener('click',()=>{ if(!dirty || confirm('Discard every unpublished change?')){ content=clone(originalContent); pendingUploads.clear(); pageDrafts.clear(); galleryDrafts.clear(); dirty=false; setState('saved','All changes saved locally'); render(); }});
+$('#discard-button').addEventListener('click',()=>{ if(!dirty || confirm('Discard every unpublished change?')){ content=clone(originalContent); content.page_blocks ||= []; pendingUploads.clear(); pageDrafts.clear(); pageBlockDrafts.clear(); galleryDrafts.clear(); dirty=false; setState('saved','All changes saved locally'); render(); }});
 $('#publish-button').addEventListener('click',()=>{ if(!dirty){toast('There are no new changes to publish.');return;} $('#publish-message').value=''; $('#publish-dialog').showModal(); });
 $('#cancel-publish').addEventListener('click',()=>$('#publish-dialog').close());
 $('#confirm-publish').addEventListener('click',publish);
@@ -109,6 +110,36 @@ function setPath(path,value){ const keys=path.split('.'); let cursor=content; ke
 function renderPreviewOnly(){ if(currentPanel==='pages') updatePagePreview(); if(currentPanel==='about') updateAboutPreview(); if(currentPanel==='contact') updateContactPreview(); }
 
 function pageRecord(path){ return content.pages.find(page=>page.path===path) || pageDrafts.get(path) || null; }
+function pageBlocksRecord(path){ return content.page_blocks.find(page=>page.path===path) || pageBlockDrafts.get(path) || null; }
+function elementSelector(element){
+  const parts=[]; let current=element;
+  while(current && current.tagName && current.tagName.toLowerCase()!=='main'){
+    const tag=current.tagName.toLowerCase();
+    const siblings=current.parentElement?[...current.parentElement.children].filter(item=>item.tagName===current.tagName):[];
+    parts.unshift(`${tag}:nth-of-type(${Math.max(siblings.indexOf(current)+1,1)})`); current=current.parentElement;
+  }
+  return current?.tagName?.toLowerCase()==='main'?`main > ${parts.join(' > ')}`:'';
+}
+function extractPageBlocks(doc,pageUrl,path){
+  const saved=content.page_blocks.find(item=>item.path===path); const savedBySelector=new Map((saved?.blocks||[]).map(item=>[item.selector,item]));
+  const hero=doc.querySelector('.page-hero, .ai-chat-intro, .home-banner'); let textNumber=0; let imageNumber=0;
+  const candidates=[...doc.querySelectorAll('main h1, main h2, main h3, main h4, main p, main li, main figcaption, main img')];
+  const blocks=candidates.filter(element=>{
+    if(hero?.contains(element) || element.closest('[hidden], [aria-hidden="true"]'))return false;
+    if(element.matches('h1,h2,h3,h4,p,li,figcaption') && (element.querySelector('a,button,input,select,textarea') || !element.textContent.trim()))return false;
+    return true;
+  }).map(element=>{
+    const selector=elementSelector(element); if(!selector)return null;
+    if(element.tagName==='IMG'){
+      imageNumber+=1; const src=element.getAttribute('src')||''; const resolved=src?new URL(src,pageUrl):null;
+      const marker='/Gallop.sg/'; const value=resolved?(resolved.pathname.includes(marker)?resolved.pathname.split(marker)[1]:resolved.pathname.replace(/^\//,'')):'';
+      return {selector,type:'image',label:`Picture ${imageNumber}`,value,alt:element.alt||'',...(savedBySelector.get(selector)||{})};
+    }
+    textNumber+=1; const tag=element.tagName.toLowerCase(); const kind=/^h/.test(tag)?'Heading':tag==='li'?'List item':tag==='figcaption'?'Caption':'Paragraph';
+    return {selector,type:'text',label:`${kind} ${textNumber}`,value:element.textContent.trim(),...(savedBySelector.get(selector)||{})};
+  }).filter(Boolean);
+  return {path,blocks};
+}
 async function importOriginalPage(path){
   if(pagesLoading.has(path))return;
   pagesLoading.add(path);
@@ -126,7 +157,7 @@ async function importOriginalPage(path){
       const marker='/Gallop.sg/';
       heroImage=resolved.pathname.includes(marker)?resolved.pathname.split(marker)[1]:resolved.pathname.replace(/^\//,'');
     }
-    pageDrafts.set(path,{
+    if(!content.pages.some(item=>item.path===path))pageDrafts.set(path,{
       path,
       eyebrow:copy?.querySelector('.eyebrow')?.textContent.trim()||'',
       heading:copy?.querySelector('h1, h2')?.textContent.trim()||'',
@@ -134,29 +165,37 @@ async function importOriginalPage(path){
       hero_image:heroImage,
       hero_alt:image?.alt||''
     });
-  }catch(error){pageDrafts.set(path,{path,eyebrow:'',heading:'',introduction:'',hero_image:'',hero_alt:''});toast(error.message,true);}
+    pageBlockDrafts.set(path,extractPageBlocks(doc,pageUrl,path));
+  }catch(error){if(!pageRecord(path))pageDrafts.set(path,{path,eyebrow:'',heading:'',introduction:'',hero_image:'',hero_alt:''});pageBlockDrafts.set(path,{path,blocks:[]});toast(error.message,true);}
   finally{pagesLoading.delete(path);if(currentPanel==='pages'&&selectedPage===path)renderPages();}
 }
 function renderPages(){
-  const page=pageRecord(selectedPage); const root=$('#panel-root');
-  if(!page){root.innerHTML='<section class="preview-card"><div class="empty-state">Loading the complete website page...</div></section>';importOriginalPage(selectedPage);return;}
+  const page=pageRecord(selectedPage); const pageBlocks=pageBlocksRecord(selectedPage); const root=$('#panel-root');
+  if(!page||!pageBlocks){root.innerHTML='<section class="preview-card"><div class="empty-state">Loading every editable word and picture...</div></section>';importOriginalPage(selectedPage);return;}
+  const blocksHtml=pageBlocks.blocks.map((block,index)=>block.type==='image'?`<div class="content-block"><div class="content-block-meta"><b>${escapeHtml(block.label)}</b><span>Picture</span></div><div class="image-picker compact"><img src="${escapeHtml(imageSrc(block.value))}" alt=""><div><label class="upload-button">Choose picture<input data-block-image="${index}" type="file" accept="image/jpeg,image/png,image/webp"></label><input data-block-alt="${index}" value="${escapeHtml(block.alt)}" placeholder="Picture description"></div></div></div>`:`<div class="content-block"><div class="content-block-meta"><b>${escapeHtml(block.label)}</b><span>Text shown on page</span></div><textarea data-block-text="${index}" data-preview-selector="${escapeHtml(block.selector)}">${escapeHtml(block.value)}</textarea><small>Delete all the words above to remove this text.</small></div>`).join('');
   root.innerHTML=`<div class="editor-grid"><section class="editor-card"><div class="card-head"><h2>Page settings</h2></div><div class="card-body">
     <div class="field"><label>Website page</label><select id="page-select">${optionsHtml()}</select></div>
     <div class="editor-explainer"><b>Highlighted area</b><span>These controls edit the highlighted top section in the full-page preview.</span></div>
-    <div class="field"><label>Small heading <span class="field-location">Top label</span></label><input data-page-field="eyebrow" value="${escapeHtml(page.eyebrow)}" placeholder="Optional label above the heading"></div>
-    <div class="field"><label>Main heading <span class="field-location">Large title</span></label><input data-page-field="heading" value="${escapeHtml(page.heading)}" placeholder="Main page heading"></div>
-    <div class="field"><label>Introduction <span class="field-location">Text below title</span></label><textarea data-page-field="introduction" placeholder="Short introduction">${escapeHtml(page.introduction)}</textarea></div>
+    <div class="field"><label>Small heading <span class="field-location">Top label</span></label><input data-page-field="eyebrow" data-preview-selector="__hero__" value="${escapeHtml(page.eyebrow)}" placeholder="Optional label above the heading"></div>
+    <div class="field"><label>Main heading <span class="field-location">Large title</span></label><input data-page-field="heading" data-preview-selector="__hero__" value="${escapeHtml(page.heading)}" placeholder="Main page heading"></div>
+    <div class="field"><label>Introduction <span class="field-location">Text below title</span></label><textarea data-page-field="introduction" data-preview-selector="__hero__" placeholder="Short introduction">${escapeHtml(page.introduction)}</textarea></div>
     <div class="field"><label>Hero picture <span class="field-location">Large top picture</span></label><div class="image-picker"><img id="hero-thumb" src="${escapeHtml(imageSrc(page.hero_image))}" alt=""><div><label class="upload-button">Choose picture<input id="hero-upload" type="file" accept="image/jpeg,image/png,image/webp"></label><small>The page automatically crops the picture.</small></div></div></div>
     <div class="field"><label>Picture description</label><input data-page-field="hero_alt" value="${escapeHtml(page.hero_alt)}" placeholder="Describe the picture for screen readers"><small>Example: Child riding a brown pony with an instructor.</small></div>
+    <div class="page-content-heading"><h3>All other page content</h3><p>Every editable word and picture from the preview appears below.</p></div><div class="content-block-list">${blocksHtml||'<p class="empty-state">No additional page content was found.</p>'}</div>
   </div></section><section class="preview-card full-page-preview"><div class="card-head"><div><h2>Complete page preview</h2><small>Scroll here to see every existing text and picture</small></div><span>Highlighted = editable here</span></div><iframe id="page-preview-frame" src="${escapeHtml(publicPath(selectedPage))}" title="Full preview of ${escapeHtml(pageName(selectedPage))}"></iframe></section></div>`;
   $('#page-select').value=selectedPage; $('#page-select').addEventListener('change',event=>{selectedPage=event.target.value;$('#live-page-link').href=publicPath(selectedPage);renderPages();});
   const ensureManaged=()=>{if(!content.pages.includes(page))content.pages.push(page);};
+  const ensureBlocksManaged=()=>{if(!content.page_blocks.includes(pageBlocks))content.page_blocks.push(pageBlocks);};
   $$('[data-page-field]',root).forEach(input=>input.addEventListener('input',()=>{ensureManaged();page[input.dataset.pageField]=input.value;markDirty();updatePagePreview(); }));
+  $$('[data-preview-selector]',root).forEach(input=>input.addEventListener('focus',()=>highlightPagePreview(input.dataset.previewSelector)));
+  $$('[data-block-text]',root).forEach(input=>input.addEventListener('input',()=>{ensureBlocksManaged();pageBlocks.blocks[Number(input.dataset.blockText)].value=input.value;markDirty();updatePagePreview();}));
+  $$('[data-block-alt]',root).forEach(input=>input.addEventListener('input',()=>{ensureBlocksManaged();pageBlocks.blocks[Number(input.dataset.blockAlt)].alt=input.value;markDirty();updatePagePreview();}));
+  $$('[data-block-image]',root).forEach(input=>input.addEventListener('change',event=>{const index=Number(input.dataset.blockImage);handleImage(event.target.files[0],path=>{ensureBlocksManaged();pageBlocks.blocks[index].value=path;renderPages();});}));
   $('#hero-upload').addEventListener('change',event=>handleImage(event.target.files[0],path=>{ensureManaged();page.hero_image=path;renderPages();}));
   $('#page-preview-frame').addEventListener('load',updatePagePreview); updatePagePreview();
 }
 function updatePagePreview(){
-  const page=pageRecord(selectedPage); const frame=$('#page-preview-frame'); const doc=frame?.contentDocument;
+  const page=pageRecord(selectedPage); const pageBlocks=pageBlocksRecord(selectedPage); const frame=$('#page-preview-frame'); const doc=frame?.contentDocument;
   if(!page||!doc)return;
   const hero=doc.querySelector('.page-hero, .ai-chat-intro, .home-banner');
   const copy=hero?.querySelector('.page-hero-copy, .ai-chat-intro > div, .home-banner-content');
@@ -164,8 +203,10 @@ function updatePagePreview(){
   const image=hero?.querySelector(':scope > img, .home-banner-video-poster');
   if(eyebrow)eyebrow.textContent=page.eyebrow;if(heading)heading.textContent=page.heading;if(introduction)introduction.textContent=page.introduction;
   if(image&&page.hero_image){image.src=imageSrc(page.hero_image);image.alt=page.hero_alt||'';}
-  if(hero){hero.classList.add('gallop-editor-highlight');const style=doc.createElement('style');style.textContent='.gallop-editor-highlight{outline:6px solid #f0b323!important;outline-offset:-6px!important;position:relative}.gallop-editor-highlight:after{content:"EDITABLE TOP SECTION";position:absolute;z-index:9999;top:12px;right:12px;background:#f0b323;color:#173b34;padding:8px 11px;border-radius:6px;font:700 12px Arial,sans-serif;letter-spacing:.06em}';doc.head.appendChild(style);}
+  pageBlocks?.blocks.forEach(block=>{let element;try{element=doc.querySelector(block.selector);}catch{return;}if(!element)return;if(block.type==='image'){if(block.value)element.src=imageSrc(block.value);element.alt=block.alt||'';}else element.textContent=block.value??'';});
+  if(!doc.querySelector('#gallop-editor-style')){const style=doc.createElement('style');style.id='gallop-editor-style';style.textContent='.gallop-editor-highlight{outline:6px solid #f0b323!important;outline-offset:-6px!important;position:relative}';doc.head.appendChild(style);}
 }
+function highlightPagePreview(selector){const doc=$('#page-preview-frame')?.contentDocument;if(!doc)return;doc.querySelectorAll('.gallop-editor-highlight').forEach(item=>item.classList.remove('gallop-editor-highlight'));let element;if(selector==='__hero__')element=doc.querySelector('.page-hero, .ai-chat-intro, .home-banner');else try{element=doc.querySelector(selector);}catch{}if(element){element.classList.add('gallop-editor-highlight');element.scrollIntoView({behavior:'smooth',block:'center'});}}
 
 function galleryRecord(path){ const item=content.galleries.find(g=>g.path===path&&Number(g.gallery_number)===1); if(item){item.images ||= [];return item;} return galleryDrafts.get(path) || null;}
 async function importOriginalGallery(path){
