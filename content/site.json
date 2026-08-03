@@ -425,6 +425,68 @@
           "alt": "A Gallop Stable pony at a special occasion"
         }
       ]
+    },
+    {
+      "path": "index.html",
+      "gallery_number": 1,
+      "images": [
+        {
+          "image": "images/openingpic1.jpeg",
+          "alt": "A moment from the Gallop Stable opening ceremony"
+        },
+        {
+          "image": "images/openingpic2.jpeg",
+          "alt": "Guests at the Gallop Stable opening ceremony"
+        },
+        {
+          "image": "images/openingpic3.jpeg",
+          "alt": "Opening ceremony activities at Gallop Stable"
+        },
+        {
+          "image": "images/openingpic4.jpeg",
+          "alt": "A celebration during the Gallop Stable opening"
+        },
+        {
+          "image": "images/openingpic5.jpeg",
+          "alt": "Visitors enjoying the Gallop Stable opening"
+        },
+        {
+          "image": "images/openingpic6.jpeg",
+          "alt": "A featured opening ceremony moment"
+        },
+        {
+          "image": "images/openingpic7.jpeg",
+          "alt": "Guests celebrating at Gallop Stable"
+        },
+        {
+          "image": "images/openingpic8.jpeg",
+          "alt": "A moment from the Gallop Stable opening ceremony"
+        },
+        {
+          "image": "images/openingpic9.jpeg",
+          "alt": "Guests at the Gallop Stable opening ceremony"
+        },
+        {
+          "image": "images/openingpic10.jpeg",
+          "alt": "Opening ceremony activities at Gallop Stable"
+        },
+        {
+          "image": "images/openingpic11.jpeg",
+          "alt": "A celebration during the Gallop Stable opening"
+        },
+        {
+          "image": "images/openingpic12.jpeg",
+          "alt": "Visitors enjoying the Gallop Stable opening"
+        },
+        {
+          "image": "images/openingpic13.jpeg",
+          "alt": "A featured opening ceremony moment"
+        },
+        {
+          "image": "images/openingpic14.jpeg",
+          "alt": "Guests celebrating at Gallop Stable"
+        }
+      ]
     }
   ],
   "page_blocks": []
