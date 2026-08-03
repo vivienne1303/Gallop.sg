@@ -5,19 +5,48 @@ const API_BASE = String(window.GALLOP_ADMIN_API_BASE_URL || DEFAULT_API_BASE).re
 const CONTENT_URL = '../content/site.json';
 const TOKEN_KEY = 'gallop_admin_session';
 
-const PAGE_OPTIONS = [
-  ['index.html', 'Website Home'], ['pages/gallopsg/index.html', 'Gallop SG Home'],
-  ['pages/gallopsg/gallop-ai.html', 'Gallop AI'], ['pages/gallopsg/promotion.html', 'Promotions'],
-  ['pages/gallopsg/join.html', 'Join the Team'], ['pages/gallopsg/faq.html', 'FAQs'],
-  ['pages/gallopsg/contact.html', 'Contact'], ['pages/stable/stable.html', 'Gallop Stable'],
-  ['pages/stable/riding-lessons.html', 'Riding Lessons'], ['pages/stable/adopt-a-horse.html', 'Adopt a Horse'],
-  ['pages/stable/lease-a-horse.html', 'Lease a Horse'], ['pages/stable/outdoor-pony-hire.html', 'Outdoor Pony Hire'],
-  ['pages/care/gallop-care.html', 'Gallop CARES'], ['pages/jackuda/jackuda.html', 'Gallop Jackuda'],
-  ['pages/jackuda/camps-workshops.html', 'Camps and Workshops'], ['pages/jackuda/birthday-party.html', 'Birthday Party'],
-  ['pages/jackuda/horseshoe-painting.html', 'Horseshoe Painting'], ['pages/jackuda/learning-journey.html', 'Learning Journey'],
-  ['pages/jackuda/photoshoot.html', 'Photoshoot'], ['pages/jackuda/pony-rides-feeding.html', 'Pony Rides and Feeding'],
-  ['pages/jackuda/trail-rides.html', 'Trail Rides']
+const PAGE_GROUPS = [
+  ['Main website', [['index.html','Website Home']]],
+  ['Gallop SG', [
+    ['pages/gallopsg/index.html','Home'], ['pages/gallopsg/gallop-ai.html','Gallop AI'],
+    ['pages/gallopsg/promotion.html','Promotions'], ['pages/gallopsg/join.html','Join the Team'],
+    ['pages/gallopsg/faq.html','FAQs'], ['pages/gallopsg/contact.html','Contact']
+  ]],
+  ['Gallop Stable', [
+    ['pages/stable/stable.html','Home'], ['pages/stable/riding-lessons.html','Riding Lessons'],
+    ['pages/stable/adopt-a-horse.html','Adopt a Horse'], ['pages/stable/adopt-horse-profile.html','Adopt Horse Profile'],
+    ['pages/stable/lease-a-horse.html','Lease a Horse'], ['pages/stable/lease-horse-profile.html','Lease Horse Profile'],
+    ['pages/stable/outdoor-pony-hire.html','Outdoor Pony Hire'], ['pages/stable/stable_promotion.html','Promotions'],
+    ['pages/stable/stable_join.html','Join the Team'], ['pages/stable/stable_faq.html','FAQs'],
+    ['pages/stable/stable_contact.html','Contact']
+  ]],
+  ['Gallop CARES', [
+    ['pages/care/gallop-care.html','Home'], ['pages/care/care_activity.html','Activities'], ['pages/care/volunteer.html','Volunteer'],
+    ['pages/care/care_promotion.html','Promotions'], ['pages/care/care_join.html','Join the Team'],
+    ['pages/care/care_faq.html','FAQs'], ['pages/care/care_contact.html','Contact']
+  ]],
+  ['Gallop Jackuda', [
+    ['pages/jackuda/jackuda.html','Home'], ['pages/jackuda/camps-workshops.html','Camps and Workshops'],
+    ['pages/jackuda/birthday-party.html','Birthday Party'], ['pages/jackuda/coperate-event.html','Corporate and Group Events'],
+    ['pages/jackuda/horseshoe-painting.html','Horseshoe Painting'], ['pages/jackuda/learning-journey.html','Learning Journey'],
+    ['pages/jackuda/photoshoot.html','Photoshoot'], ['pages/jackuda/pony-rides-feeding.html','Pony Rides and Feeding'],
+    ['pages/jackuda/trail-rides.html','Trail Rides'], ['pages/jackuda/volunteer.html','Volunteer'],
+    ['pages/jackuda/jackuda_promotion.html','Promotions'], ['pages/jackuda/jackuda_join.html','Join the Team'],
+    ['pages/jackuda/jackuda_faq.html','FAQs'], ['pages/jackuda/jackuda_contact.html','Contact']
+  ]],
+  ['Gallop Polo', venturePages('polo','polo','Polo')],
+  ['Gallop Archery', venturePages('archery','archery','Archery')],
+  ['Gallop Green', venturePages('green','green','Green')],
+  ['Gallop Catering', venturePages('catering','catering','Catering')],
+  ['Gallop Resort', venturePages('resort','resort','Resort')],
+  ["D'Equestrian Paradise", venturePages('d-equestrian-paradise','d_equestrian_paradise',"D'Equestrian Paradise",'saddlery.html')]
 ];
+function venturePages(folder,prefix,name,homeFile=`${prefix}.html`){return [
+  [`pages/${folder}/${homeFile}`,'Home'], [`pages/${folder}/${prefix}_activity.html`,'Activities'],
+  [`pages/${folder}/${prefix}_promotion.html`,'Promotions'], [`pages/${folder}/${prefix}_join.html`,'Join the Team'],
+  [`pages/${folder}/${prefix}_faq.html`,'FAQs'], [`pages/${folder}/${prefix}_contact.html`,'Contact']
+];}
+const PAGE_OPTIONS = PAGE_GROUPS.flatMap(([,pages])=>pages);
 const GALLERY_PAGES = new Set(['index.html','pages/gallopsg/index.html','pages/stable/stable.html','pages/stable/riding-lessons.html','pages/stable/outdoor-pony-hire.html','pages/care/gallop-care.html','pages/jackuda/jackuda.html','pages/jackuda/birthday-party.html','pages/jackuda/horseshoe-painting.html','pages/jackuda/learning-journey.html','pages/jackuda/photoshoot.html','pages/jackuda/pony-rides-feeding.html']);
 const PANEL_COPY = {
   pages:['Pages','Edit page text and hero picture','Choose a page, then update what visitors see at the top.'],
@@ -55,7 +84,7 @@ function setState(state, text){ const el=$('#save-state'); el.dataset.state=stat
 function markDirty(){ dirty=true; setState('dirty','Unpublished changes'); }
 function toast(message, error=false){ const el=$('#toast'); el.textContent=message; el.className=`toast show${error?' error':''}`; clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.className='toast',3500); }
 function imageSrc(path){ if(!path) return '../images/Child_and_horse.jpeg'; const pending=pendingUploads.get(path); if(pending?.dataUrl)return pending.dataUrl; if(path.startsWith('data:') || path.startsWith('blob:') || /^https?:/.test(path)) return path; return `../${path.replace(/^\//,'')}`; }
-function optionsHtml(filter=()=>true){ return PAGE_OPTIONS.filter(([path])=>filter(path)).map(([path,label])=>`<option value="${escapeHtml(path)}">${escapeHtml(label)}</option>`).join(''); }
+function optionsHtml(filter=()=>true){ return PAGE_GROUPS.map(([group,pages])=>{const visible=pages.filter(([path])=>filter(path));return visible.length?`<optgroup label="${escapeHtml(group)}">${visible.map(([path,label])=>`<option value="${escapeHtml(path)}">${escapeHtml(label)}</option>`).join('')}</optgroup>`:'';}).join(''); }
 function makeImageName(file){ const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'') || 'jpg'; const stem=file.name.replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,45)||'picture'; return `images/uploads/${Date.now()}-${stem}.${ext}`; }
 
 async function api(path, options={}){
