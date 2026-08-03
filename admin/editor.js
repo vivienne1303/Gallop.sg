@@ -42,6 +42,8 @@ let currentPanel = 'pages';
 let selectedPage = 'index.html';
 let selectedGalleryPath = 'index.html';
 let pendingUploads = new Map();
+let galleryDrafts = new Map();
+let galleriesLoading = new Set();
 let dirty = false;
 let dragContext = null;
 
@@ -49,7 +51,7 @@ function token(){ return sessionStorage.getItem(TOKEN_KEY) || ''; }
 function setState(state, text){ const el=$('#save-state'); el.dataset.state=state; $('b',el).textContent=text; }
 function markDirty(){ dirty=true; setState('dirty','Unpublished changes'); }
 function toast(message, error=false){ const el=$('#toast'); el.textContent=message; el.className=`toast show${error?' error':''}`; clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.className='toast',3500); }
-function imageSrc(path){ if(!path) return '../images/Child_and_horse.jpeg'; if(path.startsWith('data:') || path.startsWith('blob:') || /^https?:/.test(path)) return path; return `../${path.replace(/^\//,'')}`; }
+function imageSrc(path){ if(!path) return '../images/Child_and_horse.jpeg'; const pending=pendingUploads.get(path); if(pending?.dataUrl)return pending.dataUrl; if(path.startsWith('data:') || path.startsWith('blob:') || /^https?:/.test(path)) return path; return `../${path.replace(/^\//,'')}`; }
 function optionsHtml(filter=()=>true){ return PAGE_OPTIONS.filter(([path])=>filter(path)).map(([path,label])=>`<option value="${escapeHtml(path)}">${escapeHtml(label)}</option>`).join(''); }
 function makeImageName(file){ const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'') || 'jpg'; const stem=file.name.replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,45)||'picture'; return `images/uploads/${Date.now()}-${stem}.${ext}`; }
 
@@ -68,7 +70,7 @@ async function loadContent(){
   if(!response.ok) throw new Error('Could not load the website content.');
   content=await response.json();
   content.pages ||= []; content.galleries ||= []; content.faqs ||= []; content.locations ||= []; content.lesson_prices ||= [];
-  originalContent=clone(content); pendingUploads.clear(); dirty=false; setState('saved','All changes saved locally'); render();
+  originalContent=clone(content); pendingUploads.clear(); galleryDrafts.clear(); galleriesLoading.clear(); dirty=false; setState('saved','All changes saved locally'); render();
 }
 
 function showEditor(){ $('#login-screen').hidden=true; $('#editor-shell').hidden=false; loadContent().catch(error=>toast(error.message,true)); }
@@ -87,7 +89,7 @@ $('#login-form').addEventListener('submit',async event=>{
 $('#show-password').addEventListener('click',()=>{ const input=$('#password'); input.type=input.type==='password'?'text':'password'; $('#show-password').textContent=input.type==='password'?'Show':'Hide'; });
 $('#logout-button').addEventListener('click',()=>{ if(dirty&&!confirm('Sign out and discard your unpublished changes?'))return; sessionStorage.removeItem(TOKEN_KEY); location.reload(); });
 $('#editor-nav').addEventListener('click',event=>{ const button=event.target.closest('[data-panel]'); if(!button)return; currentPanel=button.dataset.panel; $$('.nav-item').forEach(item=>item.classList.toggle('active',item===button)); render(); });
-$('#discard-button').addEventListener('click',()=>{ if(!dirty || confirm('Discard every unpublished change?')){ content=clone(originalContent); pendingUploads.clear(); dirty=false; setState('saved','All changes saved locally'); render(); }});
+$('#discard-button').addEventListener('click',()=>{ if(!dirty || confirm('Discard every unpublished change?')){ content=clone(originalContent); pendingUploads.clear(); galleryDrafts.clear(); dirty=false; setState('saved','All changes saved locally'); render(); }});
 $('#publish-button').addEventListener('click',()=>{ if(!dirty){toast('There are no new changes to publish.');return;} $('#publish-message').value=''; $('#publish-dialog').showModal(); });
 $('#cancel-publish').addEventListener('click',()=>$('#publish-dialog').close());
 $('#confirm-publish').addEventListener('click',publish);
@@ -121,15 +123,36 @@ function renderPages(){
 }
 function updatePagePreview(){ const page=pageRecord(selectedPage); const preview=$('#page-preview'); if(!preview)return; preview.style.backgroundImage=`linear-gradient(0deg,rgba(8,35,31,.78),rgba(8,35,31,.05)),url("${imageSrc(page.hero_image).replace(/"/g,'')}")`; $('#preview-eyebrow').textContent=page.eyebrow||pageName(selectedPage); $('#preview-heading').textContent=page.heading||'Existing page heading'; $('#preview-introduction').textContent=page.introduction||'Existing introduction will remain when this field is empty.'; }
 
-function galleryRecord(path){ const item=content.galleries.find(g=>g.path===path&&Number(g.gallery_number)===1); if(item){item.images ||= [];return item;} return {path,gallery_number:1,images:[]};}
-function renderGalleries(){ const gallery=galleryRecord(selectedGalleryPath); const root=$('#panel-root'); root.innerHTML=`<div class="editor-grid"><section class="editor-card"><div class="card-head"><h2>Gallery settings</h2></div><div class="card-body"><div class="field"><label>Website page</label><select id="gallery-page">${optionsHtml(path=>GALLERY_PAGES.has(path))}</select><small>Pictures below appear on this page.</small></div><div class="field"><label>Gallery number</label><input value="1" disabled><small>Use the first gallery on the page.</small></div><label class="upload-tile">+ Add pictures<input id="gallery-upload" type="file" multiple accept="image/jpeg,image/png,image/webp"></label></div></section><section class="preview-card"><div class="card-head"><h2>Drag pictures to rearrange</h2><span>${gallery.images.length} pictures</span></div><div class="card-body"><div class="gallery-grid" id="gallery-grid">${gallery.images.map((item,index)=>`<article class="gallery-item" draggable="true" data-index="${index}"><img src="${escapeHtml(imageSrc(item.image))}" alt="${escapeHtml(item.alt)}"><span class="order">${index+1}</span><button class="remove-button" data-remove="${index}" type="button" aria-label="Remove picture">X</button><div class="gallery-meta">${escapeHtml(item.alt||'No description yet')}</div></article>`).join('')}<label class="upload-tile">+ Add pictures<input class="gallery-upload-more" type="file" multiple accept="image/jpeg,image/png,image/webp"></label></div>${gallery.images.length?'<p class="field"><small>Tip: the first picture above appears first on the website.</small></p>':'<div class="empty-state">No managed pictures yet. Add the first picture to begin.</div>'}</div></section></div>`;
-  $('#gallery-page').value=selectedGalleryPath; $('#gallery-page').addEventListener('change',event=>{selectedGalleryPath=event.target.value;$('#live-page-link').href=publicPath(selectedGalleryPath);renderGalleries();});
-  const upload=async files=>{if(!content.galleries.includes(gallery))content.galleries.push(gallery);for(const file of files){await handleImage(file,path=>gallery.images.push({image:path,alt:file.name.replace(/\.[^.]+$/,'').replace(/[-_]/g,' ')}),false);}markDirty();renderGalleries();};
-  $('#gallery-upload').addEventListener('change',event=>upload(event.target.files)); $('.gallery-upload-more').addEventListener('change',event=>upload(event.target.files));
-  $$('[data-remove]',root).forEach(button=>button.addEventListener('click',()=>{if(confirm('Remove this picture from the gallery?')){gallery.images.splice(Number(button.dataset.remove),1);markDirty();renderGalleries();}}));
-  $$('.gallery-item',root).forEach(item=>{item.addEventListener('dragstart',()=>{dragContext=Number(item.dataset.index);item.classList.add('dragging');});item.addEventListener('dragend',()=>item.classList.remove('dragging'));item.addEventListener('dragover',event=>event.preventDefault());item.addEventListener('drop',event=>{event.preventDefault();const target=Number(item.dataset.index);if(dragContext===null||dragContext===target)return;const [moved]=gallery.images.splice(dragContext,1);gallery.images.splice(target,0,moved);dragContext=null;markDirty();renderGalleries();});});
+function galleryRecord(path){ const item=content.galleries.find(g=>g.path===path&&Number(g.gallery_number)===1); if(item){item.images ||= [];return item;} return galleryDrafts.get(path) || null;}
+async function importOriginalGallery(path){
+  if(galleriesLoading.has(path))return;
+  galleriesLoading.add(path);
+  try{
+    const pageUrl=new URL(publicPath(path),location.href);
+    const response=await fetch(`${pageUrl.href}?v=${Date.now()}`,{cache:'no-store'});
+    if(!response.ok)throw new Error('Could not load the original gallery.');
+    const doc=new DOMParser().parseFromString(await response.text(),'text/html');
+    const firstGallery=doc.querySelector('.scroll-gallery');
+    const images=[...(firstGallery?.querySelectorAll('.scroll-gallery-track > .scroll-gallery-group:first-child img')||[])];
+    const gallery={path,gallery_number:1,images:images.map(img=>{
+      const resolved=new URL(img.getAttribute('src'),pageUrl);
+      const marker='/Gallop.sg/';
+      const imagePath=resolved.pathname.includes(marker)?resolved.pathname.split(marker)[1]:resolved.pathname.replace(/^\//,'');
+      return {image:imagePath,alt:img.alt||'Gallop SG gallery picture'};
+    })};
+    galleryDrafts.set(path,gallery);
+  }catch(error){galleryDrafts.set(path,{path,gallery_number:1,images:[]});toast(error.message,true);}
+  finally{galleriesLoading.delete(path);if(currentPanel==='galleries'&&selectedGalleryPath===path)renderGalleries();}
 }
-async function handleImage(file,apply,rerender=true){ if(!file)return; if(file.size>5*1024*1024){toast('Please choose a picture smaller than 5 MB.',true);return;} const path=makeImageName(file); const data=await fileToDataUrl(file); pendingUploads.set(path,data.split(',')[1]); apply(path); markDirty(); if(rerender)render(); }
+function renderGalleries(){ const gallery=galleryRecord(selectedGalleryPath); const root=$('#panel-root'); if(!gallery){root.innerHTML='<section class="preview-card"><div class="empty-state">Loading the existing website gallery...</div></section>';importOriginalGallery(selectedGalleryPath);return;} root.innerHTML=`<div class="editor-grid"><section class="editor-card"><div class="card-head"><h2>Gallery settings</h2></div><div class="card-body"><div class="field"><label>Website page</label><select id="gallery-page">${optionsHtml(path=>GALLERY_PAGES.has(path))}</select><small>Pictures below appear on this page.</small></div><div class="field"><label>Gallery number</label><input value="1" disabled><small>Use the first gallery on the page.</small></div><label class="upload-tile">+ Add pictures<input id="gallery-upload" type="file" multiple accept="image/jpeg,image/png,image/webp"></label></div></section><section class="preview-card"><div class="card-head"><h2>Drag pictures to rearrange</h2><span>${gallery.images.length} pictures</span></div><div class="card-body"><div class="gallery-grid" id="gallery-grid">${gallery.images.map((item,index)=>`<article class="gallery-item" draggable="true" data-index="${index}"><img src="${escapeHtml(imageSrc(item.image))}" alt="${escapeHtml(item.alt)}"><span class="order">${index+1}</span><button class="remove-button" data-remove="${index}" type="button" aria-label="Remove picture">X</button><div class="gallery-meta">${escapeHtml(item.alt||'No description yet')}</div></article>`).join('')}<label class="upload-tile">+ Add pictures<input class="gallery-upload-more" type="file" multiple accept="image/jpeg,image/png,image/webp"></label></div>${gallery.images.length?'<p class="field"><small>The existing website pictures are included. Add or rearrange them, then publish the complete gallery.</small></p>':'<div class="empty-state">This page does not have an existing gallery.</div>'}</div></section></div>`;
+  $('#gallery-page').value=selectedGalleryPath; $('#gallery-page').addEventListener('change',event=>{selectedGalleryPath=event.target.value;$('#live-page-link').href=publicPath(selectedGalleryPath);renderGalleries();});
+  const ensureManaged=()=>{if(!content.galleries.includes(gallery))content.galleries.push(gallery);};
+  const upload=async files=>{ensureManaged();for(const file of files){await handleImage(file,path=>gallery.images.push({image:path,alt:file.name.replace(/\.[^.]+$/,'').replace(/[-_]/g,' ')}),false);}markDirty();renderGalleries();};
+  $('#gallery-upload').addEventListener('change',event=>upload(event.target.files)); $('.gallery-upload-more').addEventListener('change',event=>upload(event.target.files));
+  $$('[data-remove]',root).forEach(button=>button.addEventListener('click',()=>{if(confirm('Remove this picture from the gallery?')){ensureManaged();gallery.images.splice(Number(button.dataset.remove),1);markDirty();renderGalleries();}}));
+  $$('.gallery-item',root).forEach(item=>{item.addEventListener('dragstart',()=>{dragContext=Number(item.dataset.index);item.classList.add('dragging');});item.addEventListener('dragend',()=>item.classList.remove('dragging'));item.addEventListener('dragover',event=>event.preventDefault());item.addEventListener('drop',event=>{event.preventDefault();const target=Number(item.dataset.index);if(dragContext===null||dragContext===target)return;ensureManaged();const [moved]=gallery.images.splice(dragContext,1);gallery.images.splice(target,0,moved);dragContext=null;markDirty();renderGalleries();});});
+}
+async function handleImage(file,apply,rerender=true){ if(!file)return; if(file.size>5*1024*1024){toast('Please choose a picture smaller than 5 MB.',true);return;} const path=makeImageName(file); const dataUrl=await fileToDataUrl(file); pendingUploads.set(path,{base64:dataUrl.split(',')[1],dataUrl}); apply(path); markDirty(); if(rerender)render(); }
 function fileToDataUrl(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);});}
 
 function renderAbout(){ const a=content.about; const root=$('#panel-root'); root.innerHTML=`<div class="editor-grid"><section class="editor-card"><div class="card-head"><h2>About Us text</h2></div><div class="card-body"><div class="field"><label>Heading</label><input data-bind="about.heading" value="${escapeHtml(a.heading)}"></div><div class="field"><label>Introduction</label><textarea data-bind="about.introduction">${escapeHtml(a.introduction)}</textarea></div><div class="field"><label>Story heading</label><input data-bind="about.story_heading" value="${escapeHtml(a.story_heading)}"></div><div class="field"><label>Story paragraphs</label><div class="repeat-list">${a.story_paragraphs.map((text,i)=>`<div class="repeat-item"><div class="item-bar"><span class="drag-handle">=</span><b>Paragraph ${i+1}</b><button class="remove-button" data-remove-paragraph="${i}" type="button">X</button></div><textarea data-paragraph="${i}">${escapeHtml(text)}</textarea></div>`).join('')}<button class="add-button" id="add-paragraph" type="button">+ Add paragraph</button></div></div></div></section><section class="preview-card"><div class="card-head"><h2>Preview</h2></div><div class="simple-preview" id="about-preview"></div></section></div>`; attachInputs(root); $$('[data-paragraph]',root).forEach(input=>input.addEventListener('input',()=>{a.story_paragraphs[Number(input.dataset.paragraph)]=input.value;markDirty();updateAboutPreview();})); $$('[data-remove-paragraph]',root).forEach(button=>button.addEventListener('click',()=>{a.story_paragraphs.splice(Number(button.dataset.removeParagraph),1);markDirty();renderAbout();})); $('#add-paragraph').addEventListener('click',()=>{a.story_paragraphs.push('');markDirty();renderAbout();}); updateAboutPreview(); }
@@ -147,7 +170,7 @@ function renderPrices(){ const root=$('#panel-root'); root.innerHTML=`<div class
 async function publish(){
   const button=$('#confirm-publish'); button.disabled=true; button.textContent='Publishing...'; setState('publishing','Publishing website...');
   try{
-    const uploads=[...pendingUploads].map(([path,base64])=>({path,base64}));
+    const uploads=[...pendingUploads].map(([path,file])=>({path,base64:file.base64}));
     await api('/api/admin/publish',{method:'POST',body:JSON.stringify({content,uploads,message:$('#publish-message').value.trim()})});
     originalContent=clone(content); pendingUploads.clear(); dirty=false; setState('saved','Published successfully'); $('#publish-dialog').close(); toast('Website published. It may take a few minutes to appear.');
   }catch(error){ setState('dirty','Publish failed - changes kept'); toast(error.message,true); }

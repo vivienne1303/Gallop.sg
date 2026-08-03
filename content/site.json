@@ -245,26 +245,6 @@
       ]
     }
   ],
-  "pages": [
-    {
-      "path": "index.html",
-      "eyebrow": "",
-      "heading": "",
-      "introduction": "",
-      "hero_image": "",
-      "hero_alt": ""
-    }
-  ],
-  "galleries": [
-    {
-      "path": "index.html",
-      "gallery_number": 1,
-      "images": [
-        {
-          "image": "images/uploads/1785739254605-xcorp-logo.jpeg",
-          "alt": "Xcorp logo"
-        }
-      ]
-    }
-  ]
+  "pages": [],
+  "galleries": []
 }
