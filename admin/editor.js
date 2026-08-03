@@ -42,6 +42,8 @@ let currentPanel = 'pages';
 let selectedPage = 'index.html';
 let selectedGalleryPath = 'index.html';
 let pendingUploads = new Map();
+let pageDrafts = new Map();
+let pagesLoading = new Set();
 let galleryDrafts = new Map();
 let galleriesLoading = new Set();
 let dirty = false;
@@ -70,7 +72,7 @@ async function loadContent(){
   if(!response.ok) throw new Error('Could not load the website content.');
   content=await response.json();
   content.pages ||= []; content.galleries ||= []; content.faqs ||= []; content.locations ||= []; content.lesson_prices ||= [];
-  originalContent=clone(content); pendingUploads.clear(); galleryDrafts.clear(); galleriesLoading.clear(); dirty=false; setState('saved','All changes saved locally'); render();
+  originalContent=clone(content); pendingUploads.clear(); pageDrafts.clear(); pagesLoading.clear(); galleryDrafts.clear(); galleriesLoading.clear(); dirty=false; setState('saved','All changes saved locally'); render();
 }
 
 function showEditor(){ $('#login-screen').hidden=true; $('#editor-shell').hidden=false; loadContent().catch(error=>toast(error.message,true)); }
@@ -89,7 +91,7 @@ $('#login-form').addEventListener('submit',async event=>{
 $('#show-password').addEventListener('click',()=>{ const input=$('#password'); input.type=input.type==='password'?'text':'password'; $('#show-password').textContent=input.type==='password'?'Show':'Hide'; });
 $('#logout-button').addEventListener('click',()=>{ if(dirty&&!confirm('Sign out and discard your unpublished changes?'))return; sessionStorage.removeItem(TOKEN_KEY); location.reload(); });
 $('#editor-nav').addEventListener('click',event=>{ const button=event.target.closest('[data-panel]'); if(!button)return; currentPanel=button.dataset.panel; $$('.nav-item').forEach(item=>item.classList.toggle('active',item===button)); render(); });
-$('#discard-button').addEventListener('click',()=>{ if(!dirty || confirm('Discard every unpublished change?')){ content=clone(originalContent); pendingUploads.clear(); galleryDrafts.clear(); dirty=false; setState('saved','All changes saved locally'); render(); }});
+$('#discard-button').addEventListener('click',()=>{ if(!dirty || confirm('Discard every unpublished change?')){ content=clone(originalContent); pendingUploads.clear(); pageDrafts.clear(); galleryDrafts.clear(); dirty=false; setState('saved','All changes saved locally'); render(); }});
 $('#publish-button').addEventListener('click',()=>{ if(!dirty){toast('There are no new changes to publish.');return;} $('#publish-message').value=''; $('#publish-dialog').showModal(); });
 $('#cancel-publish').addEventListener('click',()=>$('#publish-dialog').close());
 $('#confirm-publish').addEventListener('click',publish);
@@ -106,22 +108,64 @@ function attachInputs(root=$('#panel-root')){ $$('[data-bind]',root).forEach(inp
 function setPath(path,value){ const keys=path.split('.'); let cursor=content; keys.slice(0,-1).forEach(key=>cursor=cursor[Number.isNaN(Number(key))?key:Number(key)]); cursor[keys.at(-1)]=value; }
 function renderPreviewOnly(){ if(currentPanel==='pages') updatePagePreview(); if(currentPanel==='about') updateAboutPreview(); if(currentPanel==='contact') updateContactPreview(); }
 
-function pageRecord(path){ let record=content.pages.find(page=>page.path===path); if(!record){ record={path,eyebrow:'',heading:'',introduction:'',hero_image:'',hero_alt:''}; content.pages.push(record); } return record; }
+function pageRecord(path){ return content.pages.find(page=>page.path===path) || pageDrafts.get(path) || null; }
+async function importOriginalPage(path){
+  if(pagesLoading.has(path))return;
+  pagesLoading.add(path);
+  try{
+    const pageUrl=new URL(publicPath(path),location.href);
+    const response=await fetch(`${pageUrl.href}?v=${Date.now()}`,{cache:'no-store'});
+    if(!response.ok)throw new Error('Could not load the selected website page.');
+    const doc=new DOMParser().parseFromString(await response.text(),'text/html');
+    const hero=doc.querySelector('.page-hero, .ai-chat-intro, .home-banner');
+    const copy=hero?.querySelector('.page-hero-copy, .ai-chat-intro > div, .home-banner-content');
+    const image=hero?.querySelector(':scope > img, .home-banner-video-poster');
+    let heroImage='';
+    if(image?.getAttribute('src')){
+      const resolved=new URL(image.getAttribute('src'),pageUrl);
+      const marker='/Gallop.sg/';
+      heroImage=resolved.pathname.includes(marker)?resolved.pathname.split(marker)[1]:resolved.pathname.replace(/^\//,'');
+    }
+    pageDrafts.set(path,{
+      path,
+      eyebrow:copy?.querySelector('.eyebrow')?.textContent.trim()||'',
+      heading:copy?.querySelector('h1, h2')?.textContent.trim()||'',
+      introduction:copy?.querySelector('p:not(.eyebrow)')?.textContent.trim()||'',
+      hero_image:heroImage,
+      hero_alt:image?.alt||''
+    });
+  }catch(error){pageDrafts.set(path,{path,eyebrow:'',heading:'',introduction:'',hero_image:'',hero_alt:''});toast(error.message,true);}
+  finally{pagesLoading.delete(path);if(currentPanel==='pages'&&selectedPage===path)renderPages();}
+}
 function renderPages(){
   const page=pageRecord(selectedPage); const root=$('#panel-root');
+  if(!page){root.innerHTML='<section class="preview-card"><div class="empty-state">Loading the complete website page...</div></section>';importOriginalPage(selectedPage);return;}
   root.innerHTML=`<div class="editor-grid"><section class="editor-card"><div class="card-head"><h2>Page settings</h2></div><div class="card-body">
     <div class="field"><label>Website page</label><select id="page-select">${optionsHtml()}</select></div>
-    <div class="field"><label>Small heading</label><input data-page-field="eyebrow" value="${escapeHtml(page.eyebrow)}" placeholder="Optional label above the heading"></div>
-    <div class="field"><label>Main heading</label><input data-page-field="heading" value="${escapeHtml(page.heading)}" placeholder="Main page heading"></div>
-    <div class="field"><label>Introduction</label><textarea data-page-field="introduction" placeholder="Short introduction">${escapeHtml(page.introduction)}</textarea></div>
-    <div class="field"><label>Hero picture</label><div class="image-picker"><img id="hero-thumb" src="${escapeHtml(imageSrc(page.hero_image))}" alt=""><div><label class="upload-button">Choose picture<input id="hero-upload" type="file" accept="image/jpeg,image/png,image/webp"></label><small>The page automatically crops the picture.</small></div></div></div>
+    <div class="editor-explainer"><b>Highlighted area</b><span>These controls edit the highlighted top section in the full-page preview.</span></div>
+    <div class="field"><label>Small heading <span class="field-location">Top label</span></label><input data-page-field="eyebrow" value="${escapeHtml(page.eyebrow)}" placeholder="Optional label above the heading"></div>
+    <div class="field"><label>Main heading <span class="field-location">Large title</span></label><input data-page-field="heading" value="${escapeHtml(page.heading)}" placeholder="Main page heading"></div>
+    <div class="field"><label>Introduction <span class="field-location">Text below title</span></label><textarea data-page-field="introduction" placeholder="Short introduction">${escapeHtml(page.introduction)}</textarea></div>
+    <div class="field"><label>Hero picture <span class="field-location">Large top picture</span></label><div class="image-picker"><img id="hero-thumb" src="${escapeHtml(imageSrc(page.hero_image))}" alt=""><div><label class="upload-button">Choose picture<input id="hero-upload" type="file" accept="image/jpeg,image/png,image/webp"></label><small>The page automatically crops the picture.</small></div></div></div>
     <div class="field"><label>Picture description</label><input data-page-field="hero_alt" value="${escapeHtml(page.hero_alt)}" placeholder="Describe the picture for screen readers"><small>Example: Child riding a brown pony with an instructor.</small></div>
-  </div></section><section class="preview-card"><div class="card-head"><h2>Preview</h2><span>Top of page</span></div><div class="hero-preview" id="page-preview"><div><p class="eyebrow" id="preview-eyebrow"></p><h2 id="preview-heading"></h2><p id="preview-introduction"></p></div></div></section></div>`;
+  </div></section><section class="preview-card full-page-preview"><div class="card-head"><div><h2>Complete page preview</h2><small>Scroll here to see every existing text and picture</small></div><span>Highlighted = editable here</span></div><iframe id="page-preview-frame" src="${escapeHtml(publicPath(selectedPage))}" title="Full preview of ${escapeHtml(pageName(selectedPage))}"></iframe></section></div>`;
   $('#page-select').value=selectedPage; $('#page-select').addEventListener('change',event=>{selectedPage=event.target.value;$('#live-page-link').href=publicPath(selectedPage);renderPages();});
-  $$('[data-page-field]',root).forEach(input=>input.addEventListener('input',()=>{ page[input.dataset.pageField]=input.value;markDirty();updatePagePreview(); }));
-  $('#hero-upload').addEventListener('change',event=>handleImage(event.target.files[0],path=>{page.hero_image=path;renderPages();})); updatePagePreview();
+  const ensureManaged=()=>{if(!content.pages.includes(page))content.pages.push(page);};
+  $$('[data-page-field]',root).forEach(input=>input.addEventListener('input',()=>{ensureManaged();page[input.dataset.pageField]=input.value;markDirty();updatePagePreview(); }));
+  $('#hero-upload').addEventListener('change',event=>handleImage(event.target.files[0],path=>{ensureManaged();page.hero_image=path;renderPages();}));
+  $('#page-preview-frame').addEventListener('load',updatePagePreview); updatePagePreview();
 }
-function updatePagePreview(){ const page=pageRecord(selectedPage); const preview=$('#page-preview'); if(!preview)return; preview.style.backgroundImage=`linear-gradient(0deg,rgba(8,35,31,.78),rgba(8,35,31,.05)),url("${imageSrc(page.hero_image).replace(/"/g,'')}")`; $('#preview-eyebrow').textContent=page.eyebrow||pageName(selectedPage); $('#preview-heading').textContent=page.heading||'Existing page heading'; $('#preview-introduction').textContent=page.introduction||'Existing introduction will remain when this field is empty.'; }
+function updatePagePreview(){
+  const page=pageRecord(selectedPage); const frame=$('#page-preview-frame'); const doc=frame?.contentDocument;
+  if(!page||!doc)return;
+  const hero=doc.querySelector('.page-hero, .ai-chat-intro, .home-banner');
+  const copy=hero?.querySelector('.page-hero-copy, .ai-chat-intro > div, .home-banner-content');
+  const eyebrow=copy?.querySelector('.eyebrow'); const heading=copy?.querySelector('h1, h2'); const introduction=copy?.querySelector('p:not(.eyebrow)');
+  const image=hero?.querySelector(':scope > img, .home-banner-video-poster');
+  if(eyebrow)eyebrow.textContent=page.eyebrow;if(heading)heading.textContent=page.heading;if(introduction)introduction.textContent=page.introduction;
+  if(image&&page.hero_image){image.src=imageSrc(page.hero_image);image.alt=page.hero_alt||'';}
+  if(hero){hero.classList.add('gallop-editor-highlight');const style=doc.createElement('style');style.textContent='.gallop-editor-highlight{outline:6px solid #f0b323!important;outline-offset:-6px!important;position:relative}.gallop-editor-highlight:after{content:"EDITABLE TOP SECTION";position:absolute;z-index:9999;top:12px;right:12px;background:#f0b323;color:#173b34;padding:8px 11px;border-radius:6px;font:700 12px Arial,sans-serif;letter-spacing:.06em}';doc.head.appendChild(style);}
+}
 
 function galleryRecord(path){ const item=content.galleries.find(g=>g.path===path&&Number(g.gallery_number)===1); if(item){item.images ||= [];return item;} return galleryDrafts.get(path) || null;}
 async function importOriginalGallery(path){
