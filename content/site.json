@@ -245,6 +245,190 @@
       ]
     }
   ],
-  "pages": [],
-  "galleries": []
+  "pages": [
+    {
+      "path": "index.html",
+      "eyebrow": "",
+      "heading": "",
+      "introduction": "",
+      "hero_image": "",
+      "hero_alt": ""
+    }
+  ],
+  "galleries": [
+    {
+      "path": "pages/stable/stable.html",
+      "gallery_number": 1,
+      "images": [
+        {
+          "image": "STABLE%20TOURS/IMG_0488.jpg",
+          "alt": "Visitors meeting horses during a Gallop Stable tour"
+        },
+        {
+          "image": "RIDING%20LESSONS/4ddbdf2c-6bd5-4bd2-a44c-0812efd17e95.JPG",
+          "alt": "A rider learning during a Gallop Stable lesson"
+        },
+        {
+          "image": "images/zy1.jpeg",
+          "alt": "A recent Gallop Stable gallery moment"
+        },
+        {
+          "image": "images/zy2.jpeg",
+          "alt": "A recent visit to Gallop Stable"
+        },
+        {
+          "image": "images/zy3.jpeg",
+          "alt": "Guests enjoying time at Gallop Stable"
+        },
+        {
+          "image": "images/zy4.jpeg",
+          "alt": "A recent horse activity at Gallop Stable"
+        },
+        {
+          "image": "images/zy5.jpeg",
+          "alt": "A memorable moment with the horses at Gallop Stable"
+        },
+        {
+          "image": "images/zy6.jpeg",
+          "alt": "Visitors meeting the horses at Gallop Stable"
+        },
+        {
+          "image": "images/zy7.jpeg",
+          "alt": "A recent Gallop Stable experience"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/1.1.jpg",
+          "alt": "A Gallop Stable pony at an outdoor event"
+        },
+        {
+          "image": "RIDING%20LESSONS/7E89905A-828B-48BA-8080-94DA0937FF78.JPG",
+          "alt": "A supervised riding lesson at Gallop Stable"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/1.2.jpg",
+          "alt": "Guests meeting a pony at an outdoor event"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_0111.jpg",
+          "alt": "A rider in the arena during a lesson"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/2.1.jpg",
+          "alt": "A child enjoying an outdoor pony activity"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_0516.jpg",
+          "alt": "A young rider learning with an instructor"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/2.2.jpg",
+          "alt": "A guided pony experience at an outdoor event"
+        },
+        {
+          "image": "STABLE%20TOURS/IMG_0499.jpg",
+          "alt": "A Gallop Stable tour group meeting the horses"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_0520.jpg",
+          "alt": "A rider practising in the stable arena"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/3.1.jpg",
+          "alt": "A Gallop Stable outdoor pony hire moment"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_0524.jpg",
+          "alt": "A beginner rider learning horse control"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/3.2.jpg",
+          "alt": "Families spending time with a pony outdoors"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_0527.jpg",
+          "alt": "A child taking a riding lesson"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/4.1.jpg",
+          "alt": "A pony visit for an outdoor celebration"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_2679.jpg",
+          "alt": "A riding student working with a horse"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/4.2.JPG",
+          "alt": "A child meeting a pony during an event"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_3071.jpg",
+          "alt": "A horse and rider training at Gallop Stable"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/5.1.JPG",
+          "alt": "An outdoor pony hire setup at Gallop Stable event"
+        },
+        {
+          "image": "STABLE%20TOURS/IMG_8822.jpg",
+          "alt": "Visitors spending time with a horse at Gallop Stable"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_3099.jpg",
+          "alt": "A riding lesson with a Gallop Stable horse"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/5.2.JPG",
+          "alt": "A pony and handler at an outdoor programme"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_3135.jpg",
+          "alt": "A Gallop Stable riding lesson activity"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/6.1.jpg",
+          "alt": "A community event with Gallop Stable ponies"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_3136.jpg",
+          "alt": "A student learning to ride at Gallop Stable"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/6.2.jpg",
+          "alt": "Guests enjoying pony hire at an outdoor venue"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_3354.jpg",
+          "alt": "A recent riding lesson moment"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/7.1.jpg",
+          "alt": "A gentle pony experience outdoors"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_7096.jpg",
+          "alt": "A horse and rider during training"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/7.2.jpg",
+          "alt": "A pony activity for children at an event"
+        },
+        {
+          "image": "STABLE%20TOURS/IMG_9968.JPG",
+          "alt": "Visitors joining a stable tour at Gallop Stable"
+        },
+        {
+          "image": "RIDING%20LESSONS/IMG_0528.jpg",
+          "alt": "A guided lesson around the arena"
+        },
+        {
+          "image": "OUTDOOR%20EVENTS/8.1.jpg",
+          "alt": "A Gallop Stable pony at a special occasion"
+        },
+        {
+          "image": "images/uploads/1785740108156-1.png",
+          "alt": "1"
+        }
+      ]
+    }
+  ]
 }
