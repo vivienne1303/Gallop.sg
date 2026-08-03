@@ -1,20 +1,76 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Gallop SG Content Manager</title>
-  <script>
-    if (window.location.hostname !== 'gallopsg.netlify.app') {
-      const netlifyAdminUrl = new URL('https://gallopsg.netlify.app/admin/');
-      netlifyAdminUrl.search = window.location.search;
-      netlifyAdminUrl.hash = window.location.hash;
-      window.location.replace(netlifyAdminUrl);
-    }
-  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Gallop SG Website Editor</title>
+  <link rel="icon" href="../images/logo.png">
+  <link rel="stylesheet" href="editor.css">
 </head>
 <body>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <div class="login-screen" id="login-screen">
+    <form class="login-card" id="login-form">
+      <img src="../images/logo.png" alt="Gallop SG">
+      <p class="eyebrow">Staff access</p>
+      <h1>Edit the Gallop SG website</h1>
+      <p>Use the staff password to update words and pictures. No VS Code is needed.</p>
+      <label for="password">Staff password</label>
+      <div class="password-row">
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button class="secondary compact" id="show-password" type="button">Show</button>
+      </div>
+      <p class="form-error" id="login-error" role="alert"></p>
+      <button class="primary wide" type="submit">Sign in</button>
+    </form>
+  </div>
+
+  <div class="editor-shell" id="editor-shell" hidden>
+    <header class="topbar">
+      <a class="brand" href="../index.html" target="_blank" rel="noopener">
+        <img src="../images/logo.png" alt="Gallop SG">
+        <span><strong>Website Editor</strong><small>Staff workspace</small></span>
+      </a>
+      <div class="save-state" id="save-state" data-state="saved"><span></span><b>All changes saved locally</b></div>
+      <div class="top-actions">
+        <button class="secondary" id="discard-button" type="button">Discard changes</button>
+        <button class="primary" id="publish-button" type="button">Publish website</button>
+        <button class="icon-button" id="logout-button" type="button" aria-label="Sign out" title="Sign out">&#x2192;</button>
+      </div>
+    </header>
+
+    <aside class="sidebar">
+      <p class="sidebar-label">Edit website</p>
+      <nav id="editor-nav" aria-label="Editor sections">
+        <button class="nav-item active" data-panel="pages" type="button"><span>01</span>Pages &amp; hero pictures</button>
+        <button class="nav-item" data-panel="galleries" type="button"><span>02</span>Picture galleries</button>
+        <button class="nav-item" data-panel="about" type="button"><span>03</span>About us</button>
+        <button class="nav-item" data-panel="faqs" type="button"><span>04</span>FAQs</button>
+        <button class="nav-item" data-panel="contact" type="button"><span>05</span>Contact details</button>
+        <button class="nav-item" data-panel="locations" type="button"><span>06</span>Locations</button>
+        <button class="nav-item" data-panel="prices" type="button"><span>07</span>Lesson prices</button>
+      </nav>
+      <div class="sidebar-help"><b>Need a quick check?</b><p>Open the live page before publishing and compare it with the preview.</p></div>
+    </aside>
+
+    <main class="workspace">
+      <div class="workspace-heading">
+        <div><p class="eyebrow" id="panel-kicker">Pages</p><h1 id="panel-title">Edit page text and hero picture</h1><p id="panel-description">Choose a page, then update what visitors see at the top.</p></div>
+        <a class="preview-link" id="live-page-link" href="../index.html" target="_blank" rel="noopener">Open live page &#x2197;</a>
+      </div>
+      <div id="panel-root" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="publish-dialog">
+    <div class="dialog-icon">&#10003;</div>
+    <h2>Publish these changes?</h2>
+    <p>The website will update through GitHub Pages. It can take a few minutes to appear publicly.</p>
+    <label for="publish-message">Short note about this update</label>
+    <input id="publish-message" maxlength="80" placeholder="Example: Updated Riding Lessons pictures">
+    <div class="dialog-actions"><button class="secondary" id="cancel-publish" type="button">Cancel</button><button class="primary" id="confirm-publish" type="button">Publish now</button></div>
+  </dialog>
+  <script src="editor.js"></script>
 </body>
 </html>

@@ -18,7 +18,8 @@ if a different supported lightweight model is required.
 2. In Railway, create a new project and choose **Deploy from GitHub repo**.
 3. Set the service **Root Directory** to `/backend`.
 4. Add the Railway variable `OPENAI_API_KEY` with the real API key.
-5. Railway runs `npm start` from `package.json` and supplies `PORT`
+5. Add the website editor variables described in `ADMIN_EDITOR_SETUP.md`.
+6. Railway runs `npm start` from `package.json` and supplies `PORT`
    automatically. Do not create a fixed `PORT` variable.
 6. In **Settings → Networking**, generate a public Railway domain.
 7. Test `https://YOUR_RAILWAY_DOMAIN/health`; it should return

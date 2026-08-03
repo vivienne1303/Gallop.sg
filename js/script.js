@@ -1,4 +1,3 @@
-const identityTokenPattern = /(?:confirmation_token|invite_token|recovery_token|access_token)=/;
 const sectionFolders = [
   'stable',
   'care',
@@ -80,10 +79,6 @@ const rootAsset = assetPath => {
   if (isGallopSgPage) return `../../${assetPath}`;
   return `${section ? '../../' : '../'}${assetPath}`;
 };
-
-if (identityTokenPattern.test(window.location.hash) && !window.location.pathname.includes('/admin/')) {
-  window.location.replace(`https://gallopsg.netlify.app/admin/${window.location.hash}`);
-}
 
 const renderPrimaryNav = () => {
   const nav = document.querySelector('.main-nav');
