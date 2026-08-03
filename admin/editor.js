@@ -6,10 +6,9 @@ const CONTENT_URL = '../content/site.json';
 const TOKEN_KEY = 'gallop_admin_session';
 
 const PAGE_GROUPS = [
-  ['Main website', [['index.html','Website Home']]],
+  ['Main website', [['index.html','Website Home (Gallop SG)']]],
   ['Gallop SG', [
-    ['pages/gallopsg/index.html','Home'], ['pages/gallopsg/gallop-ai.html','Gallop AI'],
-    ['pages/gallopsg/promotion.html','Promotions'], ['pages/gallopsg/join.html','Join the Team'],
+    ['pages/gallopsg/gallop-ai.html','Gallop AI'], ['pages/gallopsg/promotion.html','Promotions'], ['pages/gallopsg/join.html','Join the Team'],
     ['pages/gallopsg/faq.html','FAQs'], ['pages/gallopsg/contact.html','Contact']
   ]],
   ['Gallop Stable', [
@@ -47,7 +46,7 @@ function venturePages(folder,prefix,name,homeFile=`${prefix}.html`){return [
   [`pages/${folder}/${prefix}_faq.html`,'FAQs'], [`pages/${folder}/${prefix}_contact.html`,'Contact']
 ];}
 const PAGE_OPTIONS = PAGE_GROUPS.flatMap(([,pages])=>pages);
-const GALLERY_PAGES = new Set(['index.html','pages/gallopsg/index.html','pages/stable/stable.html','pages/stable/riding-lessons.html','pages/stable/outdoor-pony-hire.html','pages/care/gallop-care.html','pages/jackuda/jackuda.html','pages/jackuda/birthday-party.html','pages/jackuda/horseshoe-painting.html','pages/jackuda/learning-journey.html','pages/jackuda/photoshoot.html','pages/jackuda/pony-rides-feeding.html']);
+const GALLERY_PAGES = new Set(['index.html','pages/stable/stable.html','pages/stable/riding-lessons.html','pages/stable/outdoor-pony-hire.html','pages/care/gallop-care.html','pages/jackuda/jackuda.html','pages/jackuda/birthday-party.html','pages/jackuda/horseshoe-painting.html','pages/jackuda/learning-journey.html','pages/jackuda/photoshoot.html','pages/jackuda/pony-rides-feeding.html']);
 const PANEL_COPY = {
   pages:['Pages','Edit page text and hero picture','Choose a page, then update what visitors see at the top.'],
   galleries:['Pictures','Arrange picture galleries','Upload, describe and drag pictures into the order visitors will see.'],
@@ -84,7 +83,7 @@ function setState(state, text){ const el=$('#save-state'); el.dataset.state=stat
 function markDirty(){ dirty=true; setState('dirty','Unpublished changes'); }
 function toast(message, error=false){ const el=$('#toast'); el.textContent=message; el.className=`toast show${error?' error':''}`; clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.className='toast',3500); }
 function imageSrc(path){ if(!path) return '../images/Child_and_horse.jpeg'; const pending=pendingUploads.get(path); if(pending?.dataUrl)return pending.dataUrl; if(path.startsWith('data:') || path.startsWith('blob:') || /^https?:/.test(path)) return path; return `../${path.replace(/^\//,'')}`; }
-function optionsHtml(filter=()=>true){ return PAGE_GROUPS.map(([group,pages])=>{const visible=pages.filter(([path])=>filter(path));return visible.length?`<optgroup label="${escapeHtml(group)}">${visible.map(([path,label])=>`<option value="${escapeHtml(path)}">${escapeHtml(label)}</option>`).join('')}</optgroup>`:'';}).join(''); }
+function optionsHtml(filter=()=>true,labelFor=(path,label)=>label){ return PAGE_GROUPS.map(([group,pages])=>{const visible=pages.filter(([path])=>filter(path));return visible.length?`<optgroup label="${escapeHtml(group)}">${visible.map(([path,label])=>`<option value="${escapeHtml(path)}">${escapeHtml(labelFor(path,label))}</option>`).join('')}</optgroup>`:'';}).join(''); }
 function makeImageName(file){ const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'') || 'jpg'; const stem=file.name.replace(/\.[^.]+$/,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,45)||'picture'; return `images/uploads/${Date.now()}-${stem}.${ext}`; }
 
 async function api(path, options={}){
@@ -246,7 +245,7 @@ async function importOriginalGallery(path){
     const response=await fetch(`${pageUrl.href}?v=${Date.now()}`,{cache:'no-store'});
     if(!response.ok)throw new Error('Could not load the original gallery.');
     const doc=new DOMParser().parseFromString(await response.text(),'text/html');
-    const firstGallery=doc.querySelector('.scroll-gallery');
+    const firstGallery=path==='index.html'?doc.querySelector('.opening-gallery-slider'):doc.querySelector('.scroll-gallery');
     const images=[...(firstGallery?.querySelectorAll('.scroll-gallery-track > .scroll-gallery-group:first-child img')||[])];
     const gallery={path,gallery_number:1,images:images.map(img=>{
       const resolved=new URL(img.getAttribute('src'),pageUrl);
@@ -258,7 +257,7 @@ async function importOriginalGallery(path){
   }catch(error){galleryDrafts.set(path,{path,gallery_number:1,images:[]});toast(error.message,true);}
   finally{galleriesLoading.delete(path);if(currentPanel==='galleries'&&selectedGalleryPath===path)renderGalleries();}
 }
-function renderGalleries(){ const gallery=galleryRecord(selectedGalleryPath); const root=$('#panel-root'); if(!gallery){root.innerHTML='<section class="preview-card"><div class="empty-state">Loading the existing website gallery...</div></section>';importOriginalGallery(selectedGalleryPath);return;} root.innerHTML=`<div class="editor-grid"><section class="editor-card"><div class="card-head"><h2>Gallery settings</h2></div><div class="card-body"><div class="field"><label>Website page</label><select id="gallery-page">${optionsHtml(path=>GALLERY_PAGES.has(path))}</select><small>Pictures below appear on this page.</small></div><div class="field"><label>Gallery number</label><input value="1" disabled><small>Use the first gallery on the page.</small></div><label class="upload-tile">+ Add pictures<input id="gallery-upload" type="file" multiple accept="image/jpeg,image/png,image/webp"></label></div></section><section class="preview-card"><div class="card-head"><h2>Drag pictures to rearrange</h2><span>${gallery.images.length} pictures</span></div><div class="card-body"><div class="gallery-grid" id="gallery-grid">${gallery.images.map((item,index)=>`<article class="gallery-item" draggable="true" data-index="${index}"><img src="${escapeHtml(imageSrc(item.image))}" alt="${escapeHtml(item.alt)}"><span class="order">${index+1}</span><button class="remove-button" data-remove="${index}" type="button" aria-label="Remove picture">X</button><div class="gallery-meta">${escapeHtml(item.alt||'No description yet')}</div></article>`).join('')}<label class="upload-tile">+ Add pictures<input class="gallery-upload-more" type="file" multiple accept="image/jpeg,image/png,image/webp"></label></div>${gallery.images.length?'<p class="field"><small>The existing website pictures are included. Add or rearrange them, then publish the complete gallery.</small></p>':'<div class="empty-state">This page does not have an existing gallery.</div>'}</div></section></div>`;
+function renderGalleries(){ const gallery=galleryRecord(selectedGalleryPath); const root=$('#panel-root'); if(!gallery){root.innerHTML='<section class="preview-card"><div class="empty-state">Loading the existing website gallery...</div></section>';importOriginalGallery(selectedGalleryPath);return;} root.innerHTML=`<div class="editor-grid"><section class="editor-card"><div class="card-head"><h2>Gallery settings</h2></div><div class="card-body"><div class="field"><label>Website gallery</label><select id="gallery-page">${optionsHtml(path=>GALLERY_PAGES.has(path),(path,label)=>path==='index.html'?'Opening Ceremony Gallery':label)}</select><small>Pictures below appear in this gallery.</small></div><div class="field"><label>Gallery number</label><input value="1" disabled><small>${selectedGalleryPath==='index.html'?'This is the Opening Ceremony Gallery on the main website home.':'Use the first gallery on this page.'}</small></div><label class="upload-tile">+ Add pictures<input id="gallery-upload" type="file" multiple accept="image/jpeg,image/png,image/webp"></label></div></section><section class="preview-card"><div class="card-head"><h2>Drag pictures to rearrange</h2><span>${gallery.images.length} pictures</span></div><div class="card-body"><div class="gallery-grid" id="gallery-grid">${gallery.images.map((item,index)=>`<article class="gallery-item" draggable="true" data-index="${index}"><img src="${escapeHtml(imageSrc(item.image))}" alt="${escapeHtml(item.alt)}"><span class="order">${index+1}</span><button class="remove-button" data-remove="${index}" type="button" aria-label="Remove picture">X</button><div class="gallery-meta">${escapeHtml(item.alt||'No description yet')}</div></article>`).join('')}<label class="upload-tile">+ Add pictures<input class="gallery-upload-more" type="file" multiple accept="image/jpeg,image/png,image/webp"></label></div>${gallery.images.length?'<p class="field"><small>The existing website pictures are included. Add or rearrange them, then publish the complete gallery.</small></p>':'<div class="empty-state">This page does not have an existing gallery.</div>'}</div></section></div>`;
   $('#gallery-page').value=selectedGalleryPath; $('#gallery-page').addEventListener('change',event=>{selectedGalleryPath=event.target.value;$('#live-page-link').href=publicPath(selectedGalleryPath);renderGalleries();});
   const ensureManaged=()=>{if(!content.galleries.includes(gallery))content.galleries.push(gallery);};
   const upload=async files=>{ensureManaged();for(const file of files){await handleImage(file,path=>gallery.images.push({image:path,alt:file.name.replace(/\.[^.]+$/,'').replace(/[-_]/g,' ')}),false);}markDirty();renderGalleries();};

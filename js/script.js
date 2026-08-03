@@ -796,7 +796,9 @@ const applyCmsGalleries = content => {
 
   pageGalleries.forEach(gallery => {
     const galleryIndex = Math.max(Number(gallery.gallery_number || 1) - 1, 0);
-    const galleryElement = galleries[galleryIndex];
+    const galleryElement = pagePath === 'index.html' && galleryIndex === 0
+      ? document.querySelector('.opening-gallery-slider')
+      : galleries[galleryIndex];
     const track = galleryElement?.querySelector('.scroll-gallery-track');
     const sourceGroup = track?.querySelector(':scope > .scroll-gallery-group');
     if (!sourceGroup) return;
