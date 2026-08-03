@@ -245,6 +245,46 @@
       ]
     }
   ],
-  "pages": [],
-  "galleries": []
+  "pages": [
+    {
+      "path": "index.html",
+      "eyebrow": "",
+      "heading": "",
+      "introduction": "",
+      "hero_image": "",
+      "hero_alt": ""
+    },
+    {
+      "path": "pages/gallopsg/gallop-ai.html",
+      "eyebrow": "",
+      "heading": "",
+      "introduction": "",
+      "hero_image": "",
+      "hero_alt": ""
+    },
+    {
+      "path": "pages/jackuda/trail-rides.html",
+      "eyebrow": "",
+      "heading": "",
+      "introduction": "",
+      "hero_image": "",
+      "hero_alt": ""
+    }
+  ],
+  "galleries": [
+    {
+      "path": "pages/stable/stable.html",
+      "gallery_number": 1,
+      "images": [
+        {
+          "image": "images/uploads/1785738910423-xcorp-logo.jpeg",
+          "alt": "Xcorp logo"
+        },
+        {
+          "image": "images/uploads/1785738924750-mega-shirt-design.png",
+          "alt": "MEGA Shirt Design"
+        }
+      ]
+    }
+  ]
 }
