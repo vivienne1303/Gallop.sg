@@ -841,17 +841,29 @@ const applyCmsPromotions = content => {
     return;
   }
 
-  const grid = document.createElement('div');
-  grid.className = 'promotions-poster-grid';
-  grid.setAttribute('aria-label', 'Current promotions');
-  promotion.images.forEach(item => {
+  let grid = section.querySelector('.promotions-poster-grid');
+  if (!grid) {
+    grid = document.createElement('div');
+    grid.className = 'promotions-poster-grid promotion-carousel promotion-carousel-portrait';
+    grid.setAttribute('aria-label', 'Portrait promotions');
+    grid.innerHTML = '<div class="promotion-carousel-track"></div>';
+  }
+  const track = grid.querySelector('.promotion-carousel-track');
+  const expectedSources = promotion.images.map(item => new URL(resolveCmsImage(item.image), window.location.href).href);
+  const currentSources = [...track.querySelectorAll('img')].map(image => image.src);
+  const alreadyCurrent = currentSources.length === expectedSources.length
+    && currentSources.every((source, index) => source === expectedSources[index]);
+  if (alreadyCurrent) return;
+
+  track.replaceChildren(...promotion.images.map(item => {
     const image = document.createElement('img');
     image.src = resolveCmsImage(item.image);
     image.alt = item.alt || 'Gallop SG promotion';
     image.loading = 'lazy';
-    grid.appendChild(image);
-  });
+    return image;
+  }));
   section.replaceChildren(grid);
+  initializePromotionCarousels();
 };
 
 const applyCmsContent = content => {
