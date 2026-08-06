@@ -841,28 +841,42 @@ const applyCmsPromotions = content => {
     return;
   }
 
-  let grid = section.querySelector('.promotions-poster-grid');
-  if (!grid) {
-    grid = document.createElement('div');
-    grid.className = 'promotions-poster-grid promotion-carousel promotion-carousel-portrait';
-    grid.setAttribute('aria-label', 'Portrait promotions');
-    grid.innerHTML = '<div class="promotion-carousel-track"></div>';
-  }
-  const track = grid.querySelector('.promotion-carousel-track');
   const expectedSources = promotion.images.map(item => new URL(resolveCmsImage(item.image), window.location.href).href);
-  const currentSources = [...track.querySelectorAll('img')].map(image => image.src);
+  const currentSources = [...section.querySelectorAll('.promotion-carousel-track img')].map(image => image.src);
   const alreadyCurrent = currentSources.length === expectedSources.length
     && currentSources.every((source, index) => source === expectedSources[index]);
   if (alreadyCurrent) return;
 
-  track.replaceChildren(...promotion.images.map(item => {
+  const makeImages = items => items.map(item => {
     const image = document.createElement('img');
     image.src = resolveCmsImage(item.image);
     image.alt = item.alt || 'Gallop SG promotion';
     image.loading = 'lazy';
     return image;
-  }));
-  section.replaceChildren(grid);
+  });
+  const makeCarousel = (items, format) => {
+    const carousel = document.createElement('div');
+    carousel.className = format === 'landscape'
+      ? 'stable-promotions-row stable-promotions-row-landscape promotion-carousel'
+      : 'promotions-poster-grid promotion-carousel promotion-carousel-portrait';
+    carousel.setAttribute('aria-label', format === 'landscape' ? 'Landscape promotions' : 'Portrait promotions');
+    const track = document.createElement('div');
+    track.className = 'promotion-carousel-track';
+    track.append(...makeImages(items));
+    carousel.appendChild(track);
+    return carousel;
+  };
+
+  const landscape = promotion.images.filter(item => item.format === 'landscape');
+  const portrait = promotion.images.filter(item => item.format !== 'landscape');
+  if (landscape.length && portrait.length) {
+    const layout = document.createElement('div');
+    layout.className = 'stable-promotions-layout';
+    layout.append(makeCarousel(landscape, 'landscape'), makeCarousel(portrait, 'portrait'));
+    section.replaceChildren(layout);
+  } else {
+    section.replaceChildren(makeCarousel(landscape.length ? landscape : portrait, landscape.length ? 'landscape' : 'portrait'));
+  }
   initializePromotionCarousels();
 };
 
