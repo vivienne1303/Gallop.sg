@@ -3,6 +3,7 @@ const DEFAULT_API_BASE = ['localhost', '127.0.0.1'].includes(window.location.hos
   : 'https://gallopsg-production.up.railway.app';
 const API_BASE = String(window.GALLOP_ADMIN_API_BASE_URL || DEFAULT_API_BASE).replace(/\/$/, '');
 const CONTENT_URL = '../content/site.json';
+const GITHUB_CONTENT_URL = 'https://api.github.com/repos/vivienne1303/Gallop.sg/contents/content/site.json';
 const TOKEN_KEY = 'gallop_admin_session';
 
 const PAGE_GROUPS = [
@@ -102,10 +103,19 @@ async function api(path, options={}){
 async function loadContent(){
   try{content=await api('/api/admin/content');}
   catch(error){
-    const response=await fetch(`${CONTENT_URL}?v=${Date.now()}`,{cache:'no-store'});
-    if(!response.ok) throw error;
-    content=await response.json();
-    toast('Loaded the public cached copy because the publishing service is still updating.',true);
+    try{
+      const githubResponse=await fetch(`${GITHUB_CONTENT_URL}?ref=main&t=${Date.now()}`,{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
+      if(!githubResponse.ok)throw new Error('GitHub content request failed.');
+      const githubFile=await githubResponse.json();
+      const bytes=Uint8Array.from(atob(String(githubFile.content||'').replace(/\s/g,'')),char=>char.charCodeAt(0));
+      content=JSON.parse(new TextDecoder().decode(bytes));
+      toast('Loaded the latest published content directly from GitHub.');
+    }catch(githubError){
+      const response=await fetch(`${CONTENT_URL}?v=${Date.now()}`,{cache:'no-store'});
+      if(!response.ok) throw error;
+      content=await response.json();
+      toast('Loaded a cached copy. Recent published changes may take a few minutes to appear.',true);
+    }
   }
   content.pages ||= []; content.page_blocks ||= []; content.galleries ||= []; content.promotions ||= []; content.faqs ||= []; content.locations ||= []; content.lesson_prices ||= [];
   originalContent=clone(content); pendingUploads.clear(); pageDrafts.clear(); pageBlockDrafts.clear(); pagesLoading.clear(); galleryDrafts.clear(); galleriesLoading.clear(); dirty=false; setState('saved','All changes saved locally'); render();
