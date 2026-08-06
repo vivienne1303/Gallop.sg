@@ -190,6 +190,21 @@ app.get('/api/admin/session', requireAdmin, (_req, res) => {
   res.status(200).json({ authenticated: true });
 });
 
+app.get('/api/admin/content', requireAdmin, async (_req, res) => {
+  try {
+    const file = await githubRequest('content/site.json', {
+      query: `?ref=${encodeURIComponent(GITHUB_BRANCH)}&t=${Date.now()}`
+    });
+    const content = JSON.parse(Buffer.from(file.content || '', 'base64').toString('utf8'));
+    if (!validSiteContent(content)) throw new Error('GitHub returned invalid website content.');
+    res.set('Cache-Control', 'no-store');
+    return res.status(200).json(content);
+  } catch (error) {
+    console.error('Admin content load failed:', { status: error.status, message: error.message });
+    return res.status(502).json({ error: 'Could not load the latest website content from GitHub.' });
+  }
+});
+
 app.post('/api/admin/publish', requireAdmin, async (req, res) => {
   const { content, uploads = [], message } = req.body || {};
   if (!validSiteContent(content)) {

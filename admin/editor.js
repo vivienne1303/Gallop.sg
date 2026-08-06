@@ -100,9 +100,13 @@ async function api(path, options={}){
 }
 
 async function loadContent(){
-  const response=await fetch(`${CONTENT_URL}?v=${Date.now()}`,{cache:'no-store'});
-  if(!response.ok) throw new Error('Could not load the website content.');
-  content=await response.json();
+  try{content=await api('/api/admin/content');}
+  catch(error){
+    const response=await fetch(`${CONTENT_URL}?v=${Date.now()}`,{cache:'no-store'});
+    if(!response.ok) throw error;
+    content=await response.json();
+    toast('Loaded the public cached copy because the publishing service is still updating.',true);
+  }
   content.pages ||= []; content.page_blocks ||= []; content.galleries ||= []; content.promotions ||= []; content.faqs ||= []; content.locations ||= []; content.lesson_prices ||= [];
   originalContent=clone(content); pendingUploads.clear(); pageDrafts.clear(); pageBlockDrafts.clear(); pagesLoading.clear(); galleryDrafts.clear(); galleriesLoading.clear(); dirty=false; setState('saved','All changes saved locally'); render();
 }
