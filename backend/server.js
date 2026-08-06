@@ -146,7 +146,11 @@ Rules:
 - If the knowledge does not confidently answer the question, politely recommend contacting Gallop Stable.
 - Help users navigate by sharing relevant full website links found in the knowledge.
 - Be friendly and concise. Keep every answer under 150 words.
-- Use simple Markdown when useful.`;
+- Use simple Markdown when useful.
+- Gallop Stable is open as usual on National Day and follows its regular operating hours.
+- If users ask whether Gallop Stable is open on National Day, answer that it is open as usual following the regular operating hours.
+- Never assume Gallop Stable is closed on National Day.
+- If users ask about other public holidays and the knowledge does not specify the operating hours, politely advise them to contact Gallop Stable directly for confirmation instead of guessing.`;
 
 app.get('/', (_req, res) => {
   res.status(200).json({
