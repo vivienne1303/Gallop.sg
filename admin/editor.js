@@ -47,9 +47,11 @@ function venturePages(folder,prefix,name,homeFile=`${prefix}.html`){return [
 ];}
 const PAGE_OPTIONS = PAGE_GROUPS.flatMap(([,pages])=>pages);
 const GALLERY_PAGES = new Set(['index.html','pages/stable/stable.html','pages/stable/riding-lessons.html','pages/stable/outdoor-pony-hire.html','pages/care/gallop-care.html','pages/jackuda/jackuda.html','pages/jackuda/birthday-party.html','pages/jackuda/horseshoe-painting.html','pages/jackuda/learning-journey.html','pages/jackuda/photoshoot.html','pages/jackuda/pony-rides-feeding.html']);
+const PROMOTION_PAGES = new Set(PAGE_OPTIONS.map(([path])=>path).filter(path=>/promotion\.html$/.test(path)));
 const PANEL_COPY = {
   pages:['Pages','Edit page text and hero picture','Choose a page, then update what visitors see at the top.'],
   galleries:['Pictures','Arrange picture galleries','Upload, describe and drag pictures into the order visitors will see.'],
+  promotions:['Promotions','Add promotion pictures','Choose a promotions page, then upload and arrange its posters or banners.'],
   about:['Main content','Edit the About Us section','Update the introduction and arrange the story paragraphs.'],
   faqs:['Help content','Edit frequently asked questions','Add, remove or rearrange questions and answers.'],
   contact:['Contact','Edit contact details','Keep the general email and WhatsApp number current.'],
@@ -69,6 +71,7 @@ let originalContent = null;
 let currentPanel = 'pages';
 let selectedPage = 'index.html';
 let selectedGalleryPath = 'index.html';
+let selectedPromotionPath = 'pages/gallopsg/promotion.html';
 let pendingUploads = new Map();
 let pageDrafts = new Map();
 let pageBlockDrafts = new Map();
@@ -100,7 +103,7 @@ async function loadContent(){
   const response=await fetch(`${CONTENT_URL}?v=${Date.now()}`,{cache:'no-store'});
   if(!response.ok) throw new Error('Could not load the website content.');
   content=await response.json();
-  content.pages ||= []; content.page_blocks ||= []; content.galleries ||= []; content.faqs ||= []; content.locations ||= []; content.lesson_prices ||= [];
+  content.pages ||= []; content.page_blocks ||= []; content.galleries ||= []; content.promotions ||= []; content.faqs ||= []; content.locations ||= []; content.lesson_prices ||= [];
   originalContent=clone(content); pendingUploads.clear(); pageDrafts.clear(); pageBlockDrafts.clear(); pagesLoading.clear(); galleryDrafts.clear(); galleriesLoading.clear(); dirty=false; setState('saved','All changes saved locally'); render();
 }
 
@@ -129,9 +132,9 @@ window.addEventListener('beforeunload',event=>{ if(dirty){event.preventDefault()
 function render(){
   if(!content)return; const [kicker,title,description]=PANEL_COPY[currentPanel];
   $('#panel-kicker').textContent=kicker; $('#panel-title').textContent=title; $('#panel-description').textContent=description;
-  $('#live-page-link').hidden=!['pages','galleries'].includes(currentPanel);
-  $('#live-page-link').href=publicPath(currentPanel==='pages'?selectedPage:selectedGalleryPath);
-  ({pages:renderPages,galleries:renderGalleries,about:renderAbout,faqs:renderFaqs,contact:renderContact,locations:renderLocations,prices:renderPrices}[currentPanel])();
+  $('#live-page-link').hidden=!['pages','galleries','promotions'].includes(currentPanel);
+  $('#live-page-link').href=publicPath(currentPanel==='pages'?selectedPage:currentPanel==='galleries'?selectedGalleryPath:selectedPromotionPath);
+  ({pages:renderPages,galleries:renderGalleries,promotions:renderPromotions,about:renderAbout,faqs:renderFaqs,contact:renderContact,locations:renderLocations,prices:renderPrices}[currentPanel])();
 }
 function attachInputs(root=$('#panel-root')){ $$('[data-bind]',root).forEach(input=>input.addEventListener('input',()=>{ setPath(input.dataset.bind,input.value); markDirty(); renderPreviewOnly(); })); }
 function setPath(path,value){ const keys=path.split('.'); let cursor=content; keys.slice(0,-1).forEach(key=>cursor=cursor[Number.isNaN(Number(key))?key:Number(key)]); cursor[keys.at(-1)]=value; }
@@ -267,6 +270,21 @@ function renderGalleries(){ const gallery=galleryRecord(selectedGalleryPath); co
 }
 async function handleImage(file,apply,rerender=true){ if(!file)return; if(file.size>5*1024*1024){toast('Please choose a picture smaller than 5 MB.',true);return;} const path=makeImageName(file); const dataUrl=await fileToDataUrl(file); pendingUploads.set(path,{base64:dataUrl.split(',')[1],dataUrl}); apply(path); markDirty(); if(rerender)render(); }
 function fileToDataUrl(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);});}
+
+function promotionRecord(path){let promotion=content.promotions.find(item=>item.path===path);if(!promotion){promotion={path,images:[]};content.promotions.push(promotion);}promotion.images ||= [];return promotion;}
+
+function renderPromotions(){
+  const promotion=promotionRecord(selectedPromotionPath); const root=$('#panel-root');
+  root.innerHTML=`<div class="editor-grid"><section class="editor-card"><div class="card-head"><h2>Promotion page</h2></div><div class="card-body"><div class="field"><label>Website section</label><select id="promotion-page">${optionsHtml(path=>PROMOTION_PAGES.has(path))}</select><small>Pictures will appear on this section's Promotions page.</small></div><label class="upload-tile">+ Add promotion pictures<input id="promotion-upload" type="file" multiple accept="image/jpeg,image/png,image/webp"></label></div></section><section class="preview-card"><div class="card-head"><h2>Drag pictures to rearrange</h2><span>${promotion.images.length} pictures</span></div><div class="card-body"><div class="gallery-grid" id="promotion-grid">${promotion.images.map((item,index)=>`<article class="gallery-item" draggable="true" data-promotion-index="${index}"><img src="${escapeHtml(imageSrc(item.image))}" alt="${escapeHtml(item.alt)}"><span class="order">${index+1}</span><button class="remove-button" data-promotion-remove="${index}" type="button" aria-label="Remove promotion picture">X</button><div class="gallery-meta"><input data-promotion-alt="${index}" value="${escapeHtml(item.alt)}" placeholder="Short picture description"></div></article>`).join('')}<label class="upload-tile">+ Add pictures<input class="promotion-upload-more" type="file" multiple accept="image/jpeg,image/png,image/webp"></label></div>${promotion.images.length?'':'<div class="empty-state">No promotion pictures yet. Add the first one above.</div>'}</div></section></div>`;
+  $('#promotion-page').value=selectedPromotionPath;
+  $('#promotion-page').addEventListener('change',event=>{selectedPromotionPath=event.target.value;render();});
+  const upload=async files=>{for(const file of files){await handleImage(file,path=>promotion.images.push({image:path,alt:file.name.replace(/\.[^.]+$/,'').replace(/[-_]/g,' ')}),false);}markDirty();renderPromotions();};
+  $('#promotion-upload').addEventListener('change',event=>upload([...event.target.files]));
+  $('.promotion-upload-more')?.addEventListener('change',event=>upload([...event.target.files]));
+  $$('[data-promotion-alt]',root).forEach(input=>input.addEventListener('input',()=>{promotion.images[Number(input.dataset.promotionAlt)].alt=input.value;markDirty();}));
+  $$('[data-promotion-remove]',root).forEach(button=>button.addEventListener('click',()=>{if(confirm('Remove this promotion picture?')){promotion.images.splice(Number(button.dataset.promotionRemove),1);markDirty();renderPromotions();}}));
+  $$('[data-promotion-index]',root).forEach(item=>{item.addEventListener('dragstart',()=>{dragContext=Number(item.dataset.promotionIndex);item.classList.add('dragging');});item.addEventListener('dragend',()=>item.classList.remove('dragging'));item.addEventListener('dragover',event=>event.preventDefault());item.addEventListener('drop',event=>{event.preventDefault();const target=Number(item.dataset.promotionIndex);if(dragContext===null||dragContext===target)return;const [moved]=promotion.images.splice(dragContext,1);promotion.images.splice(target,0,moved);dragContext=null;markDirty();renderPromotions();});});
+}
 
 function renderAbout(){ const a=content.about; const root=$('#panel-root'); root.innerHTML=`<div class="editor-grid"><section class="editor-card"><div class="card-head"><h2>About Us text</h2></div><div class="card-body"><div class="field"><label>Heading</label><input data-bind="about.heading" value="${escapeHtml(a.heading)}"></div><div class="field"><label>Introduction</label><textarea data-bind="about.introduction">${escapeHtml(a.introduction)}</textarea></div><div class="field"><label>Story heading</label><input data-bind="about.story_heading" value="${escapeHtml(a.story_heading)}"></div><div class="field"><label>Story paragraphs</label><div class="repeat-list">${a.story_paragraphs.map((text,i)=>`<div class="repeat-item"><div class="item-bar"><span class="drag-handle">=</span><b>Paragraph ${i+1}</b><button class="remove-button" data-remove-paragraph="${i}" type="button">X</button></div><textarea data-paragraph="${i}">${escapeHtml(text)}</textarea></div>`).join('')}<button class="add-button" id="add-paragraph" type="button">+ Add paragraph</button></div></div></div></section><section class="preview-card"><div class="card-head"><h2>Preview</h2></div><div class="simple-preview" id="about-preview"></div></section></div>`; attachInputs(root); $$('[data-paragraph]',root).forEach(input=>input.addEventListener('input',()=>{a.story_paragraphs[Number(input.dataset.paragraph)]=input.value;markDirty();updateAboutPreview();})); $$('[data-remove-paragraph]',root).forEach(button=>button.addEventListener('click',()=>{a.story_paragraphs.splice(Number(button.dataset.removeParagraph),1);markDirty();renderAbout();})); $('#add-paragraph').addEventListener('click',()=>{a.story_paragraphs.push('');markDirty();renderAbout();}); updateAboutPreview(); }
 function updateAboutPreview(){ const a=content.about;if(!$('#about-preview'))return;$('#about-preview').innerHTML=`<h2>${escapeHtml(a.heading)}</h2><p>${escapeHtml(a.introduction)}</p><h3>${escapeHtml(a.story_heading)}</h3>${a.story_paragraphs.map(p=>`<p>${escapeHtml(p)}</p>`).join('')}`; }

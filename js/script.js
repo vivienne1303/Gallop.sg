@@ -824,6 +824,36 @@ const applyCmsGalleries = content => {
   if (pageGalleries.length) syncScrollingGalleries();
 };
 
+const applyCmsPromotions = content => {
+  const promotion = content.promotions?.find(item => item.path === getCmsPagePath());
+  if (!promotion) return;
+
+  let section = document.querySelector('.promotions-poster-section');
+  if (!section) {
+    section = document.querySelector('.main-coming-soon');
+    if (!section) return;
+    section.className = 'promotions-poster-section';
+    section.removeAttribute('aria-labelledby');
+  }
+
+  if (!promotion.images?.length) {
+    section.innerHTML = '<div class="main-coming-soon"><p class="eyebrow">Promotions</p><h2>Coming soon!</h2><p>New promotions will be added here.</p></div>';
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'promotions-poster-grid';
+  grid.setAttribute('aria-label', 'Current promotions');
+  promotion.images.forEach(item => {
+    const image = document.createElement('img');
+    image.src = resolveCmsImage(item.image);
+    image.alt = item.alt || 'Gallop SG promotion';
+    image.loading = 'lazy';
+    grid.appendChild(image);
+  });
+  section.replaceChildren(grid);
+};
+
 const applyCmsContent = content => {
   const aboutHeading = document.querySelector('#about .hero-copy h2');
   const aboutIntroduction = document.querySelector('#about .hero-copy > p:not(.eyebrow)');
@@ -926,6 +956,7 @@ const applyCmsContent = content => {
   applyCmsPageContent(content);
   applyCmsPageBlocks(content);
   applyCmsGalleries(content);
+  applyCmsPromotions(content);
 };
 
 const loadCmsContent = async () => {
