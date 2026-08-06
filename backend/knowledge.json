@@ -6,5 +6,44 @@
   "promotions": "Promotions change over time. Never claim that a promotion is active or provide promotional dates, schedules or prices unless they are explicitly added to this field. Direct visitors to the current promotions page at https://www.gallop.sg/pages/gallopsg/promotion.html or ask them to contact Gallop Stable.",
   "camps": "Gallop offers camps and workshops, including stable and pony experiences. Dates, formats, eligibility, availability and prices can change. Direct visitors to https://www.gallop.sg/pages/jackuda/camps-workshops.html and recommend confirming current details with the team.",
   "joining_the_team": "Gallop welcomes people who are passionate, energetic, animal-loving and eager to learn. Website roles may include riding instructors, horse grooms (SYCE) and customer service officers. Openings can change, so direct visitors to https://www.gallop.sg/pages/gallopsg/join.html or the relevant venture's Join the Team page, and recommend contacting Gallop Stable to confirm vacancies.",
-  "navigation": "Main website pages include Riding Lessons at /pages/stable/riding-lessons.html, Promotions at /pages/gallopsg/promotion.html, FAQs at /pages/gallopsg/faq.html, Join the Team at /pages/gallopsg/join.html, Contact at /pages/gallopsg/contact.html, and Camps/Workshops at /pages/jackuda/camps-workshops.html. When sharing a page, use the full https://www.gallop.sg URL."
+  "navigation": "Main website pages include Riding Lessons at /pages/stable/riding-lessons.html, Promotions at /pages/gallopsg/promotion.html, FAQs at /pages/gallopsg/faq.html, Join the Team at /pages/gallopsg/join.html, Contact at /pages/gallopsg/contact.html, and Camps/Workshops at /pages/jackuda/camps-workshops.html. When sharing a page, use the full https://www.gallop.sg URL.",
+  "openingHours": {
+  "nationalDay": "Gallop Stable is open as usual on National Day and follows its regular operating hours.",
+  "outlets": {
+    "Admiralty East": {
+      "address": "8 Admiralty Rd East, Singapore 759991",
+      "phone": "6463 6012 / 8383 6425",
+      "operatingHours": {
+        "Daily": [
+          "8:30 AM - 11:45 AM",
+          "2:30 PM - 6:45 PM"
+        ]
+      }
+    },
+    "Pasir Ris": {
+      "address": "61 Pasir Ris Green, Pasir Ris Park Carpark C, Singapore 518225",
+      "phone": "6583 9665",
+      "operatingHours": {
+        "Tuesday - Friday": [
+          "10:00 AM - 11:30 AM",
+          "2:00 PM - 6:30 PM"
+        ],
+        "Weekends / Public Holidays": [
+          "8:00 AM - 11:30 AM",
+          "2:00 PM - 6:30 PM"
+        ]
+      }
+    },
+    "Downtown East": {
+      "address": "1 Pasir Ris Close, Singapore 519599",
+      "phone": "8787 5377",
+      "operatingHours": {
+        "Wednesdays - Mondays": [
+          "9:00 AM - 11:45 AM",
+          "2:00 PM - 6:45 PM"
+        ]
+      }
+    }
+  }
+}
 }
