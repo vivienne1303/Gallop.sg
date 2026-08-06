@@ -389,17 +389,24 @@ const initializeImageLightbox = () => {
     lightboxClose.focus();
   };
 
-  lightboxImages.forEach(image => {
+  const isLightboxImage = target => target instanceof Element
+    && target.matches('.promotions-poster-section img, .activity-poster-section img');
+
+  const prepareImage = image => {
     image.tabIndex = 0;
     image.setAttribute('role', 'button');
     image.setAttribute('aria-label', `${image.alt || 'Promotion image'} - enlarge image`);
+  };
 
-    image.addEventListener('click', () => openLightbox(image));
-    image.addEventListener('keydown', event => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      event.preventDefault();
-      openLightbox(image);
-    });
+  lightboxImages.forEach(prepareImage);
+
+  document.addEventListener('click', event => {
+    if (isLightboxImage(event.target)) openLightbox(event.target);
+  });
+  document.addEventListener('keydown', event => {
+    if ((event.key !== 'Enter' && event.key !== ' ') || !isLightboxImage(event.target)) return;
+    event.preventDefault();
+    openLightbox(event.target);
   });
 
   lightboxClose.addEventListener('click', closeLightbox);
@@ -852,6 +859,9 @@ const applyCmsPromotions = content => {
     image.src = resolveCmsImage(item.image);
     image.alt = item.alt || 'Gallop SG promotion';
     image.loading = 'lazy';
+    image.tabIndex = 0;
+    image.setAttribute('role', 'button');
+    image.setAttribute('aria-label', `${image.alt} - enlarge image`);
     return image;
   });
   const makeCarousel = (items, format) => {
