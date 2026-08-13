@@ -493,13 +493,7 @@
   "promotions": [
     {
       "path": "pages/gallopsg/promotion.html",
-      "images": [
-        {
-          "image": "images/uploads/gallop-sg-national-day-family-bundle.png",
-          "alt": "Gallop SG National Day Family Bundle promotion for Singapore's 61st birthday",
-          "format": "portrait"
-        }
-      ]
+      "images": []
     },
     {
       "path": "pages/stable/stable_promotion.html",
