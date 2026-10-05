@@ -529,11 +529,6 @@
       "path": "pages/jackuda/jackuda_promotion.html",
       "images": [
         {
-          "image": "images/ponyshowering_poster.png",
-          "alt": "Pony showering workshop promotion",
-          "format": "portrait"
-        },
-        {
           "image": "images/ponygroomingworkshop_poster.png",
           "alt": "Pony grooming workshop promotion",
           "format": "portrait"
