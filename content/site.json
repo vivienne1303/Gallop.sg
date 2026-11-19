@@ -493,7 +493,13 @@
   "promotions": [
     {
       "path": "pages/gallopsg/promotion.html",
-      "images": []
+      "images": [
+        {
+          "image": "images/uploads/1795064242584-pony-jingle-jam-gallop-sg-1.jpg",
+          "alt": "Pony Jingle Jam @ Gallop.sg (1)",
+          "format": "portrait"
+        }
+      ]
     },
     {
       "path": "pages/stable/stable_promotion.html",
